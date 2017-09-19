@@ -1,0 +1,39 @@
+{
+    "name": "simpod/php-snmp",
+    "description": "PHP Simple Network Management",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Simon Podlipsky",
+            "email": "simon@podlipsky.net"
+        }
+    ],
+    "keywords": [
+        "php",
+        "snmp"
+    ],
+    "config": {
+        "sort-packages": true
+    },
+    "require": {
+        "php": "^7.2",
+        "ext-snmp": "*",
+        "consistence/consistence": "^1.0|^2.0"
+    },
+    "require-dev": {
+        "doctrine/coding-standard": "^6.0",
+        "phpstan/phpstan": "^0.11.5",
+        "phpstan/phpstan-strict-rules": "^0.11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SimPod\\PhpSnmp\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SimPod\\PhpSnmp\\Tests\\": "tests/"
+        }
+    }
+}
