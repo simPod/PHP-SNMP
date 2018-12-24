@@ -19,7 +19,7 @@
     "require": {
         "php": "^7.1",
         "ext-snmp": "*",
-        "consistence/consistence": "^1.1"
+        "consistence/consistence": "^1.1 || ^2.0"
     },
     "require-dev": {
         "doctrine/coding-standard": "^5.0",
