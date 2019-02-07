@@ -21,7 +21,7 @@ class EntitySensor extends MibBase
     /**
      * @return int[]
      */
-    public function getPhysicalSensorType() : array
+    public function getPhysicalSensorType() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_TYPE);
     }
@@ -29,7 +29,7 @@ class EntitySensor extends MibBase
     /**
      * @return int[]
      */
-    public function getPhysicalSensorScale() : array
+    public function getPhysicalSensorScale() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_SCALE);
     }
@@ -37,7 +37,7 @@ class EntitySensor extends MibBase
     /**
      * @return int[]
      */
-    public function getPhysicalSensorPrecision() : array
+    public function getPhysicalSensorPrecision() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_PRECISION);
     }
@@ -45,7 +45,7 @@ class EntitySensor extends MibBase
     /**
      * @return int[]
      */
-    public function getPhysicalSensorValue() : array
+    public function getPhysicalSensorValue() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_VALUE);
     }
@@ -53,7 +53,7 @@ class EntitySensor extends MibBase
     /**
      * @return int[]
      */
-    public function getPhysicalSensorOperStatus() : array
+    public function getPhysicalSensorOperStatus() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_OPER_STATUS);
     }
@@ -61,7 +61,7 @@ class EntitySensor extends MibBase
     /**
      * @return string[]
      */
-    public function getPhysicalSensorUnitsDisplay() : array
+    public function getPhysicalSensorUnitsDisplay() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_UNITS_DISPLAY);
     }
@@ -69,7 +69,7 @@ class EntitySensor extends MibBase
     /**
      * @return int[]
      */
-    public function getPhysicalSensorValueTimeStamp() : array
+    public function getPhysicalSensorValueTimeStamp() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_VALUE_TIME_STAMP);
     }
@@ -77,7 +77,7 @@ class EntitySensor extends MibBase
     /**
      * @return int[]
      */
-    public function getPhysicalSensorValueUpdateRate() : array
+    public function getPhysicalSensorValueUpdateRate() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_VALUE_UPDATE_RATE);
     }

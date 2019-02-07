@@ -14,7 +14,7 @@ final class System extends MibBase
     /**
      * @return string[]
      */
-    public function getDescription() : array
+    public function getDescription() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_DESCRIPTION);
     }
@@ -22,7 +22,7 @@ final class System extends MibBase
     /**
      * @return string[]
      */
-    public function getLocation() : array
+    public function getLocation() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_LOCATION);
     }
@@ -30,7 +30,7 @@ final class System extends MibBase
     /**
      * @return string[]
      */
-    public function getName() : array
+    public function getName() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_NAME);
     }
@@ -38,7 +38,7 @@ final class System extends MibBase
     /**
      * @return int[]
      */
-    public function getUptime() : array
+    public function getUptime() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_UPTIME);
     }

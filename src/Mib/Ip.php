@@ -12,7 +12,7 @@ class Ip extends MibBase
     /**
      * @return string[]
      */
-    public function getIpAddress() : array
+    public function getIpAddress() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_IP_ADDRESS);
     }
@@ -20,7 +20,7 @@ class Ip extends MibBase
     /**
      * @return string[]
      */
-    public function getIpNetToMediaPhysAddress() : array
+    public function getIpNetToMediaPhysAddress() : iterable
     {
         return $this->getSnmp()->walk(self::OID_IP_NET_TO_MEDIA_PHYS_ADDRESS);
     }

@@ -12,9 +12,9 @@ class DismanEvent extends MibBase
     public const OID_SYS_UP_TIME_INSTANCE = '.1.3.6.1.2.1.1.3.0';
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getSysUpTimeInstance() : array
+    public function getSysUpTimeInstance() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_SYS_UP_TIME_INSTANCE);
     }

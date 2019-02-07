@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Mib;
 
-use SimPod\PhpSnmp\Snmp;
+use SimPod\PhpSnmp\Transport\Snmp;
 
 interface Mib
 {

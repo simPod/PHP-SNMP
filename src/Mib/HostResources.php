@@ -117,7 +117,7 @@ class HostResources extends MibBase
     /**
      * @return int[]
      */
-    public function getHost() : array
+    public function getHost() : iterable
     {
         return $this->getSnmp()->walk(self::OID_HOST);
     }
@@ -125,7 +125,7 @@ class HostResources extends MibBase
     /**
      * @return string[]
      */
-    public function getHrStorageType() : array
+    public function getHrStorageType() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HR_STORAGE_TYPE);
     }
@@ -133,7 +133,7 @@ class HostResources extends MibBase
     /**
      * @return string[]
      */
-    public function getHrStorageDescr() : array
+    public function getHrStorageDescr() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HR_STORAGE_DESCR);
     }
@@ -141,7 +141,7 @@ class HostResources extends MibBase
     /**
      * @return int[]
      */
-    public function getHrStorageSize() : array
+    public function getHrStorageSize() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HR_STORAGE_SIZE);
     }
@@ -149,7 +149,7 @@ class HostResources extends MibBase
     /**
      * @return int[]
      */
-    public function getHrStorageUsed() : array
+    public function getHrStorageUsed() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HR_STORAGE_USED);
     }
@@ -157,7 +157,7 @@ class HostResources extends MibBase
     /**
      * @return int[]
      */
-    public function getHrDeviceType() : array
+    public function getHrDeviceType() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HR_DEVICE_TYPE);
     }
@@ -165,7 +165,7 @@ class HostResources extends MibBase
     /**
      * @return string[]
      */
-    public function getHrDeviceDescr() : array
+    public function getHrDeviceDescr() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HR_DEVICE_DESCR);
     }
@@ -173,7 +173,7 @@ class HostResources extends MibBase
     /**
      * @return int[]
      */
-    public function getHrDeviceStatus() : array
+    public function getHrDeviceStatus() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HR_DEVICE_STATUS);
     }
@@ -181,7 +181,7 @@ class HostResources extends MibBase
     /**
      * @return int[]
      */
-    public function getHrProcessorLoad() : array
+    public function getHrProcessorLoad() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HR_PROCESSOR_LOAD);
     }

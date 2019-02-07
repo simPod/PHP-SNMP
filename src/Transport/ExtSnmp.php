@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SimPod\PhpSnmp;
+namespace SimPod\PhpSnmp\Transport;
 
 use SimPod\PhpSnmp\Exception\SnmpFailed;
 use SimPod\PhpSnmp\Mib\MibBase;
@@ -25,7 +25,7 @@ use function trim;
 use const PREG_OFFSET_CAPTURE;
 use const SNMP_OID_OUTPUT_NUMERIC;
 
-class Snmp
+final class ExtSnmp implements Snmp
 {
     /** @var string */
     private $community;
@@ -60,9 +60,6 @@ class Snmp
     /** @var int */
     private $timeout;
 
-    /** @var mixed */
-    private $lastResult;
-
     public function __construct(
         string $host = '127.0.0.1',
         string $community = 'public',
@@ -93,11 +90,9 @@ class Snmp
     /**
      * @return mixed[]
      */
-    public function walkFirstDegree(string $walkedOid) : array
+    public function walkFirstDegree(string $walkedOid) : iterable
     {
         $result = $this->realWalk($walkedOid);
-
-        $processedResult = [];
 
         $oidPrefix = null;
         foreach ($result as $oid => $value) {
@@ -110,25 +105,35 @@ class Snmp
 
             $oidPrefix = substr($oid, 0, $length);
 
-            $processedResult[substr($oid, $length + 1)] = $this->parseSnmpValue($value);
+            yield substr($oid, $length + 1) => $this->parseSnmpValue($value);
         }
-
-        return $processedResult;
     }
 
     /**
      * @return mixed[]
      */
-    public function realWalk(string $oid) : array
+    public function walk(string $oid) : iterable
     {
-        switch ($this->getVersion()) {
+        $rawResult = $this->realWalk($oid);
+
+        foreach ($rawResult as $oidKey => $value) {
+            yield $oidKey => $this->parseSnmpValue($value);
+        }
+    }
+
+    /**
+     * @return mixed[]
+     */
+    private function realWalk(string $oid) : array
+    {
+        switch ($this->version) {
             case '1':
                 $result = @snmprealwalk(
                     $this->host,
                     $this->community,
                     $oid,
-                    $this->getTimeout(),
-                    $this->getRetry()
+                    $this->timeout,
+                    $this->retry
                 );
                 break;
             case '2c':
@@ -136,26 +141,26 @@ class Snmp
                     $this->host,
                     $this->community,
                     $oid,
-                    $this->getTimeout(),
-                    $this->getRetry()
+                    $this->timeout,
+                    $this->retry
                 );
                 break;
             case '3':
                 $result = @snmp3_real_walk(
                     $this->host,
-                    $this->getSecName(),
-                    $this->getSecLevel(),
-                    $this->getAuthProtocol(),
-                    $this->getAuthPassphrase(),
-                    $this->getPrivProtocol(),
-                    $this->getPrivPassphrase(),
+                    $this->secName,
+                    $this->secLevel,
+                    $this->authProtocol,
+                    $this->authPassphrase,
+                    $this->privProtocol,
+                    $this->privPassphrase,
                     $oid,
-                    $this->getTimeout(),
-                    $this->getRetry()
+                    $this->timeout,
+                    $this->retry
                 );
                 break;
             default:
-                throw new SnmpFailed('Invalid SNMP version: ' . $this->getVersion());
+                throw new SnmpFailed('Invalid SNMP version: ' . $this->version);
         }
 
         if ($result === false) {
@@ -163,51 +168,6 @@ class Snmp
         }
 
         return $result;
-    }
-
-    private function getVersion() : string
-    {
-        return $this->version;
-    }
-
-    private function getTimeout() : int
-    {
-        return $this->timeout;
-    }
-
-    private function getRetry() : int
-    {
-        return $this->retry;
-    }
-
-    public function getSecName() : string
-    {
-        return $this->secName;
-    }
-
-    public function getSecLevel() : string
-    {
-        return $this->secLevel;
-    }
-
-    public function getAuthProtocol() : string
-    {
-        return $this->authProtocol;
-    }
-
-    public function getAuthPassphrase() : string
-    {
-        return $this->authPassphrase;
-    }
-
-    public function getPrivProtocol() : string
-    {
-        return $this->privProtocol;
-    }
-
-    public function getPrivPassphrase() : string
-    {
-        return $this->privPassphrase;
     }
 
     /**
@@ -293,20 +253,5 @@ class Snmp
         }
 
         return $resolvedValue;
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function walk(string $oid) : array
-    {
-        $rawResult = $this->realWalk($oid);
-
-        $result = [];
-        foreach ($rawResult as $oidKey => $value) {
-            $result[$oidKey] = $this->parseSnmpValue($value);
-        }
-
-        return $result;
     }
 }

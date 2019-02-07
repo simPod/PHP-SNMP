@@ -16,7 +16,7 @@ class EntitySensor extends MibBase
     /**
      * @return int[]
      */
-    public function getThresholdLowWarning() : array
+    public function getThresholdLowWarning() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_THRESHOLD_LOW_WARNING);
     }
@@ -24,7 +24,7 @@ class EntitySensor extends MibBase
     /**
      * @return int[]
      */
-    public function getThresholdLowCritical() : array
+    public function getThresholdLowCritical() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_THRESHOLD_LOW_CRITICAL);
     }
@@ -32,7 +32,7 @@ class EntitySensor extends MibBase
     /**
      * @return int[]
      */
-    public function getThresholdHighWarning() : array
+    public function getThresholdHighWarning() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_THRESHOLD_HIGH_WARNING);
     }
@@ -40,7 +40,7 @@ class EntitySensor extends MibBase
     /**
      * @return int[]
      */
-    public function getThresholdHighCritical() : array
+    public function getThresholdHighCritical() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_THRESHOLD_HIGH_CRITICAL);
     }

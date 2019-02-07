@@ -16,10 +16,17 @@
     "config": {
         "sort-packages": true
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/simPod/SNMP"
+        }
+    ],
     "require": {
         "php": "^7.2",
         "ext-snmp": "*",
-        "consistence/consistence": "^1.0|^2.0"
+        "consistence/consistence": "^1.0|^2.0",
+        "freedsx/snmp": "dev-yo@dev"
     },
     "require-dev": {
         "doctrine/coding-standard": "^6.0",

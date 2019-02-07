@@ -15,7 +15,7 @@ class EntityState extends MibBase
     /**
      * @return int[]
      */
-    public function getEntStateAdmin() : array
+    public function getEntStateAdmin() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_ENT_STATE_ADMIN);
     }
@@ -23,7 +23,7 @@ class EntityState extends MibBase
     /**
      * @return int[]
      */
-    public function getEntStateOper() : array
+    public function getEntStateOper() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_ENT_STATE_OPER);
     }

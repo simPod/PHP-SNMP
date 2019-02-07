@@ -29,7 +29,7 @@ class Entity extends MibBase
     /**
      * @return string[]
      */
-    public function getPhysicalDescription() : array
+    public function getPhysicalDescription() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_DESCRIPTION);
     }
@@ -37,7 +37,7 @@ class Entity extends MibBase
     /**
      * @return string[]
      */
-    public function getPhysicalVendorType() : array
+    public function getPhysicalVendorType() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_VENDOR_TYPE);
     }
@@ -45,7 +45,7 @@ class Entity extends MibBase
     /**
      * @return int[]
      */
-    public function getPhysicalContainedIn() : array
+    public function getPhysicalContainedIn() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_CONTAINED_IN);
     }
@@ -53,7 +53,7 @@ class Entity extends MibBase
     /**
      * @return int[]
      */
-    public function getPhysicalClass() : array
+    public function getPhysicalClass() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_CLASS);
     }
@@ -61,7 +61,7 @@ class Entity extends MibBase
     /**
      * @return string[]
      */
-    public function getPhysicalName() : array
+    public function getPhysicalName() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_NAME);
     }
@@ -69,7 +69,7 @@ class Entity extends MibBase
     /**
      * @return string[]
      */
-    public function getPhysicalHardwareRev() : array
+    public function getPhysicalHardwareRev() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_HARDWARE_REV);
     }
@@ -77,7 +77,7 @@ class Entity extends MibBase
     /**
      * @return string[]
      */
-    public function getPhysicalFirmwareRev() : array
+    public function getPhysicalFirmwareRev() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_FIRMWARE_REV);
     }
@@ -85,7 +85,7 @@ class Entity extends MibBase
     /**
      * @return string[]
      */
-    public function getPhysicalSoftwareRev() : array
+    public function getPhysicalSoftwareRev() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SOFTWARE_REV);
     }
@@ -93,7 +93,7 @@ class Entity extends MibBase
     /**
      * @return string[]
      */
-    public function getPhysicalSerialNumber() : array
+    public function getPhysicalSerialNumber() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SERIAL_NUM);
     }
@@ -101,7 +101,7 @@ class Entity extends MibBase
     /**
      * @return string[]
      */
-    public function getPhysicalMfgName() : array
+    public function getPhysicalMfgName() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_MFG_NAME);
     }
@@ -109,7 +109,7 @@ class Entity extends MibBase
     /**
      * @return string[]
      */
-    public function getPhysicalModelName() : array
+    public function getPhysicalModelName() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_MODEL_NAME);
     }

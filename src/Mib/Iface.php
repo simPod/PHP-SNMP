@@ -33,7 +33,7 @@ class Iface extends MibBase
     /**
      * @return int[]
      */
-    public function getAdminStatuses() : array
+    public function getAdminStatuses() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_ADMIN_STATUS);
     }
@@ -41,7 +41,7 @@ class Iface extends MibBase
     /**
      * @return string[]
      */
-    public function getAliases() : array
+    public function getAliases() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_ALIAS);
     }
@@ -49,7 +49,7 @@ class Iface extends MibBase
     /**
      * @return string[]
      */
-    public function getDescriptions() : array
+    public function getDescriptions() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_DESCRIPTION);
     }
@@ -57,7 +57,7 @@ class Iface extends MibBase
     /**
      * @return string[]
      */
-    public function getHcInOctets() : array
+    public function getHcInOctets() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HC_IN_OCTETS);
     }
@@ -70,7 +70,7 @@ class Iface extends MibBase
     /**
      * @return string[]
      */
-    public function getHcOutOctets() : array
+    public function getHcOutOctets() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HC_OUT_OCTETS);
     }
@@ -99,7 +99,7 @@ class Iface extends MibBase
     /**
      * @return string[]
      */
-    public function getHcInBroadcastPackets() : array
+    public function getHcInBroadcastPackets() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HC_IN_BROADCAST_PACKETS);
     }
@@ -115,7 +115,7 @@ class Iface extends MibBase
     /**
      * @return string[]
      */
-    public function getHcOutBroadcastPackets() : array
+    public function getHcOutBroadcastPackets() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HC_OUT_BROADCAST_PACKETS);
     }
@@ -131,7 +131,7 @@ class Iface extends MibBase
     /**
      * @return string[]
      */
-    public function getHcInMulticastPackets() : array
+    public function getHcInMulticastPackets() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HC_IN_MULTICAST_PACKETS);
     }
@@ -147,7 +147,7 @@ class Iface extends MibBase
     /**
      * @return string[]
      */
-    public function getHcOutMulticastPackets() : array
+    public function getHcOutMulticastPackets() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HC_OUT_MULTICAST_PACKETS);
     }
@@ -163,7 +163,7 @@ class Iface extends MibBase
     /**
      * @return string[]
      */
-    public function getHcInUnicastPackets() : array
+    public function getHcInUnicastPackets() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HC_IN_UNICAST_PACKETS);
     }
@@ -179,7 +179,7 @@ class Iface extends MibBase
     /**
      * @return string[]
      */
-    public function getHcOutUnicastPackets() : array
+    public function getHcOutUnicastPackets() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HC_OUT_UNICAST_PACKETS);
     }
@@ -195,7 +195,7 @@ class Iface extends MibBase
     /**
      * @return int[]
      */
-    public function getInDiscards() : array
+    public function getInDiscards() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_IN_DISCARDS);
     }
@@ -208,7 +208,7 @@ class Iface extends MibBase
     /**
      * @return int[]
      */
-    public function getOutDiscards() : array
+    public function getOutDiscards() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_OUT_DISCARDS);
     }
@@ -221,7 +221,7 @@ class Iface extends MibBase
     /**
      * @return int[]
      */
-    public function getInErrors() : array
+    public function getInErrors() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_IN_ERRORS);
     }
@@ -234,7 +234,7 @@ class Iface extends MibBase
     /**
      * @return int[]
      */
-    public function getOutErrors() : array
+    public function getOutErrors() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_OUT_ERRORS);
     }
@@ -247,7 +247,7 @@ class Iface extends MibBase
     /**
      * @return string[]
      */
-    public function getNames() : array
+    public function getNames() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_NAME);
     }
@@ -255,7 +255,7 @@ class Iface extends MibBase
     /**
      * @return int[]
      */
-    public function getOperStatuses() : array
+    public function getOperStatuses() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_OPER_STATUS);
     }
@@ -263,7 +263,7 @@ class Iface extends MibBase
     /**
      * @return int[]
      */
-    public function getSpeeds() : array
+    public function getSpeeds() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_SPEED);
     }
@@ -271,7 +271,7 @@ class Iface extends MibBase
     /**
      * @return int[]
      */
-    public function getHcSpeeds() : array
+    public function getHcSpeeds() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_HC_SPEED);
     }
@@ -279,7 +279,7 @@ class Iface extends MibBase
     /**
      * @return int[]
      */
-    public function getTypes() : array
+    public function getTypes() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_TYPE);
     }
@@ -287,7 +287,7 @@ class Iface extends MibBase
     /**
      * @return mixed[]
      */
-    public function getStackTable() : array
+    public function getStackTable() : iterable
     {
         return $this->getSnmp()->walk(self::OID_STACK_STATUS);
     }

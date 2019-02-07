@@ -11,7 +11,7 @@ final class SNMPFramework extends MibBase
     /**
      * @return int[]
      */
-    public function getEngineTime() : array
+    public function getEngineTime() : iterable
     {
         return $this->getSnmp()->walkFirstDegree(self::OID_SNMP_ENGINE_TIME);
     }

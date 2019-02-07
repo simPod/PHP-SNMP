@@ -14,7 +14,7 @@ final class Lldp extends MibBase
     /**
      * @return string[]
      */
-    public function getLocalPortIds() : array
+    public function getLocalPortIds() : iterable
     {
         return $this->getSnmp()->walk(self::OID_LOCAL_PORT_ID);
     }
@@ -22,7 +22,7 @@ final class Lldp extends MibBase
     /**
      * @return string[]
      */
-    public function getRemotePortIds() : array
+    public function getRemotePortIds() : iterable
     {
         return $this->getSnmp()->walk(self::OID_REMOTE_PORT_ID);
     }
@@ -30,7 +30,7 @@ final class Lldp extends MibBase
     /**
      * @return string[]
      */
-    public function getRemoteSysNames() : array
+    public function getRemoteSysNames() : iterable
     {
         return $this->getSnmp()->walk(self::OID_REMOTE_SYS_NAME);
     }
@@ -38,7 +38,7 @@ final class Lldp extends MibBase
     /**
      * @return int[]
      */
-    public function getPortConfigAdminStatus() : array
+    public function getPortConfigAdminStatus() : iterable
     {
         return $this->getSnmp()->walk(self::OID_PORT_CONFIG_ADMIN_STATUS);
     }

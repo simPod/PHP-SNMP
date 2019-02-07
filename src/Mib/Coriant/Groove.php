@@ -42,7 +42,7 @@ class Groove extends MibBase
     /**
      * @return float[]
      */
-    public function getSystemPowerConsumptionCurrent() : array
+    public function getSystemPowerConsumptionCurrent() : iterable
     {
         return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_SYSTEM_POWER_CONSUMPTION_CURRENT));
     }
@@ -50,7 +50,7 @@ class Groove extends MibBase
     /**
      * @return int[]
      */
-    public function getCardAdminStatus() : array
+    public function getCardAdminStatus() : iterable
     {
         return $this->getSnmp()->walk(self::OID_CARD_ADMIN_STATUS);
     }
@@ -58,7 +58,7 @@ class Groove extends MibBase
     /**
      * @return int[]
      */
-    public function getCardOperStatus() : array
+    public function getCardOperStatus() : iterable
     {
         return $this->getSnmp()->walk(self::OID_CARD_OPER_STATUS);
     }
@@ -66,7 +66,7 @@ class Groove extends MibBase
     /**
      * @return int[]
      */
-    public function getCardFanSpeedRate() : array
+    public function getCardFanSpeedRate() : iterable
     {
         return $this->getSnmp()->walk(self::OID_CARD_FAN_SPEED_RATE);
     }
@@ -74,7 +74,7 @@ class Groove extends MibBase
     /**
      * @return float[]
      */
-    public function getCardTemperature() : array
+    public function getCardTemperature() : iterable
     {
         return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_CARD_TEMPERATURE));
     }
@@ -82,7 +82,7 @@ class Groove extends MibBase
     /**
      * @return string[]
      */
-    public function getSubcardEquipmentNames() : array
+    public function getSubcardEquipmentNames() : iterable
     {
         return $this->getSnmp()->walk(self::OID_SUBCARD_EQUIPMENT_NAME);
     }
@@ -90,7 +90,7 @@ class Groove extends MibBase
     /**
      * @return float[]
      */
-    public function getPortRxOpticalPower() : array
+    public function getPortRxOpticalPower() : iterable
     {
         return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_RX_OPTICAL_POWER));
     }
@@ -98,7 +98,7 @@ class Groove extends MibBase
     /**
      * @return float[]
      */
-    public function getPortTxOpticalPower() : array
+    public function getPortTxOpticalPower() : iterable
     {
         return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_TX_OPTICAL_POWER));
     }
@@ -106,7 +106,7 @@ class Groove extends MibBase
     /**
      * @return float[]
      */
-    public function getPortRxOpticalPowerLane1() : array
+    public function getPortRxOpticalPowerLane1() : iterable
     {
         return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_RX_OPTICAL_POWER_LANE_1));
     }
@@ -114,7 +114,7 @@ class Groove extends MibBase
     /**
      * @return float[]
      */
-    public function getPortRxOpticalPowerLane2() : array
+    public function getPortRxOpticalPowerLane2() : iterable
     {
         return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_RX_OPTICAL_POWER_LANE_2));
     }
@@ -122,7 +122,7 @@ class Groove extends MibBase
     /**
      * @return float[]
      */
-    public function getPortRxOpticalPowerLane3() : array
+    public function getPortRxOpticalPowerLane3() : iterable
     {
         return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_RX_OPTICAL_POWER_LANE_3));
     }
@@ -130,7 +130,7 @@ class Groove extends MibBase
     /**
      * @return float[]
      */
-    public function getPortRxOpticalPowerLane4() : array
+    public function getPortRxOpticalPowerLane4() : iterable
     {
         return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_RX_OPTICAL_POWER_LANE_4));
     }
@@ -138,7 +138,7 @@ class Groove extends MibBase
     /**
      * @return float[]
      */
-    public function getPortTxOpticalPowerLane1() : array
+    public function getPortTxOpticalPowerLane1() : iterable
     {
         return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_TX_OPTICAL_POWER_LANE_1));
     }
@@ -146,7 +146,7 @@ class Groove extends MibBase
     /**
      * @return float[]
      */
-    public function getPortTxOpticalPowerLane2() : array
+    public function getPortTxOpticalPowerLane2() : iterable
     {
         return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_TX_OPTICAL_POWER_LANE_2));
     }
@@ -154,7 +154,7 @@ class Groove extends MibBase
     /**
      * @return float[]
      */
-    public function getPortTxOpticalPowerLane3() : array
+    public function getPortTxOpticalPowerLane3() : iterable
     {
         return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_TX_OPTICAL_POWER_LANE_3));
     }
@@ -162,7 +162,7 @@ class Groove extends MibBase
     /**
      * @return float[]
      */
-    public function getPortTxOpticalPowerLane4() : array
+    public function getPortTxOpticalPowerLane4() : iterable
     {
         return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_TX_OPTICAL_POWER_LANE_4));
     }
@@ -170,7 +170,7 @@ class Groove extends MibBase
     /**
      * @return string[]
      */
-    public function getPortNames() : array
+    public function getPortNames() : iterable
     {
         return $this->getSnmp()->walk(self::OID_PORT_NAME);
     }
@@ -178,7 +178,7 @@ class Groove extends MibBase
     /**
      * @return int[]
      */
-    public function getPortAdminStatuses() : array
+    public function getPortAdminStatuses() : iterable
     {
         return $this->getSnmp()->walk(self::OID_PORT_ADMIN_STATUS);
     }
@@ -186,7 +186,7 @@ class Groove extends MibBase
     /**
      * @return int[]
      */
-    public function getPortOperStatuses() : array
+    public function getPortOperStatuses() : iterable
     {
         return $this->getSnmp()->walk(self::OID_PORT_OPER_STATUS);
     }
@@ -194,7 +194,7 @@ class Groove extends MibBase
     /**
      * @return string[]
      */
-    public function getPortAliasNames() : array
+    public function getPortAliasNames() : iterable
     {
         return $this->getSnmp()->walk(self::OID_PORT_ALIAS_NAME);
     }
@@ -202,7 +202,7 @@ class Groove extends MibBase
     /**
      * @return int[]
      */
-    public function getInventoryEquipmentType() : array
+    public function getInventoryEquipmentType() : iterable
     {
         return $this->getSnmp()->walk(self::OID_INVENTORY_EQUIPMENT_TYPE);
     }
@@ -210,7 +210,7 @@ class Groove extends MibBase
     /**
      * @return string[]
      */
-    public function getInventoryModuleType() : array
+    public function getInventoryModuleType() : iterable
     {
         return $this->getSnmp()->walk(self::OID_INVENTORY_MODULE_TYPE);
     }
@@ -218,7 +218,7 @@ class Groove extends MibBase
     /**
      * @return string[]
      */
-    public function getInventorySerialNumber() : array
+    public function getInventorySerialNumber() : iterable
     {
         return $this->getSnmp()->walk(self::OID_INVENTORY_SERIAL_NUMBER);
     }
@@ -226,7 +226,7 @@ class Groove extends MibBase
     /**
      * @return string[]
      */
-    public function getInventoryFwVersion() : array
+    public function getInventoryFwVersion() : iterable
     {
         return $this->getSnmp()->walk(self::OID_INVENTORY_FW_VERSION);
     }
@@ -234,7 +234,7 @@ class Groove extends MibBase
     /**
      * @return string[]
      */
-    public function getInventoryVendor() : array
+    public function getInventoryVendor() : iterable
     {
         return $this->getSnmp()->walk(self::OID_INVENTORY_VENDOR);
     }
@@ -242,7 +242,7 @@ class Groove extends MibBase
     /**
      * @return string[]
      */
-    public function getInventoryPartVersion() : array
+    public function getInventoryPartVersion() : iterable
     {
         return $this->getSnmp()->walk(self::OID_INVENTORY_PART_VERSION);
     }
