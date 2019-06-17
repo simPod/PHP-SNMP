@@ -52,9 +52,9 @@ final class FreedsxSnmp implements Snmp
     /**
      * @return mixed[]
      */
-    public function walkFirstDegree(string $walkedOid) : iterable
+    public function walkFirstDegree(string $oid) : iterable
     {
-        $result = $this->walk($walkedOid);
+        $result = $this->walk($oid);
 
         $oidPrefix = null;
         foreach ($result as $oid => $value) {

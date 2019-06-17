@@ -90,9 +90,9 @@ final class ExtSnmp implements Snmp
     /**
      * @return mixed[]
      */
-    public function walkFirstDegree(string $walkedOid) : iterable
+    public function walkFirstDegree(string $oid) : iterable
     {
-        $result = $this->realWalk($walkedOid);
+        $result = $this->realWalk($oid);
 
         $oidPrefix = null;
         foreach ($result as $oid => $value) {

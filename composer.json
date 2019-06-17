@@ -26,7 +26,9 @@
         "php": "^7.2",
         "ext-snmp": "*",
         "consistence/consistence": "^1.0|^2.0",
-        "freedsx/snmp": "dev-yo@dev"
+        "freedsx/snmp": "dev-yo@dev",
+        "ext-curl": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "doctrine/coding-standard": "^6.0",
