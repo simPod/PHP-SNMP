@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Mib;
 
-use function iterable_to_array;
-use SimPod\PhpSnmp\OidWithIndex;
 use SimPod\PhpSnmp\Transport\Snmp;
+use function iterable_to_array;
 
 class Iface
 {
