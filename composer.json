@@ -24,16 +24,24 @@
     ],
     "require": {
         "php": "^7.2",
-        "ext-snmp": "*",
-        "consistence/consistence": "^1.0|^2.0",
-        "freedsx/snmp": "dev-yo@dev",
-        "ext-curl": "*",
-        "ext-json": "*"
+        "bentools/iterable-functions": "^1.2",
+        "consistence/consistence": "^1.0|^2.0"
+    },
+    "suggest": {
+        "ext-curl": "Required for SNMP transport \"Api\"",
+        "ext-json": "Required for SNMP transport \"Api\"",
+        "ext-snmp": "Required for SNMP transport \"Extension\"",
+        "freedsx/snmp": "Required for SNMP transport \"FreeDSx\""
     },
     "require-dev": {
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-snmp": "*",
         "doctrine/coding-standard": "^6.0",
+        "freedsx/snmp": "dev-yo@dev",
         "phpstan/phpstan": "^0.11.5",
-        "phpstan/phpstan-strict-rules": "^0.11.0"
+        "phpstan/phpstan-strict-rules": "^0.11.0",
+        "phpunit/phpunit": "^8.2"
     },
     "autoload": {
         "psr-4": {

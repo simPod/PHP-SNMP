@@ -11,7 +11,7 @@ use function is_int;
 use function strrpos;
 use function substr;
 
-final class FreedsxSnmp implements Snmp
+final class FreeDSxSnmp implements Snmp
 {
     /** @var SnmpClient */
     private $client;

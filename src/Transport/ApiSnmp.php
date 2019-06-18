@@ -20,7 +20,7 @@ use const CURLOPT_CONNECTTIMEOUT;
 use const CURLOPT_HEADER;
 use const CURLOPT_RETURNTRANSFER;
 use const CURLOPT_TIMEOUT;
-use function var_dump;
+use const JSON_BIGINT_AS_STRING;
 
 final class ApiSnmp implements Snmp
 {
@@ -119,7 +119,7 @@ final class ApiSnmp implements Snmp
             throw SnmpApiError::connectionFailed($error);
         }
 
-        $json = json_decode($result, true);
+        $json = json_decode($result, true, 3, JSON_BIGINT_AS_STRING);
         if ($json === null) {
             throw SnmpApiError::invalidJson(json_last_error_msg());
         }
