@@ -36,6 +36,7 @@ class MacAddress
             return null;
         }
 
+        /** @var string[] $parts */
         $parts = explode($matches['delim'], strtolower($macAddress));
         $partsCount = count($parts);
 

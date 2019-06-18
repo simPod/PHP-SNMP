@@ -34,9 +34,4 @@ final class SnmpApiError extends RuntimeException implements SnmpException
     {
         return new self(sprintf('Failed to fetch OID: %s', $error));
     }
-
-    public static function tooManyRetries(self $previous) : self
-    {
-        return new self('Failed to fetch OID: too many retries', 0, $previous);
-    }
 }

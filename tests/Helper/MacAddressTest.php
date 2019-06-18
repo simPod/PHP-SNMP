@@ -12,25 +12,22 @@ use function pack;
 class MacAddressTest extends TestCase
 {
     /**
-     * @param array<string,string> $macAddress
-     * @param array<string,string> $expected
-     *
      * @dataProvider providerNormalize
      */
     public function testNormalize(string $macAddress, ?string $expected) : void
     {
-        $this->assertSame($expected, MacAddress::normalize($macAddress));
+        self::assertSame($expected, MacAddress::normalize($macAddress));
     }
 
     /**
-     * @param array<string,string> $macAddresses
-     * @param array<string,string> $expectedMacAddresses
+     * @param array<string, string> $macAddresses
+     * @param array<string, string> $expectedMacAddresses
      *
      * @dataProvider providerNormalizeBulk
      */
     public function testNormalizeBulk(array $macAddresses, array $expectedMacAddresses) : void
     {
-        $this->assertSame($expectedMacAddresses, iterable_to_array(MacAddress::normalizeBulk($macAddresses)));
+        self::assertSame($expectedMacAddresses, iterable_to_array(MacAddress::normalizeBulk($macAddresses)));
     }
 
     public function providerNormalize() : iterable

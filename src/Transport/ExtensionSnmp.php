@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SimPod\PhpSnmp\Transport;
 
 use SimPod\PhpSnmp\Exception\SnmpFailed;
-use SimPod\PhpSnmp\Mib\MibBase;
+use SimPod\PhpSnmp\Mib\HostResources;
 use function array_key_exists;
 use function assert;
 use function explode;
@@ -27,6 +27,12 @@ use const SNMP_OID_OUTPUT_NUMERIC;
 
 final class ExtSnmp implements Snmp
 {
+    private const OBJECT_TYPES = [
+        HostResources::OID_HR_STORAGE_TYPES => null,
+        HostResources::OID_HR_DEVICE_TYPES  => null,
+        HostResources::OID_HR_FSTYPES       => null,
+    ];
+
     /** @var string */
     private $community;
 
@@ -229,11 +235,11 @@ final class ExtSnmp implements Snmp
                 break;
 
             case 'Opaque':
-                $resolvedValue = $this->parseSnmpValue(str_replace('Oprague: ', '', $value));
+                $resolvedValue = $this->parseSnmpValue(str_replace('Opaque: ', '', $value));
                 break;
 
             case 'OID':
-                $objectTypes       = MibBase::OBJECT_TYPES;
+                $objectTypes       = self::OBJECT_TYPES;
                 $reversedOidParts  = explode('.', strrev($value), 2);
                 $objectTypeOidBase = strrev($reversedOidParts[1]);
                 $resolvedValue     = array_key_exists(

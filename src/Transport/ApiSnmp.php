@@ -6,7 +6,6 @@ namespace SimPod\PhpSnmp\Transport;
 
 use SimPod\PhpSnmp\Exception\SnmpApiError;
 use function array_key_exists;
-use function assert;
 use function base64_decode;
 use function curl_close;
 use function curl_error;
@@ -36,33 +35,18 @@ final class ApiSnmp implements Snmp
     private $host;
 
     /** @var int */
-    private $retry;
-
-    /** @var int */
     private $timeout;
 
     public function __construct(
         string $apiHostUrl,
         string $community = 'public',
         string $host = '127.0.0.1',
-        int $timeout = 30,
-        int $retry = 3
+        int $timeout = 30
     ) {
         $this->apiHostUrl = $apiHostUrl;
         $this->community = $community;
         $this->host = $host;
         $this->timeout = $timeout;
-
-        assert($retry >= 0);
-        $this->retry = $retry;
-    }
-
-    /**
-     * @return iterable<string, mixed>
-     */
-    public function walkFirstDegree(string $oid) : iterable
-    {
-        yield from $this->get($oid, true);
     }
 
     /**
@@ -70,24 +54,18 @@ final class ApiSnmp implements Snmp
      */
     public function walk(string $oid) : iterable
     {
-        yield from $this->get($oid, false);
+        yield from $this->getResponse($oid, true);
     }
 
-    private function get(string $oid, bool $stripOidPrefix) : iterable
+    /**
+     * @return iterable<string, mixed>
+     */
+    public function walkWithCompleteOids(string $oid) : iterable
     {
-        for ($i = 0; $i <= $this->retry; $i++) {
-            try {
-                return yield from $this->doGet($oid, $stripOidPrefix);
-            } catch (SnmpApiError $error) {
-            }
-        }
-
-        assert(isset($error));
-
-        throw SnmpApiError::tooManyRetries($error);
+        yield from $this->getResponse($oid, false);
     }
 
-    private function doGet(string $oid, bool $stripOidPrefix) : iterable
+    private function getResponse(string $oid, bool $stripOidPrefix) : iterable
     {
         $url = $this->apiHostUrl . strtr(
                 self::API_PATH,
@@ -119,7 +97,7 @@ final class ApiSnmp implements Snmp
             throw SnmpApiError::connectionFailed($error);
         }
 
-        $json = json_decode($result, true, 3, JSON_BIGINT_AS_STRING);
+        $json = json_decode($result, true, 4, JSON_BIGINT_AS_STRING);
         if ($json === null) {
             throw SnmpApiError::invalidJson(json_last_error_msg());
         }
