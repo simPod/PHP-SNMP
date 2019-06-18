@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Mib;
 
-final class System extends MibBase
+use SimPod\PhpSnmp\Transport\Snmp;
+
+final class System
 {
     public const OID_DESCRIPTION = '.1.3.6.1.2.1.1.1';
     public const OID_NAME        = '.1.3.6.1.2.1.1.5.0';
@@ -12,34 +14,34 @@ final class System extends MibBase
     public const OID_UPTIME      = '.1.3.6.1.2.1.1.3.0';
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getDescription() : iterable
+    public function getDescription(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_DESCRIPTION);
+        return $snmp->walk(self::OID_DESCRIPTION);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getLocation() : iterable
+    public function getLocation(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_LOCATION);
+        return $snmp->walk(self::OID_LOCATION);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getName() : iterable
+    public function getName(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_NAME);
+        return $snmp->walk(self::OID_NAME);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getUptime() : iterable
+    public function getUptime(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_UPTIME);
+        return $snmp->walk(self::OID_UPTIME);
     }
 }

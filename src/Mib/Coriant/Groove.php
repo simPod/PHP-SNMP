@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace SimPod\PhpSnmp\Mib\Coriant;
 
 use SimPod\PhpSnmp\Helper\TypeMapper;
-use SimPod\PhpSnmp\Mib\MibBase;
+use SimPod\PhpSnmp\Transport\Snmp;
 
 /**
  * See Groove G30 release 2.1.0 https://mibs.observium.org/mib/CORIANT-GROOVE-MIB/
  */
-class Groove extends MibBase
+class Groove
 {
     public const OID_SYSTEM_POWER_CONSUMPTION_CURRENT = '.1.3.6.1.4.1.42229.1.2.2.2.2';
     public const OID_CARD_ADMIN_STATUS                = '.1.3.6.1.4.1.42229.1.2.3.3.1.1.3';
@@ -40,210 +40,210 @@ class Groove extends MibBase
     public const OID_INVENTORY_PART_VERSION           = '.1.3.6.1.4.1.42229.1.2.3.12.1.1.11';
 
     /**
-     * @return float[]
+     * @return iterable<string, float>
      */
-    public function getSystemPowerConsumptionCurrent() : iterable
+    public function getSystemPowerConsumptionCurrent(Snmp $snmp) : iterable
     {
-        return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_SYSTEM_POWER_CONSUMPTION_CURRENT));
+        return TypeMapper::stringsToFloats($snmp->walk(self::OID_SYSTEM_POWER_CONSUMPTION_CURRENT));
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getCardAdminStatus() : iterable
+    public function getCardAdminStatus(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_CARD_ADMIN_STATUS);
+        return $snmp->walk(self::OID_CARD_ADMIN_STATUS);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getCardOperStatus() : iterable
+    public function getCardOperStatus(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_CARD_OPER_STATUS);
+        return $snmp->walk(self::OID_CARD_OPER_STATUS);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getCardFanSpeedRate() : iterable
+    public function getCardFanSpeedRate(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_CARD_FAN_SPEED_RATE);
+        return $snmp->walk(self::OID_CARD_FAN_SPEED_RATE);
     }
 
     /**
-     * @return float[]
+     * @return iterable<string, float>
      */
-    public function getCardTemperature() : iterable
+    public function getCardTemperature(Snmp $snmp) : iterable
     {
-        return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_CARD_TEMPERATURE));
+        return TypeMapper::stringsToFloats($snmp->walk(self::OID_CARD_TEMPERATURE));
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getSubcardEquipmentNames() : iterable
+    public function getSubcardEquipmentNames(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_SUBCARD_EQUIPMENT_NAME);
+        return $snmp->walk(self::OID_SUBCARD_EQUIPMENT_NAME);
     }
 
     /**
-     * @return float[]
+     * @return iterable<string, float>
      */
-    public function getPortRxOpticalPower() : iterable
+    public function getPortRxOpticalPower(Snmp $snmp) : iterable
     {
-        return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_RX_OPTICAL_POWER));
+        return TypeMapper::stringsToFloats($snmp->walk(self::OID_PORT_RX_OPTICAL_POWER));
     }
 
     /**
-     * @return float[]
+     * @return iterable<string, float>
      */
-    public function getPortTxOpticalPower() : iterable
+    public function getPortTxOpticalPower(Snmp $snmp) : iterable
     {
-        return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_TX_OPTICAL_POWER));
+        return TypeMapper::stringsToFloats($snmp->walk(self::OID_PORT_TX_OPTICAL_POWER));
     }
 
     /**
-     * @return float[]
+     * @return iterable<string, float>
      */
-    public function getPortRxOpticalPowerLane1() : iterable
+    public function getPortRxOpticalPowerLane1(Snmp $snmp) : iterable
     {
-        return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_RX_OPTICAL_POWER_LANE_1));
+        return TypeMapper::stringsToFloats($snmp->walk(self::OID_PORT_RX_OPTICAL_POWER_LANE_1));
     }
 
     /**
-     * @return float[]
+     * @return iterable<string, float>
      */
-    public function getPortRxOpticalPowerLane2() : iterable
+    public function getPortRxOpticalPowerLane2(Snmp $snmp) : iterable
     {
-        return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_RX_OPTICAL_POWER_LANE_2));
+        return TypeMapper::stringsToFloats($snmp->walk(self::OID_PORT_RX_OPTICAL_POWER_LANE_2));
     }
 
     /**
-     * @return float[]
+     * @return iterable<string, float>
      */
-    public function getPortRxOpticalPowerLane3() : iterable
+    public function getPortRxOpticalPowerLane3(Snmp $snmp) : iterable
     {
-        return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_RX_OPTICAL_POWER_LANE_3));
+        return TypeMapper::stringsToFloats($snmp->walk(self::OID_PORT_RX_OPTICAL_POWER_LANE_3));
     }
 
     /**
-     * @return float[]
+     * @return iterable<string, float>
      */
-    public function getPortRxOpticalPowerLane4() : iterable
+    public function getPortRxOpticalPowerLane4(Snmp $snmp) : iterable
     {
-        return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_RX_OPTICAL_POWER_LANE_4));
+        return TypeMapper::stringsToFloats($snmp->walk(self::OID_PORT_RX_OPTICAL_POWER_LANE_4));
     }
 
     /**
-     * @return float[]
+     * @return iterable<string, float>
      */
-    public function getPortTxOpticalPowerLane1() : iterable
+    public function getPortTxOpticalPowerLane1(Snmp $snmp) : iterable
     {
-        return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_TX_OPTICAL_POWER_LANE_1));
+        return TypeMapper::stringsToFloats($snmp->walk(self::OID_PORT_TX_OPTICAL_POWER_LANE_1));
     }
 
     /**
-     * @return float[]
+     * @return iterable<string, float>
      */
-    public function getPortTxOpticalPowerLane2() : iterable
+    public function getPortTxOpticalPowerLane2(Snmp $snmp) : iterable
     {
-        return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_TX_OPTICAL_POWER_LANE_2));
+        return TypeMapper::stringsToFloats($snmp->walk(self::OID_PORT_TX_OPTICAL_POWER_LANE_2));
     }
 
     /**
-     * @return float[]
+     * @return iterable<string, float>
      */
-    public function getPortTxOpticalPowerLane3() : iterable
+    public function getPortTxOpticalPowerLane3(Snmp $snmp) : iterable
     {
-        return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_TX_OPTICAL_POWER_LANE_3));
+        return TypeMapper::stringsToFloats($snmp->walk(self::OID_PORT_TX_OPTICAL_POWER_LANE_3));
     }
 
     /**
-     * @return float[]
+     * @return iterable<string, float>
      */
-    public function getPortTxOpticalPowerLane4() : iterable
+    public function getPortTxOpticalPowerLane4(Snmp $snmp) : iterable
     {
-        return TypeMapper::stringsToFloats($this->getSnmp()->walk(self::OID_PORT_TX_OPTICAL_POWER_LANE_4));
+        return TypeMapper::stringsToFloats($snmp->walk(self::OID_PORT_TX_OPTICAL_POWER_LANE_4));
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getPortNames() : iterable
+    public function getPortNames(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_PORT_NAME);
+        return $snmp->walk(self::OID_PORT_NAME);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getPortAdminStatuses() : iterable
+    public function getPortAdminStatuses(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_PORT_ADMIN_STATUS);
+        return $snmp->walk(self::OID_PORT_ADMIN_STATUS);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getPortOperStatuses() : iterable
+    public function getPortOperStatuses(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_PORT_OPER_STATUS);
+        return $snmp->walk(self::OID_PORT_OPER_STATUS);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getPortAliasNames() : iterable
+    public function getPortAliasNames(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_PORT_ALIAS_NAME);
+        return $snmp->walk(self::OID_PORT_ALIAS_NAME);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getInventoryEquipmentType() : iterable
+    public function getInventoryEquipmentType(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_INVENTORY_EQUIPMENT_TYPE);
+        return $snmp->walk(self::OID_INVENTORY_EQUIPMENT_TYPE);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getInventoryModuleType() : iterable
+    public function getInventoryModuleType(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_INVENTORY_MODULE_TYPE);
+        return $snmp->walk(self::OID_INVENTORY_MODULE_TYPE);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getInventorySerialNumber() : iterable
+    public function getInventorySerialNumber(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_INVENTORY_SERIAL_NUMBER);
+        return $snmp->walk(self::OID_INVENTORY_SERIAL_NUMBER);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getInventoryFwVersion() : iterable
+    public function getInventoryFwVersion(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_INVENTORY_FW_VERSION);
+        return $snmp->walk(self::OID_INVENTORY_FW_VERSION);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getInventoryVendor() : iterable
+    public function getInventoryVendor(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_INVENTORY_VENDOR);
+        return $snmp->walk(self::OID_INVENTORY_VENDOR);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getInventoryPartVersion() : iterable
+    public function getInventoryPartVersion(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_INVENTORY_PART_VERSION);
+        return $snmp->walk(self::OID_INVENTORY_PART_VERSION);
     }
 }

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Mib;
 
+use SimPod\PhpSnmp\Transport\Snmp;
+
 /**
  * See RFC 4133 https://tools.ietf.org/html/rfc4133
  */
-class Entity extends MibBase
+class Entity
 {
     public const OID_PHYSICAL_DESCRIPTION    = '.1.3.6.1.2.1.47.1.1.1.1.2';
     public const OID_PHYSICAL_VENDOR_TYPE    = '.1.3.6.1.2.1.47.1.1.1.1.3';
@@ -27,90 +29,90 @@ class Entity extends MibBase
     public const OID_PHYSICAL_IS_FRU         = '.1.3.6.1.2.1.47.1.1.1.1.16';
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getPhysicalDescription() : iterable
+    public function getPhysicalDescription(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_DESCRIPTION);
+        return $snmp->walk(self::OID_PHYSICAL_DESCRIPTION);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getPhysicalVendorType() : iterable
+    public function getPhysicalVendorType(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_VENDOR_TYPE);
+        return $snmp->walk(self::OID_PHYSICAL_VENDOR_TYPE);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getPhysicalContainedIn() : iterable
+    public function getPhysicalContainedIn(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_CONTAINED_IN);
+        return $snmp->walk(self::OID_PHYSICAL_CONTAINED_IN);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getPhysicalClass() : iterable
+    public function getPhysicalClass(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_CLASS);
+        return $snmp->walk(self::OID_PHYSICAL_CLASS);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getPhysicalName() : iterable
+    public function getPhysicalName(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_NAME);
+        return $snmp->walk(self::OID_PHYSICAL_NAME);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getPhysicalHardwareRev() : iterable
+    public function getPhysicalHardwareRev(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_HARDWARE_REV);
+        return $snmp->walk(self::OID_PHYSICAL_HARDWARE_REV);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getPhysicalFirmwareRev() : iterable
+    public function getPhysicalFirmwareRev(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_FIRMWARE_REV);
+        return $snmp->walk(self::OID_PHYSICAL_FIRMWARE_REV);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getPhysicalSoftwareRev() : iterable
+    public function getPhysicalSoftwareRev(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SOFTWARE_REV);
+        return $snmp->walk(self::OID_PHYSICAL_SOFTWARE_REV);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getPhysicalSerialNumber() : iterable
+    public function getPhysicalSerialNumber(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SERIAL_NUM);
+        return $snmp->walk(self::OID_PHYSICAL_SERIAL_NUM);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getPhysicalMfgName() : iterable
+    public function getPhysicalMfgName(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_MFG_NAME);
+        return $snmp->walk(self::OID_PHYSICAL_MFG_NAME);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getPhysicalModelName() : iterable
+    public function getPhysicalModelName(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_MODEL_NAME);
+        return $snmp->walk(self::OID_PHYSICAL_MODEL_NAME);
     }
 }

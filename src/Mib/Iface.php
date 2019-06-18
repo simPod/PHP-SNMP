@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Mib;
 
+use function iterable_to_array;
 use SimPod\PhpSnmp\OidWithIndex;
+use SimPod\PhpSnmp\Transport\Snmp;
 
-class Iface extends MibBase
+class Iface
 {
     public const OID_ADMIN_STATUS             = '.1.3.6.1.2.1.2.2.1.7';
     public const OID_ALIAS                    = '.1.3.6.1.2.1.31.1.1.1.18';
@@ -31,264 +33,256 @@ class Iface extends MibBase
     public const OID_STACK_STATUS             = '.1.3.6.1.2.1.31.1.2.1.3';
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getAdminStatuses() : iterable
+    public function getAdminStatuses(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_ADMIN_STATUS);
+        return $snmp->walk(self::OID_ADMIN_STATUS);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getAliases() : iterable
+    public function getAliases(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_ALIAS);
+        return $snmp->walk(self::OID_ALIAS);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getDescriptions() : iterable
+    public function getDescriptions(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_DESCRIPTION);
+        return $snmp->walk(self::OID_DESCRIPTION);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getHcInOctets() : iterable
+    public function getHcInOctets(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HC_IN_OCTETS);
+        return $snmp->walk(self::OID_HC_IN_OCTETS);
     }
 
-    public function getHcInOctetsForIndex(int $index) : string
+    public function getHcInOctetsForIndex(Snmp $snmp, int $index) : string
     {
-        return $this->getSnmp()->walkFirstDegree((string) OidWithIndex::new(self::OID_HC_IN_OCTETS, $index))[$index];
+        return iterable_to_array($this->getHcInOctets($snmp))[$index];
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getHcOutOctets() : iterable
+    public function getHcOutOctets(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HC_OUT_OCTETS);
+        return $snmp->walk(self::OID_HC_OUT_OCTETS);
     }
 
-    public function getHcOutOctetsForIndex(int $index) : string
+    public function getHcOutOctetsForIndex(Snmp $snmp, int $index) : string
     {
-        return $this->getSnmp()->walkFirstDegree((string) OidWithIndex::new(self::OID_HC_OUT_OCTETS, $index))[$index];
-    }
-
-    public function getHcInPacketsForIndex(int $index) : string
-    {
-        return $this->getSnmp()->walkFirstDegree((string) OidWithIndex::new(
-            self::OID_HC_IN_UNICAST_PACKETS,
-            $index
-        ))[$index];
-    }
-
-    public function getHcOutPacketsForIndex(int $index) : string
-    {
-        return $this->getSnmp()->walkFirstDegree((string) OidWithIndex::new(
-            self::OID_HC_OUT_UNICAST_PACKETS,
-            $index
-        ))[$index];
+        return iterable_to_array($this->getHcOutOctets($snmp))[$index];
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getHcInBroadcastPackets() : iterable
+    public function getHcInPackets(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HC_IN_BROADCAST_PACKETS);
+        return $snmp->walk(self::OID_HC_IN_UNICAST_PACKETS);
     }
 
-    public function getHcInBroadcastPacketsForIndex(int $index) : string
+    public function getHcInPacketsForIndex(Snmp $snmp, int $index) : string
     {
-        return $this->getSnmp()->walkFirstDegree((string) OidWithIndex::new(
-            self::OID_HC_IN_BROADCAST_PACKETS,
-            $index
-        ))[$index];
+        return iterable_to_array($this->getHcInPackets($snmp))[$index];
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getHcOutBroadcastPackets() : iterable
+    public function getHcOutPackets(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HC_OUT_BROADCAST_PACKETS);
+        return $snmp->walk(self::OID_HC_OUT_UNICAST_PACKETS);
     }
 
-    public function getHcOutBroadcastPacketsForIndex(int $index) : string
+    public function getHcOutPacketsForIndex(Snmp $snmp, int $index) : string
     {
-        return $this->getSnmp()->walkFirstDegree((string) OidWithIndex::new(
-            self::OID_HC_OUT_BROADCAST_PACKETS,
-            $index
-        ))[$index];
+        return iterable_to_array($this->getHcOutPackets($snmp))[$index];
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getHcInMulticastPackets() : iterable
+    public function getHcInBroadcastPackets(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HC_IN_MULTICAST_PACKETS);
+        return $snmp->walk(self::OID_HC_IN_BROADCAST_PACKETS);
     }
 
-    public function getHcInMulticastPacketsForIndex(int $index) : string
+    public function getHcInBroadcastPacketsForIndex(Snmp $snmp, int $index) : string
     {
-        return $this->getSnmp()->walkFirstDegree((string) OidWithIndex::new(
-            self::OID_HC_IN_MULTICAST_PACKETS,
-            $index
-        ))[$index];
+        return iterable_to_array($this->getHcInBroadcastPackets($snmp))[$index];
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getHcOutMulticastPackets() : iterable
+    public function getHcOutBroadcastPackets(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HC_OUT_MULTICAST_PACKETS);
+        return $snmp->walk(self::OID_HC_OUT_BROADCAST_PACKETS);
     }
 
-    public function getHcOutMulticastPacketsForIndex(int $index) : string
+    public function getHcOutBroadcastPacketsForIndex(Snmp $snmp, int $index) : string
     {
-        return $this->getSnmp()->walkFirstDegree((string) OidWithIndex::new(
-            self::OID_HC_OUT_MULTICAST_PACKETS,
-            $index
-        ))[$index];
+        return iterable_to_array($this->getHcOutBroadcastPackets($snmp))[$index];
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getHcInUnicastPackets() : iterable
+    public function getHcInMulticastPackets(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HC_IN_UNICAST_PACKETS);
+        return $snmp->walk(self::OID_HC_IN_MULTICAST_PACKETS);
     }
 
-    public function getHcInUnicastPacketsForIndex(int $index) : string
+    public function getHcInMulticastPacketsForIndex(Snmp $snmp, int $index) : string
     {
-        return $this->getSnmp()->walkFirstDegree((string) OidWithIndex::new(
-            self::OID_HC_IN_UNICAST_PACKETS,
-            $index
-        ))[$index];
+        return iterable_to_array($this->getHcInMulticastPackets($snmp))[$index];
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getHcOutUnicastPackets() : iterable
+    public function getHcOutMulticastPackets(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HC_OUT_UNICAST_PACKETS);
+        return $snmp->walk(self::OID_HC_OUT_MULTICAST_PACKETS);
     }
 
-    public function getHcOutUnicastPacketsForIndex(int $index) : string
+    public function getHcOutMulticastPacketsForIndex(Snmp $snmp, int $index) : string
     {
-        return $this->getSnmp()->walkFirstDegree((string) OidWithIndex::new(
-            self::OID_HC_OUT_UNICAST_PACKETS,
-            $index
-        ))[$index];
+        return iterable_to_array($this->getHcOutMulticastPackets($snmp))[$index];
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, string>
      */
-    public function getInDiscards() : iterable
+    public function getHcInUnicastPackets(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_IN_DISCARDS);
+        return $snmp->walk(self::OID_HC_IN_UNICAST_PACKETS);
     }
 
-    public function getInDiscardsForIndex(int $index) : int
+    public function getHcInUnicastPacketsForIndex(Snmp $snmp, int $index) : string
     {
-        return $this->getSnmp()->walkFirstDegree((string) OidWithIndex::new(self::OID_IN_DISCARDS, $index))[$index];
+        return iterable_to_array($this->getHcInUnicastPackets($snmp))[$index];
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, string>
      */
-    public function getOutDiscards() : iterable
+    public function getHcOutUnicastPackets(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_OUT_DISCARDS);
+        return $snmp->walk(self::OID_HC_OUT_UNICAST_PACKETS);
     }
 
-    public function getOutDiscardsForIndex(int $index) : int
+    public function getHcOutUnicastPacketsForIndex(Snmp $snmp, int $index) : string
     {
-        return $this->getSnmp()->walkFirstDegree((string) OidWithIndex::new(self::OID_OUT_DISCARDS, $index))[$index];
+        return iterable_to_array($this->getHcOutUnicastPackets($snmp))[$index];
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getInErrors() : iterable
+    public function getInDiscards(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_IN_ERRORS);
+        return $snmp->walk(self::OID_IN_DISCARDS);
     }
 
-    public function getInErrorsForIndex(int $index) : int
+    public function getInDiscardsForIndex(Snmp $snmp, int $index) : int
     {
-        return $this->getSnmp()->walkFirstDegree((string) OidWithIndex::new(self::OID_IN_ERRORS, $index))[$index];
+        return iterable_to_array($this->getInDiscards($snmp))[$index];
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getOutErrors() : iterable
+    public function getOutDiscards(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_OUT_ERRORS);
+        return $snmp->walk(self::OID_OUT_DISCARDS);
     }
 
-    public function getOutErrorsForIndex(int $index) : int
+    public function getOutDiscardsForIndex(Snmp $snmp, int $index) : int
     {
-        return $this->getSnmp()->walkFirstDegree((string) OidWithIndex::new(self::OID_OUT_ERRORS, $index))[$index];
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getNames() : iterable
-    {
-        return $this->getSnmp()->walkFirstDegree(self::OID_NAME);
+        return iterable_to_array($this->getOutDiscards($snmp))[$index];
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getOperStatuses() : iterable
+    public function getInErrors(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_OPER_STATUS);
+        return $snmp->walk(self::OID_IN_ERRORS);
+    }
+
+    public function getInErrorsForIndex(Snmp $snmp, int $index) : int
+    {
+        return iterable_to_array($this->getInErrors($snmp))[$index];
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getSpeeds() : iterable
+    public function getOutErrors(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_SPEED);
+        return $snmp->walk(self::OID_OUT_ERRORS);
+    }
+
+    public function getOutErrorsForIndex(Snmp $snmp, int $index) : int
+    {
+        return iterable_to_array($this->getOutErrors($snmp))[$index];
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, string>
      */
-    public function getHcSpeeds() : iterable
+    public function getNames(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HC_SPEED);
+        return $snmp->walk(self::OID_NAME);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getTypes() : iterable
+    public function getOperStatuses(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_TYPE);
+        return $snmp->walk(self::OID_OPER_STATUS);
+    }
+
+    /**
+     * @return iterable<string, int>
+     */
+    public function getSpeeds(Snmp $snmp) : iterable
+    {
+        return $snmp->walk(self::OID_SPEED);
+    }
+
+    /**
+     * @return iterable<string, int>
+     */
+    public function getHcSpeeds(Snmp $snmp) : iterable
+    {
+        return $snmp->walk(self::OID_HC_SPEED);
+    }
+
+    /**
+     * @return iterable<string, int>
+     */
+    public function getTypes(Snmp $snmp) : iterable
+    {
+        return $snmp->walk(self::OID_TYPE);
     }
 
     /**
      * @return mixed[]
      */
-    public function getStackTable() : iterable
+    public function getStackTable(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_STACK_STATUS);
+        return $snmp->walk(self::OID_STACK_STATUS);
     }
 }

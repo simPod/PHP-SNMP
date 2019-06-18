@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Mib;
 
+use SimPod\PhpSnmp\Transport\Snmp;
+
 /**
  * See RFC 2790 https://tools.ietf.org/html/rfc2790
  */
-class HostResources extends MibBase
+class HostResources
 {
     public const OID_HOST                              = '.1.3.6.1.2.1.25';
     public const OID_HR_SYSTEM                         = '.1.3.6.1.2.1.25.1';
@@ -115,74 +117,74 @@ class HostResources extends MibBase
     public const OID_HR_SWINSTALLED_GROUP              = '.1.3.6.1.2.1.25.7.3.6';
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getHost() : iterable
+    public function getHost(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walk(self::OID_HOST);
+        return $snmp->walk(self::OID_HOST);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getHrStorageType() : iterable
+    public function getHrStorageType(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HR_STORAGE_TYPE);
+        return $snmp->walk(self::OID_HR_STORAGE_TYPE);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getHrStorageDescr() : iterable
+    public function getHrStorageDescr(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HR_STORAGE_DESCR);
+        return $snmp->walk(self::OID_HR_STORAGE_DESCR);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getHrStorageSize() : iterable
+    public function getHrStorageSize(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HR_STORAGE_SIZE);
+        return $snmp->walk(self::OID_HR_STORAGE_SIZE);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getHrStorageUsed() : iterable
+    public function getHrStorageUsed(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HR_STORAGE_USED);
+        return $snmp->walk(self::OID_HR_STORAGE_USED);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getHrDeviceType() : iterable
+    public function getHrDeviceType(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HR_DEVICE_TYPE);
+        return $snmp->walk(self::OID_HR_DEVICE_TYPE);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getHrDeviceDescr() : iterable
+    public function getHrDeviceDescr(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HR_DEVICE_DESCR);
+        return $snmp->walk(self::OID_HR_DEVICE_DESCR);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getHrDeviceStatus() : iterable
+    public function getHrDeviceStatus(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HR_DEVICE_STATUS);
+        return $snmp->walk(self::OID_HR_DEVICE_STATUS);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getHrProcessorLoad() : iterable
+    public function getHrProcessorLoad(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_HR_PROCESSOR_LOAD);
+        return $snmp->walk(self::OID_HR_PROCESSOR_LOAD);
     }
 }

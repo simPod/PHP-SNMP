@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Mib\Cisco;
 
-use SimPod\PhpSnmp\Mib\MibBase;
+use SimPod\PhpSnmp\Transport\Snmp;
 
 /**
  * See CISCO-ENVMON-MIB
  */
-class EnvMon extends MibBase
+class EnvMon
 {
     public const OID_CISCO_ENV_MON_FAN_STATUS_DESRC   = '1.3.6.1.4.1.9.9.13.1.4.1.2';
     public const OID_CISCO_ENV_MON_FAN_STATE          = '1.3.6.1.4.1.9.9.13.1.4.1.3';
@@ -17,34 +17,34 @@ class EnvMon extends MibBase
     public const OID_CISCO_ENV_MON_SUPPLY_STATE       = '1.3.6.1.4.1.9.9.13.1.5.1.3';
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getCiscoEnvMonFanStatusDescr() : array
+    public function getCiscoEnvMonFanStatusDescr(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_CISCO_ENV_MON_FAN_STATUS_DESRC);
+        return $snmp->walk(self::OID_CISCO_ENV_MON_FAN_STATUS_DESRC);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getCiscoEnvMonFanState() : array
+    public function getCiscoEnvMonFanState(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_CISCO_ENV_MON_FAN_STATE);
+        return $snmp->walk(self::OID_CISCO_ENV_MON_FAN_STATE);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, string>
      */
-    public function getCiscoEnvMonSupplyStatusDescr() : array
+    public function getCiscoEnvMonSupplyStatusDescr(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_CISCO_ENV_MON_SUPPLY_STATUS_DESC);
+        return $snmp->walk(self::OID_CISCO_ENV_MON_SUPPLY_STATUS_DESC);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getCiscoEnvMonSupplyState() : array
+    public function getCiscoEnvMonSupplyState(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_CISCO_ENV_MON_SUPPLY_STATE);
+        return $snmp->walk(self::OID_CISCO_ENV_MON_SUPPLY_STATE);
     }
 }

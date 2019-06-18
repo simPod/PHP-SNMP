@@ -10,11 +10,11 @@ use Consistence\Type\ArrayType\KeyValuePair;
 class TypeMapper
 {
     /**
-     * @param string[] $haystack
+     * @param iterable<string, string> $haystack
      *
-     * @return float[]
+     * @return array<string, float>
      */
-    public static function stringsToFloats(array $haystack) : array
+    public static function stringsToFloats(iterable $haystack) : array
     {
         return ArrayType::mapByCallback(
             $haystack,

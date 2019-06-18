@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Mib\Cisco;
 
-use SimPod\PhpSnmp\Mib\MibBase;
+use SimPod\PhpSnmp\Transport\Snmp;
 
 /**
  * See CISCO-ENTITY-SENSOR-MIB
  */
-class EntitySensor extends MibBase
+class EntitySensor
 {
     public const OID_PHYSICAL_SENSOR_TYPE              = '.1.3.6.1.4.1.9.9.91.1.1.1.1.1';
     public const OID_PHYSICAL_SENSOR_SCALE             = '.1.3.6.1.4.1.9.9.91.1.1.1.1.2';
@@ -21,66 +21,66 @@ class EntitySensor extends MibBase
     public const OID_PHYSICAL_SENSOR_VALUE_UPDATE_RATE = '.1.3.6.1.4.1.9.9.91.1.1.1.1.8';
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getPhysicalSensorType() : array
+    public function getPhysicalSensorType(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_TYPE);
+        return $snmp->walk(self::OID_PHYSICAL_SENSOR_TYPE);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getPhysicalSensorScale() : array
+    public function getPhysicalSensorScale(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_SCALE);
+        return $snmp->walk(self::OID_PHYSICAL_SENSOR_SCALE);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getPhysicalSensorPrecision() : array
+    public function getPhysicalSensorPrecision(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_PRECISION);
+        return $snmp->walk(self::OID_PHYSICAL_SENSOR_PRECISION);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getPhysicalSensorValue() : array
+    public function getPhysicalSensorValue(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_VALUE);
+        return $snmp->walk(self::OID_PHYSICAL_SENSOR_VALUE);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getPhysicalSensorOperStatus() : array
+    public function getPhysicalSensorOperStatus(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_OPER_STATUS);
+        return $snmp->walk(self::OID_PHYSICAL_SENSOR_OPER_STATUS);
     }
 
     /**
-     * @return string[]
+     * @return iterable<string, int>
      */
-    public function getPhysicalSensorUnitsDisplay() : array
+    public function getPhysicalSensorUnitsDisplay(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_UNITS_DISPLAY);
+        return $snmp->walk(self::OID_PHYSICAL_SENSOR_UNITS_DISPLAY);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getPhysicalSensorValueTimeStamp() : array
+    public function getPhysicalSensorValueTimeStamp(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_VALUE_TIME_STAMP);
+        return $snmp->walk(self::OID_PHYSICAL_SENSOR_VALUE_TIME_STAMP);
     }
 
     /**
-     * @return int[]
+     * @return iterable<string, int>
      */
-    public function getPhysicalSensorValueUpdateRate() : array
+    public function getPhysicalSensorValueUpdateRate(Snmp $snmp) : iterable
     {
-        return $this->getSnmp()->walkFirstDegree(self::OID_PHYSICAL_SENSOR_VALUE_UPDATE_RATE);
+        return $snmp->walk(self::OID_PHYSICAL_SENSOR_VALUE_UPDATE_RATE);
     }
 }

@@ -16,7 +16,9 @@ use function snmp2_real_walk;
 use function snmp3_real_walk;
 use function snmp_set_oid_output_format;
 use function snmprealwalk;
+use function sprintf;
 use function str_replace;
+use function strlen;
 use function strpos;
 use function strrev;
 use function strrpos;
@@ -25,12 +27,12 @@ use function trim;
 use const PREG_OFFSET_CAPTURE;
 use const SNMP_OID_OUTPUT_NUMERIC;
 
-final class ExtSnmp implements Snmp
+final class ExtensionSnmp implements Snmp
 {
     private const OBJECT_TYPES = [
         HostResources::OID_HR_STORAGE_TYPES => null,
-        HostResources::OID_HR_DEVICE_TYPES  => null,
-        HostResources::OID_HR_FSTYPES       => null,
+        HostResources::OID_HR_DEVICE_TYPES => null,
+        HostResources::OID_HR_FSTYPES => null,
     ];
 
     /** @var string */
@@ -79,56 +81,43 @@ final class ExtSnmp implements Snmp
         string $privPassphrase = 'None'
     ) {
         $this->community = $community;
-        $this->host      = $host;
-        $this->retry     = $retry;
-        $this->timeout   = $timeout;
-        $this->version   = $version;
+        $this->host = $host;
+        $this->retry = $retry;
+        $this->timeout = $timeout;
+        $this->version = $version;
 
-        $this->secName        = $community;
-        $this->secLevel       = $secLevel;
-        $this->authProtocol   = $authProtocol;
+        $this->secName = $community;
+        $this->secLevel = $secLevel;
+        $this->authProtocol = $authProtocol;
         $this->authPassphrase = $authPassphrase;
-        $this->privProtocol   = $privProtocol;
+        $this->privProtocol = $privProtocol;
         $this->privPassphrase = $privPassphrase;
         snmp_set_oid_output_format(SNMP_OID_OUTPUT_NUMERIC);
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<string, mixed>
      */
-    public function walkFirstDegree(string $oid) : iterable
+    public function walk(string $oid) : iterable
     {
-        $result = $this->realWalk($oid);
-
-        $oidPrefix = null;
-        foreach ($result as $oid => $value) {
-            $length = strrpos($oid, '.');
-            assert(is_int($length));
-
-            if ($oidPrefix !== null && $oidPrefix !== substr($oid, 0, $length)) {
-                throw new SnmpFailed('Requested OID tree is not a first degree indexed SNMP value');
-            }
-
-            $oidPrefix = substr($oid, 0, $length);
-
-            yield substr($oid, $length + 1) => $this->parseSnmpValue($value);
+        $oidLength = strlen($oid) + 1;
+        foreach ($this->realWalk($oid) as $oidKey => $value) {
+            yield substr($oidKey, $oidLength) => $this->parseSnmpValue($value);
         }
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<string, mixed>
      */
-    public function walk(string $oid) : iterable
+    public function walkWithCompleteOids(string $oid) : iterable
     {
-        $rawResult = $this->realWalk($oid);
-
-        foreach ($rawResult as $oidKey => $value) {
+        foreach ($this->realWalk($oid) as $oidKey => $value) {
             yield $oidKey => $this->parseSnmpValue($value);
         }
     }
 
     /**
-     * @return mixed[]
+     * @return array<string, mixed>
      */
     private function realWalk(string $oid) : array
     {
@@ -177,7 +166,7 @@ final class ExtSnmp implements Snmp
     }
 
     /**
-     * @return int|string
+     * @return mixed
      */
     private function parseSnmpValue(string $rawValue)
     {
@@ -190,74 +179,44 @@ final class ExtSnmp implements Snmp
         $value = trim($value);
 
         switch ($type) {
+            case 'BITS':
+            case 'Counter64':
+            case 'Hex-STRING':
+            case 'IpAddress':
+            case 'OID':
+                return $value;
+
             case 'STRING':
-                $resolvedValue = strpos($value, '"') === 0 ? trim(substr(substr($value, 1), 0, -1)) : $value;
-                break;
+                return strpos($value, '"') === 0 ? trim(substr(substr($value, 1), 0, -1)) : $value;
 
             case 'INTEGER':
                 if (is_numeric($value)) {
-                    $resolvedValue = (int) $value;
-                } else {
-                    // find the first digit and offset the string to that point
-                    // just in case there is some mib strangeness going on
-                    preg_match('/\d/', $value, $m, PREG_OFFSET_CAPTURE);
-                    $resolvedValue = (int) substr($value, $m[0][1]);
+                    return (int) $value;
                 }
-                break;
+
+                // find the first digit and offset the string to that point
+                // just in case there is some mib strangeness going on
+                preg_match('/\d/', $value, $m, PREG_OFFSET_CAPTURE);
+
+                return (int) substr($value, $m[0][1]);
 
             case 'Float':
-                $resolvedValue = (float) $value;
-                break;
-
-            case 'BITS':
-                // This is vaguely implemented
-                $resolvedValue = $value;
-                break;
+                return (float) $value;
 
             case 'Counter32':
-                $resolvedValue = (int) $value;
-                break;
-
-            case 'Counter64':
-                $resolvedValue = $value;
-                break;
-
             case 'Gauge32':
-                $resolvedValue = (int) $value;
-                break;
-
-            case 'Hex-STRING':
-                $resolvedValue = $value;
-                break;
-
-            case 'IpAddress':
-                $resolvedValue = $value;
-                break;
+                return (int) $value;
 
             case 'Opaque':
-                $resolvedValue = $this->parseSnmpValue(str_replace('Opaque: ', '', $value));
-                break;
-
-            case 'OID':
-                $objectTypes       = self::OBJECT_TYPES;
-                $reversedOidParts  = explode('.', strrev($value), 2);
-                $objectTypeOidBase = strrev($reversedOidParts[1]);
-                $resolvedValue     = array_key_exists(
-                    $objectTypeOidBase,
-                    $objectTypes
-                ) ? (int) $reversedOidParts[0] : $value;
-                break;
+                return $this->parseSnmpValue(str_replace('Opaque: ', '', $value));
 
             case 'Timeticks':
                 $length = strrpos($value, ')');
                 assert(is_int($length));
-                $resolvedValue = (int) substr($value, 1, $length - 1);
-                break;
 
-            default:
-                throw new SnmpFailed('ERR: Unhandled SNMP return type: ' . $type);
+                return (int) substr($value, 1, $length - 1);
         }
 
-        return $resolvedValue;
+        throw new SnmpFailed(sprintf('Unhandled SNMP return type "%s"', $type));
     }
 }
