@@ -1,38 +1,78 @@
-dist: trusty
+dist: xenial
 language: php
 sudo: required
 
 php:
-  - 7.2
-  - 7.3
-  - nightly
+    - "7.2"
+    - "7.3"
+    - 7.4snapshot
 
-before_install:
-  - echo "extension = snmp.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - composer self-update
+env:
+    - DEPENDENCIES=
+    - DEPENDENCIES=--prefer-lowest
 
-before_script:
-  - travis_retry composer update --prefer-dist
+install: COMPOSER_ARGS="--ignore-platform-reqs --prefer-stable $DEPENDENCIES" make
 
-script: ./vendor/bin/phpunit
+script: PHPUNIT_ARGS="--exclude-group snmpExtension" make test
+
+stages:
+    - Code Quality
+    - Test
 
 jobs:
-  include:
-    - stage: Coding Standard
-      php: 7.2
-      script: ./vendor/bin/phpcs
+    allow_failures:
+        -   php: 7.4snapshot
+        -   php: nightly
 
-    - stage: Static Analysis
-      php: 7.2
-      script:
-        - ./vendor/bin/phpstan analyse -c phpstan.neon.dist -l max src
+    include:
+        -   stage: Code Quality
+            name: Lint
+            php: "7.3"
+            script: make lint
+        -   name: Coding Standard
+            php: "7.3"
+            script: make cs
+        -   name: Static Analysis
+            php: "7.3"
+            script: make static-analysis
+
+        -   stage: Test
+            name: "PHP: nightly"
+            php: nightly
+
+        - &snmpTest
+            name: ExtensionSnmp transport, PHP 7.2
+            php: "7.2"
+            script: PHPUNIT_ARGS="--group snmpExtension" make test
+            addons:
+                apt:
+                    sources:
+                        -   sourceline: ppa:ondrej/php
+                    packages:
+                        - php$TRAVIS_PHP_VERSION-cli
+                        - php$TRAVIS_PHP_VERSION-curl
+                        - php$TRAVIS_PHP_VERSION-mbstring
+                        - php$TRAVIS_PHP_VERSION-snmp
+                        - php$TRAVIS_PHP_VERSION-xdebug
+                        - php$TRAVIS_PHP_VERSION-xml
+                        - python-pip
+                        - snmp
+            before_install:
+                - phpenv global system
+                - wget https://getcomposer.org/installer -O - -q | php -- --quiet
+                - sudo mv composer.phar /usr/local/bin/composer
+                - sudo -H pip install snmpsim
+            install: COMPOSER_ARGS="--prefer-stable $DEPENDENCIES" make
+        -   <<: *snmpTest
+            name: ExtensionSnmp transport, PHP 7.3
+            php: "7.3"
 
 cache:
-  directories:
-    - $HOME/.composer/cache
+    directories:
+        - $HOME/.composer/cache
 
-after_script:
-  # upload clover.xml file to Scrutinizer to analyze it
-  - |
-    if [ "$TRAVIS_PHP_VERSION" == "7.2" ]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-    if [ "$TRAVIS_PHP_VERSION" == "7.2" ]; then php ocular.phar code-coverage:upload --format=php-clover temp/clover.xml; fi
+after_script: |
+    if [[ -f temp/clover.xml && ( $TRAVIS_PHP_VERSION == "7.2" || $TRAVIS_PHP_VERSION == "7.3" ) ]]; then
+        wget https://scrutinizer-ci.com/ocular.phar
+        php ocular.phar code-coverage:upload --format=php-clover temp/clover.xml
+    fi

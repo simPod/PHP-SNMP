@@ -1,12 +1,16 @@
 {
     "name": "simpod/php-snmp",
-    "description": "PHP Simple Network Management",
+    "description": "PHP library for connecting to the SNMP agents; includes small collection of OIDs, neatly packed into classes/methods for convenient use.",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "Simon Podlipsky",
+            "name": "Šimon Podlipský",
             "email": "simon@podlipsky.net"
+        },
+        {
+            "name": "Jakub Chábek",
+            "email": "jakub@chabek.cz"
         }
     ],
     "keywords": [
@@ -16,28 +20,20 @@
     "config": {
         "sort-packages": true
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/simPod/SNMP"
-        }
-    ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.2||^8.0",
         "bentools/iterable-functions": "^1.2",
-        "consistence/consistence": "^1.0|^2.0"
+        "guzzlehttp/guzzle": "^6.3"
     },
     "suggest": {
-        "ext-curl": "Required for SNMP transport \"Api\"",
         "ext-json": "Required for SNMP transport \"Api\"",
         "ext-snmp": "Required for SNMP transport \"Extension\""
     },
     "require-dev": {
-        "ext-curl": "*",
         "ext-json": "*",
         "ext-snmp": "*",
         "doctrine/coding-standard": "^6.0",
-        "freedsx/snmp": "dev-yo@dev",
+        "jakub-onderka/php-parallel-lint": "^1.0",
         "phpstan/phpstan": "^0.11.5",
         "phpstan/phpstan-strict-rules": "^0.11.0",
         "phpunit/phpunit": "^8.2"

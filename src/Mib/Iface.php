@@ -278,7 +278,7 @@ class Iface
     }
 
     /**
-     * @return mixed[]
+     * @return iterable<string, int>
      */
     public function getStackTable(Snmp $snmp) : iterable
     {

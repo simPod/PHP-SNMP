@@ -4,24 +4,18 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Transport;
 
-use SimPod\PhpSnmp\Exception\SnmpFailed;
-use function assert;
+use SimPod\PhpSnmp\Exception\SnmpExtensionError;
+use function error_get_last;
 use function explode;
-use function is_int;
-use function is_numeric;
-use function preg_match;
 use function snmp2_real_walk;
 use function snmp3_real_walk;
 use function snmp_set_oid_output_format;
 use function snmprealwalk;
-use function sprintf;
-use function str_replace;
 use function strlen;
 use function strpos;
 use function strrpos;
 use function substr;
 use function trim;
-use const PREG_OFFSET_CAPTURE;
 use const SNMP_OID_OUTPUT_NUMERIC;
 
 final class ExtensionSnmp implements Snmp
@@ -146,11 +140,17 @@ final class ExtensionSnmp implements Snmp
                 );
                 break;
             default:
-                throw new SnmpFailed('Invalid SNMP version: ' . $this->version);
+                throw SnmpExtensionError::invalidVersion($this->version);
         }
 
         if ($result === false) {
-            throw new SnmpFailed('Could not perform walk for OID ' . $oid);
+            /** @var array $error */
+            $error = error_get_last();
+            if (strpos($error['message'], 'No more variables left in this MIB') !== false) {
+                throw SnmpExtensionError::oidOutOfRange($oid);
+            }
+
+            throw SnmpExtensionError::generic($oid, $error['message']);
         }
 
         return $result;
@@ -161,16 +161,11 @@ final class ExtensionSnmp implements Snmp
      */
     private function parseSnmpValue(string $rawValue)
     {
-        if ($rawValue === '""' || $rawValue === '') {
-            return '';
-        }
-
         [$type, $value] = explode(':', $rawValue, 2);
 
         $value = trim($value);
 
         switch ($type) {
-            case 'BITS':
             case 'Counter64':
             case 'Hex-STRING':
             case 'IpAddress':
@@ -179,29 +174,13 @@ final class ExtensionSnmp implements Snmp
             case 'STRING':
                 return strpos($value, '"') === 0 ? trim(substr(substr($value, 1), 0, -1)) : $value;
             case 'INTEGER':
-                if (is_numeric($value)) {
-                    return (int) $value;
-                }
-
-                // find the first digit and offset the string to that point
-                // just in case there is some mib strangeness going on
-                preg_match('/\d/', $value, $m, PREG_OFFSET_CAPTURE);
-
-                return (int) substr($value, $m[0][1]);
-            case 'Float':
-                return (float) $value;
             case 'Counter32':
             case 'Gauge32':
                 return (int) $value;
-            case 'Opaque':
-                return $this->parseSnmpValue(str_replace('Opaque: ', '', $value));
             case 'Timeticks':
-                $length = strrpos($value, ')');
-                assert(is_int($length));
-
-                return (int) substr($value, 1, $length - 1);
+                return (int) substr($value, 1, (int) strrpos($value, ')') - 1);
         }
 
-        throw new SnmpFailed(sprintf('Unhandled SNMP return type "%s"', $type));
+        throw SnmpExtensionError::unknownType($type);
     }
 }
