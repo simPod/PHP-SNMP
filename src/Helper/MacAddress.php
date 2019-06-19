@@ -56,8 +56,8 @@ class MacAddress
     }
 
     /**
-     * @param array<string,string> $macAddresses
-     * @return array<string,string>
+     * @param iterable<string,string> $macAddresses
+     * @return iterable<string,string>
      */
     public static function normalizeBulk(iterable $macAddresses) : iterable
     {

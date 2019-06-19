@@ -14,9 +14,8 @@ interface Snmp
     public function walk(string $oid) : iterable;
 
     /**
-     * Returns complete OID in the result keys
      *
-     * @return iterable<string, mixed>
+     * @return iterable<string, mixed> Key is complete OID
      */
     public function walkWithCompleteOids(string $oid) : iterable;
 }

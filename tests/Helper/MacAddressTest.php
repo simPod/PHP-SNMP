@@ -9,7 +9,7 @@ use SimPod\PhpSnmp\Helper\MacAddress;
 use function iterable_to_array;
 use function pack;
 
-class MacAddressTest extends TestCase
+final class MacAddressTest extends TestCase
 {
     /**
      * @dataProvider providerNormalize
