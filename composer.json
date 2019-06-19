@@ -30,8 +30,7 @@
     "suggest": {
         "ext-curl": "Required for SNMP transport \"Api\"",
         "ext-json": "Required for SNMP transport \"Api\"",
-        "ext-snmp": "Required for SNMP transport \"Extension\"",
-        "freedsx/snmp": "Required for SNMP transport \"FreeDSx\""
+        "ext-snmp": "Required for SNMP transport \"Extension\""
     },
     "require-dev": {
         "ext-curl": "*",

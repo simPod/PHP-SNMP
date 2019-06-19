@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace SimPod\PhpSnmp\Transport;
 
 use SimPod\PhpSnmp\Exception\SnmpFailed;
-use SimPod\PhpSnmp\Mib\HostResources;
-use function array_key_exists;
 use function assert;
 use function explode;
 use function is_int;
@@ -20,7 +18,6 @@ use function sprintf;
 use function str_replace;
 use function strlen;
 use function strpos;
-use function strrev;
 use function strrpos;
 use function substr;
 use function trim;
@@ -29,12 +26,6 @@ use const SNMP_OID_OUTPUT_NUMERIC;
 
 final class ExtensionSnmp implements Snmp
 {
-    private const OBJECT_TYPES = [
-        HostResources::OID_HR_STORAGE_TYPES => null,
-        HostResources::OID_HR_DEVICE_TYPES => null,
-        HostResources::OID_HR_FSTYPES => null,
-    ];
-
     /** @var string */
     private $community;
 
@@ -81,16 +72,16 @@ final class ExtensionSnmp implements Snmp
         string $privPassphrase = 'None'
     ) {
         $this->community = $community;
-        $this->host = $host;
-        $this->retry = $retry;
-        $this->timeout = $timeout;
-        $this->version = $version;
+        $this->host      = $host;
+        $this->retry     = $retry;
+        $this->timeout   = $timeout;
+        $this->version   = $version;
 
-        $this->secName = $community;
-        $this->secLevel = $secLevel;
-        $this->authProtocol = $authProtocol;
+        $this->secName        = $community;
+        $this->secLevel       = $secLevel;
+        $this->authProtocol   = $authProtocol;
         $this->authPassphrase = $authPassphrase;
-        $this->privProtocol = $privProtocol;
+        $this->privProtocol   = $privProtocol;
         $this->privPassphrase = $privPassphrase;
         snmp_set_oid_output_format(SNMP_OID_OUTPUT_NUMERIC);
     }
@@ -185,10 +176,8 @@ final class ExtensionSnmp implements Snmp
             case 'IpAddress':
             case 'OID':
                 return $value;
-
             case 'STRING':
                 return strpos($value, '"') === 0 ? trim(substr(substr($value, 1), 0, -1)) : $value;
-
             case 'INTEGER':
                 if (is_numeric($value)) {
                     return (int) $value;
@@ -199,17 +188,13 @@ final class ExtensionSnmp implements Snmp
                 preg_match('/\d/', $value, $m, PREG_OFFSET_CAPTURE);
 
                 return (int) substr($value, $m[0][1]);
-
             case 'Float':
                 return (float) $value;
-
             case 'Counter32':
             case 'Gauge32':
                 return (int) $value;
-
             case 'Opaque':
                 return $this->parseSnmpValue(str_replace('Opaque: ', '', $value));
-
             case 'Timeticks':
                 $length = strrpos($value, ')');
                 assert(is_int($length));

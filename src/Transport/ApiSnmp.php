@@ -9,7 +9,9 @@ use function array_key_exists;
 use function base64_decode;
 use function curl_close;
 use function curl_error;
+use function curl_exec;
 use function curl_init;
+use function curl_setopt;
 use function is_array;
 use function is_bool;
 use function json_decode;
@@ -44,9 +46,9 @@ final class ApiSnmp implements Snmp
         int $timeout = 30
     ) {
         $this->apiHostUrl = $apiHostUrl;
-        $this->community = $community;
-        $this->host = $host;
-        $this->timeout = $timeout;
+        $this->community  = $community;
+        $this->host       = $host;
+        $this->timeout    = $timeout;
     }
 
     /**
@@ -65,16 +67,19 @@ final class ApiSnmp implements Snmp
         yield from $this->getResponse($oid, false);
     }
 
+    /**
+     * @return iterable<string, mixed>
+     */
     private function getResponse(string $oid, bool $stripOidPrefix) : iterable
     {
         $url = $this->apiHostUrl . strtr(
-                self::API_PATH,
-                [
-                    '{community}' => $this->community,
-                    '{host}' => $this->host,
-                    '{oid}' => $oid,
-                ]
-            );
+            self::API_PATH,
+            [
+                '{community}' => $this->community,
+                '{host}' => $this->host,
+                '{oid}' => $oid,
+            ]
+        );
 
         if ($stripOidPrefix) {
             $url .= '?strip=1';
@@ -90,7 +95,7 @@ final class ApiSnmp implements Snmp
         curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         $result = curl_exec($curl);
-        $error = curl_error($curl);
+        $error  = curl_error($curl);
         curl_close($curl);
 
         if (is_bool($result)) {
@@ -106,15 +111,14 @@ final class ApiSnmp implements Snmp
             throw SnmpApiError::failed($json['error']);
         }
 
-        if (!array_key_exists('response', $json)) {
+        if (! array_key_exists('response', $json)) {
             return [];
         }
-
 
         foreach ($json['response'] as $key => $value) {
             if (is_array($value) && $value['type'] === 'string') {
                 $data = base64_decode($value['value'], true);
-                if (is_bool($data)) {
+                if (is_bool($data)) { // https://github.com/phpstan/phpstan/pull/1366
                     throw SnmpApiError::invalidBase64String($value['value']);
                 }
 

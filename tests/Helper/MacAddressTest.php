@@ -30,6 +30,9 @@ final class MacAddressTest extends TestCase
         self::assertSame($expectedMacAddresses, iterable_to_array(MacAddress::normalizeBulk($macAddresses)));
     }
 
+    /**
+     * @return iterable<array<string|null>>
+     */
     public function providerNormalize() : iterable
     {
         yield [pack('C*', 120, 186, 249, 65, 240, 242), '78:ba:f9:41:f0:f2'];
@@ -51,6 +54,9 @@ final class MacAddressTest extends TestCase
         yield ['a8:c d-19.a4:d0', null];
     }
 
+    /**
+     * @return iterable<array<array<int, string>>>
+     */
     public function providerNormalizeBulk() : iterable
     {
         yield [

@@ -5,13 +5,20 @@ declare(strict_types=1);
 namespace SimPod\PhpSnmp\Helper;
 
 use function bin2hex;
+use function count;
+use function explode;
+use function implode;
+use function preg_match;
+use function sprintf;
+use function str_pad;
 use function strlen;
 use function strtolower;
+use const STR_PAD_LEFT;
 
 class MacAddress
 {
     private const DEFAULT_DELIMITER = ':';
-    private const REGEX = '[[:xdigit:]]{1,4}(?<delim>[:. -])(?:[[:xdigit:]]{1,4}\g{delim}){1,4}[[:xdigit:]]{1,4}';
+    private const REGEX             = '[[:xdigit:]]{1,4}(?<delim>[:. -])(?:[[:xdigit:]]{1,4}\g{delim}){1,4}[[:xdigit:]]{1,4}';
 
     public static function normalize(string $macAddress) : ?string
     {
@@ -24,9 +31,11 @@ class MacAddress
             $formattedMacAddress = '';
             for ($i = 0; $i < 12; $i++) {
                 $formattedMacAddress .= $macAddress[$i];
-                if ($i % 2 === 1 && $i !== 11) {
-                    $formattedMacAddress .= self::DEFAULT_DELIMITER;
+                if ($i % 2 !== 1 || $i === 11) {
+                    continue;
                 }
+
+                $formattedMacAddress .= self::DEFAULT_DELIMITER;
             }
 
             return $formattedMacAddress;
@@ -37,7 +46,7 @@ class MacAddress
         }
 
         /** @var string[] $parts */
-        $parts = explode($matches['delim'], strtolower($macAddress));
+        $parts      = explode($matches['delim'], strtolower($macAddress));
         $partsCount = count($parts);
 
         if ($partsCount === 3) {
@@ -57,6 +66,7 @@ class MacAddress
 
     /**
      * @param iterable<string,string> $macAddresses
+     *
      * @return iterable<string,string>
      */
     public static function normalizeBulk(iterable $macAddresses) : iterable
