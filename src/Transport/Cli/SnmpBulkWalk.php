@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SimPod\PhpSnmp\Transport;
+namespace SimPod\PhpSnmp\Transport\Cli;
 
 use SimPod\PhpSnmp\Exception\SnmpCliError;
 use Symfony\Component\Process\Process;

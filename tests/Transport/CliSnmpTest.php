@@ -6,8 +6,8 @@ namespace SimPod\PhpSnmp\Tests\Transport;
 
 use PHPUnit\Framework\TestCase;
 use SimPod\PhpSnmp\Exception\SnmpCliError;
+use SimPod\PhpSnmp\Transport\Cli\SnmpBulkWalk;
 use SimPod\PhpSnmp\Transport\CliSnmp;
-use SimPod\PhpSnmp\Transport\SnmpBulkWalk;
 use function assert;
 use function file_get_contents;
 use function iterable_to_array;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Mib;
 
-use SimPod\PhpSnmp\Helper\MacAddress;
 use SimPod\PhpSnmp\Transport\Snmp;
 
 class Ip
@@ -25,6 +24,6 @@ class Ip
      */
     public function getIpNetToMediaPhysAddress(Snmp $snmp) : iterable
     {
-        return MacAddress::normalizeBulk($snmp->walk(self::OID_IP_NET_TO_MEDIA_PHYS_ADDRESS));
+        return $snmp->walk(self::OID_IP_NET_TO_MEDIA_PHYS_ADDRESS);
     }
 }

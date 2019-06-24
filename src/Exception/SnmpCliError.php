@@ -25,7 +25,7 @@ final class SnmpCliError extends RuntimeException implements SnmpException
         return new self(sprintf('Could not perform walk for OID "%s": %s', $oid, $error));
     }
 
-    public static function regexFailed(string $oid, string $error) : self
+    public static function failedToParseOutput(string $oid, string $error) : self
     {
         return new self(sprintf('Failed to parse SNMP output for OID "%s": %s', $oid, $error));
     }

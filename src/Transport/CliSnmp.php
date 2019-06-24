@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SimPod\PhpSnmp\Transport;
 
 use SimPod\PhpSnmp\Exception\SnmpCliError;
+use SimPod\PhpSnmp\Transport\Cli\SnmpBulkWalk;
 use function count;
 use function error_get_last;
 use function in_array;
@@ -70,7 +71,7 @@ final class CliSnmp implements Snmp
         $output = $this->snmpBulkWalk->execute($oid);
 
         if (preg_match_all(self::REGEX, $output, $matches, PREG_SET_ORDER) === false) {
-            throw SnmpCliError::regexFailed($oid, error_get_last()['message'] ?? 'unknown');
+            throw SnmpCliError::failedToParseOutput($oid, error_get_last()['message'] ?? 'unknown');
         }
 
         foreach ($matches as $match) {
