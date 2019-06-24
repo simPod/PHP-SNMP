@@ -31,6 +31,8 @@ class Iface
     public const OID_OUT_DISCARDS             = '.1.3.6.1.2.1.2.2.1.19';
     public const OID_STACK_STATUS             = '.1.3.6.1.2.1.31.1.2.1.3';
 
+    private const HC_SPEED_MULTIPLIER = 1000000;
+
     /**
      * @return iterable<string, int>
      */
@@ -266,7 +268,9 @@ class Iface
      */
     public function getHcSpeeds(Snmp $snmp) : iterable
     {
-        return $snmp->walk(self::OID_HC_SPEED);
+        foreach ($snmp->walk(self::OID_HC_SPEED) as $key => $value) {
+            yield $key => $value * self::HC_SPEED_MULTIPLIER;
+        }
     }
 
     /**
