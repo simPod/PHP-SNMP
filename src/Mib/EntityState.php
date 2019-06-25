@@ -15,7 +15,7 @@ class EntityState
     public const OID_ENT_STATE_OPER  = '.1.3.6.1.2.1.131.1.1.1.3';
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getEntStateAdmin(Snmp $snmp) : iterable
     {
@@ -23,7 +23,7 @@ class EntityState
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getEntStateOper(Snmp $snmp) : iterable
     {

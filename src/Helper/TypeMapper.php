@@ -9,7 +9,7 @@ final class TypeMapper
     /**
      * @param iterable<string, string> $strings
      *
-     * @return iterable<string, float>
+     * @return iterable<string|int, float>
      */
     public static function stringsToFloats(iterable $strings) : iterable
     {

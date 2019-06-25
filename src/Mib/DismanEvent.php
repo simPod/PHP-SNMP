@@ -14,7 +14,7 @@ class DismanEvent
     public const OID_SYS_UP_TIME_INSTANCE = '.1.3.6.1.2.1.1.3.0';
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getSysUpTimeInstance(Snmp $snmp) : iterable
     {

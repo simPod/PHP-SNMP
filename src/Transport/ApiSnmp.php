@@ -49,7 +49,7 @@ final class ApiSnmp implements Snmp
     }
 
     /**
-     * @return iterable<string, mixed>
+     * @return iterable<string|int, mixed>
      */
     public function walk(string $oid) : iterable
     {
@@ -57,7 +57,7 @@ final class ApiSnmp implements Snmp
     }
 
     /**
-     * @return iterable<string, mixed>
+     * @return iterable<string|int, mixed>
      */
     public function walkWithCompleteOids(string $oid) : iterable
     {
@@ -65,7 +65,7 @@ final class ApiSnmp implements Snmp
     }
 
     /**
-     * @return iterable<string, mixed>
+     * @return iterable<string|int, mixed>
      */
     private function getResponse(string $oid, bool $stripOidPrefix) : iterable
     {

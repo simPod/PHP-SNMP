@@ -14,7 +14,7 @@ class EntitySensor
     public const OID_THRESHOLD_HIGH_CRITICAL = '.1.3.6.1.4.1.30065.3.12.1.1.1.4';
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getThresholdLowWarning(Snmp $snmp) : iterable
     {
@@ -22,7 +22,7 @@ class EntitySensor
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getThresholdLowCritical(Snmp $snmp) : iterable
     {
@@ -30,7 +30,7 @@ class EntitySensor
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getThresholdHighWarning(Snmp $snmp) : iterable
     {
@@ -38,7 +38,7 @@ class EntitySensor
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getThresholdHighCritical(Snmp $snmp) : iterable
     {

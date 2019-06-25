@@ -12,7 +12,7 @@ class Ip
     public const OID_IP_NET_TO_MEDIA_PHYS_ADDRESS = '.1.3.6.1.2.1.4.22.1.2';
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getIpAddress(Snmp $snmp) : iterable
     {
@@ -20,7 +20,7 @@ class Ip
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getIpNetToMediaPhysAddress(Snmp $snmp) : iterable
     {

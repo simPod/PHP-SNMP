@@ -40,7 +40,7 @@ class Groove
     public const OID_INVENTORY_PART_VERSION           = '.1.3.6.1.4.1.42229.1.2.3.12.1.1.11';
 
     /**
-     * @return iterable<string, float>
+     * @return iterable<string|int, float>
      */
     public function getSystemPowerConsumptionCurrent(Snmp $snmp) : iterable
     {
@@ -48,7 +48,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getCardAdminStatus(Snmp $snmp) : iterable
     {
@@ -56,7 +56,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getCardOperStatus(Snmp $snmp) : iterable
     {
@@ -64,7 +64,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getCardFanSpeedRate(Snmp $snmp) : iterable
     {
@@ -72,7 +72,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, float>
+     * @return iterable<string|int, float>
      */
     public function getCardTemperature(Snmp $snmp) : iterable
     {
@@ -80,7 +80,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getSubcardEquipmentNames(Snmp $snmp) : iterable
     {
@@ -88,7 +88,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, float>
+     * @return iterable<string|int, float>
      */
     public function getPortRxOpticalPower(Snmp $snmp) : iterable
     {
@@ -96,7 +96,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, float>
+     * @return iterable<string|int, float>
      */
     public function getPortTxOpticalPower(Snmp $snmp) : iterable
     {
@@ -104,7 +104,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, float>
+     * @return iterable<string|int, float>
      */
     public function getPortRxOpticalPowerLane1(Snmp $snmp) : iterable
     {
@@ -112,7 +112,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, float>
+     * @return iterable<string|int, float>
      */
     public function getPortRxOpticalPowerLane2(Snmp $snmp) : iterable
     {
@@ -120,7 +120,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, float>
+     * @return iterable<string|int, float>
      */
     public function getPortRxOpticalPowerLane3(Snmp $snmp) : iterable
     {
@@ -128,7 +128,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, float>
+     * @return iterable<string|int, float>
      */
     public function getPortRxOpticalPowerLane4(Snmp $snmp) : iterable
     {
@@ -136,7 +136,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, float>
+     * @return iterable<string|int, float>
      */
     public function getPortTxOpticalPowerLane1(Snmp $snmp) : iterable
     {
@@ -144,7 +144,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, float>
+     * @return iterable<string|int, float>
      */
     public function getPortTxOpticalPowerLane2(Snmp $snmp) : iterable
     {
@@ -152,7 +152,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, float>
+     * @return iterable<string|int, float>
      */
     public function getPortTxOpticalPowerLane3(Snmp $snmp) : iterable
     {
@@ -160,7 +160,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, float>
+     * @return iterable<string|int, float>
      */
     public function getPortTxOpticalPowerLane4(Snmp $snmp) : iterable
     {
@@ -168,7 +168,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getPortNames(Snmp $snmp) : iterable
     {
@@ -176,7 +176,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getPortAdminStatuses(Snmp $snmp) : iterable
     {
@@ -184,7 +184,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getPortOperStatuses(Snmp $snmp) : iterable
     {
@@ -192,7 +192,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getPortAliasNames(Snmp $snmp) : iterable
     {
@@ -200,7 +200,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getInventoryEquipmentType(Snmp $snmp) : iterable
     {
@@ -208,7 +208,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getInventoryModuleType(Snmp $snmp) : iterable
     {
@@ -216,7 +216,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getInventorySerialNumber(Snmp $snmp) : iterable
     {
@@ -224,7 +224,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getInventoryFwVersion(Snmp $snmp) : iterable
     {
@@ -232,7 +232,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getInventoryVendor(Snmp $snmp) : iterable
     {
@@ -240,7 +240,7 @@ class Groove
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getInventoryPartVersion(Snmp $snmp) : iterable
     {

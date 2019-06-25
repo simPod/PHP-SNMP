@@ -14,7 +14,7 @@ final class System
     public const OID_UPTIME      = '.1.3.6.1.2.1.1.3.0';
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getDescription(Snmp $snmp) : iterable
     {
@@ -22,7 +22,7 @@ final class System
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getLocation(Snmp $snmp) : iterable
     {
@@ -30,7 +30,7 @@ final class System
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getName(Snmp $snmp) : iterable
     {
@@ -38,7 +38,7 @@ final class System
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getUptime(Snmp $snmp) : iterable
     {

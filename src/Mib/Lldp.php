@@ -14,7 +14,7 @@ final class Lldp
     public const OID_PORT_CONFIG_ADMIN_STATUS = '.1.0.8802.1.1.2.1.1.6.1.2';
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getLocalPortIds(Snmp $snmp) : iterable
     {
@@ -22,7 +22,7 @@ final class Lldp
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getRemotePortIds(Snmp $snmp) : iterable
     {
@@ -30,7 +30,7 @@ final class Lldp
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getRemoteSysNames(Snmp $snmp) : iterable
     {
@@ -38,7 +38,7 @@ final class Lldp
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getPortConfigAdminStatus(Snmp $snmp) : iterable
     {

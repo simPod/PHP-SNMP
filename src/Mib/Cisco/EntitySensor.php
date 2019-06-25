@@ -21,7 +21,7 @@ class EntitySensor
     public const OID_PHYSICAL_SENSOR_VALUE_UPDATE_RATE = '.1.3.6.1.4.1.9.9.91.1.1.1.1.8';
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getPhysicalSensorType(Snmp $snmp) : iterable
     {
@@ -29,7 +29,7 @@ class EntitySensor
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getPhysicalSensorScale(Snmp $snmp) : iterable
     {
@@ -37,7 +37,7 @@ class EntitySensor
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getPhysicalSensorPrecision(Snmp $snmp) : iterable
     {
@@ -45,7 +45,7 @@ class EntitySensor
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getPhysicalSensorValue(Snmp $snmp) : iterable
     {
@@ -53,7 +53,7 @@ class EntitySensor
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getPhysicalSensorOperStatus(Snmp $snmp) : iterable
     {
@@ -61,7 +61,7 @@ class EntitySensor
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getPhysicalSensorUnitsDisplay(Snmp $snmp) : iterable
     {
@@ -69,7 +69,7 @@ class EntitySensor
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getPhysicalSensorValueTimeStamp(Snmp $snmp) : iterable
     {
@@ -77,7 +77,7 @@ class EntitySensor
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getPhysicalSensorValueUpdateRate(Snmp $snmp) : iterable
     {

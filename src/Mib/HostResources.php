@@ -117,7 +117,7 @@ class HostResources
     public const OID_HR_SWINSTALLED_GROUP              = '.1.3.6.1.2.1.25.7.3.6';
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getHost(Snmp $snmp) : iterable
     {
@@ -125,7 +125,7 @@ class HostResources
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getHrStorageType(Snmp $snmp) : iterable
     {
@@ -133,7 +133,7 @@ class HostResources
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getHrStorageDescr(Snmp $snmp) : iterable
     {
@@ -141,7 +141,7 @@ class HostResources
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getHrStorageSize(Snmp $snmp) : iterable
     {
@@ -149,7 +149,7 @@ class HostResources
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getHrStorageUsed(Snmp $snmp) : iterable
     {
@@ -157,7 +157,7 @@ class HostResources
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getHrDeviceType(Snmp $snmp) : iterable
     {
@@ -165,7 +165,7 @@ class HostResources
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getHrDeviceDescr(Snmp $snmp) : iterable
     {
@@ -173,7 +173,7 @@ class HostResources
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getHrDeviceStatus(Snmp $snmp) : iterable
     {
@@ -181,7 +181,7 @@ class HostResources
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getHrProcessorLoad(Snmp $snmp) : iterable
     {

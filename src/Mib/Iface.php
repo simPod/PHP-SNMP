@@ -34,7 +34,7 @@ class Iface
     private const HC_SPEED_MULTIPLIER = 1000000;
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getAdminStatuses(Snmp $snmp) : iterable
     {
@@ -42,7 +42,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getAliases(Snmp $snmp) : iterable
     {
@@ -50,7 +50,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getDescriptions(Snmp $snmp) : iterable
     {
@@ -58,7 +58,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getHcInOctets(Snmp $snmp) : iterable
     {
@@ -71,7 +71,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getHcOutOctets(Snmp $snmp) : iterable
     {
@@ -84,7 +84,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getHcInPackets(Snmp $snmp) : iterable
     {
@@ -97,7 +97,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getHcOutPackets(Snmp $snmp) : iterable
     {
@@ -110,7 +110,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getHcInBroadcastPackets(Snmp $snmp) : iterable
     {
@@ -123,7 +123,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getHcOutBroadcastPackets(Snmp $snmp) : iterable
     {
@@ -136,7 +136,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getHcInMulticastPackets(Snmp $snmp) : iterable
     {
@@ -149,7 +149,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getHcOutMulticastPackets(Snmp $snmp) : iterable
     {
@@ -162,7 +162,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getHcInUnicastPackets(Snmp $snmp) : iterable
     {
@@ -175,7 +175,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getHcOutUnicastPackets(Snmp $snmp) : iterable
     {
@@ -188,7 +188,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getInDiscards(Snmp $snmp) : iterable
     {
@@ -201,7 +201,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getOutDiscards(Snmp $snmp) : iterable
     {
@@ -214,7 +214,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getInErrors(Snmp $snmp) : iterable
     {
@@ -227,7 +227,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getOutErrors(Snmp $snmp) : iterable
     {
@@ -240,7 +240,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getNames(Snmp $snmp) : iterable
     {
@@ -248,7 +248,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getOperStatuses(Snmp $snmp) : iterable
     {
@@ -256,7 +256,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getSpeeds(Snmp $snmp) : iterable
     {
@@ -264,7 +264,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getHcSpeeds(Snmp $snmp) : iterable
     {
@@ -274,7 +274,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getTypes(Snmp $snmp) : iterable
     {
@@ -282,7 +282,7 @@ class Iface
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getStackTable(Snmp $snmp) : iterable
     {

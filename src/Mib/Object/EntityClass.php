@@ -6,7 +6,7 @@ namespace SimPod\PhpSnmp\Mib\Object;
 
 use Consistence\Enum\Enum;
 
-class EntityClass extends Enum
+final class EntityClass extends Enum
 {
     public const OTHER        = 1;
     public const UNKNOWN      = 2;

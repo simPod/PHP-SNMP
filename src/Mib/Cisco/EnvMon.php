@@ -17,7 +17,7 @@ class EnvMon
     public const OID_CISCO_ENV_MON_SUPPLY_STATE       = '1.3.6.1.4.1.9.9.13.1.5.1.3';
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getCiscoEnvMonFanStatusDescr(Snmp $snmp) : iterable
     {
@@ -25,7 +25,7 @@ class EnvMon
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getCiscoEnvMonFanState(Snmp $snmp) : iterable
     {
@@ -33,7 +33,7 @@ class EnvMon
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getCiscoEnvMonSupplyStatusDescr(Snmp $snmp) : iterable
     {
@@ -41,7 +41,7 @@ class EnvMon
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getCiscoEnvMonSupplyState(Snmp $snmp) : iterable
     {

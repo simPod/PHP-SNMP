@@ -29,7 +29,7 @@ class Entity
     public const OID_PHYSICAL_IS_FRU         = '.1.3.6.1.2.1.47.1.1.1.1.16';
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getPhysicalDescription(Snmp $snmp) : iterable
     {
@@ -37,7 +37,7 @@ class Entity
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getPhysicalVendorType(Snmp $snmp) : iterable
     {
@@ -45,7 +45,7 @@ class Entity
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getPhysicalContainedIn(Snmp $snmp) : iterable
     {
@@ -53,7 +53,7 @@ class Entity
     }
 
     /**
-     * @return iterable<string, int>
+     * @return iterable<string|int, int>
      */
     public function getPhysicalClass(Snmp $snmp) : iterable
     {
@@ -61,7 +61,7 @@ class Entity
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getPhysicalName(Snmp $snmp) : iterable
     {
@@ -69,7 +69,7 @@ class Entity
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getPhysicalHardwareRev(Snmp $snmp) : iterable
     {
@@ -77,7 +77,7 @@ class Entity
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getPhysicalFirmwareRev(Snmp $snmp) : iterable
     {
@@ -85,7 +85,7 @@ class Entity
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getPhysicalSoftwareRev(Snmp $snmp) : iterable
     {
@@ -93,7 +93,7 @@ class Entity
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getPhysicalSerialNumber(Snmp $snmp) : iterable
     {
@@ -101,7 +101,7 @@ class Entity
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getPhysicalMfgName(Snmp $snmp) : iterable
     {
@@ -109,7 +109,7 @@ class Entity
     }
 
     /**
-     * @return iterable<string, string>
+     * @return iterable<string|int, string>
      */
     public function getPhysicalModelName(Snmp $snmp) : iterable
     {

@@ -45,7 +45,7 @@ final class CliSnmp implements Snmp
     }
 
     /**
-     * @return iterable<string, mixed>
+     * @return iterable<string|int, mixed>
      */
     public function walk(string $oid) : iterable
     {
@@ -56,7 +56,7 @@ final class CliSnmp implements Snmp
     }
 
     /**
-     * @return iterable<string, mixed>
+     * @return iterable<string|int, mixed>
      */
     public function walkWithCompleteOids(string $oid) : iterable
     {
@@ -64,7 +64,7 @@ final class CliSnmp implements Snmp
     }
 
     /**
-     * @return iterable<string, mixed>
+     * @return iterable<string|int, mixed>
      */
     private function realWalk(string $oid) : iterable
     {
