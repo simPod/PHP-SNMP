@@ -4,6 +4,7 @@
          beStrictAboutChangesToGlobalState="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
+         executionOrder="random"
          colors="true"
          bootstrap="tests/bootstrap.php"
 >

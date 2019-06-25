@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
-use PHPStan\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use SimPod\PhpSnmp\Exception\SnmpApiError;
 use SimPod\PhpSnmp\Transport\ApiSnmp;
 use function base64_encode;

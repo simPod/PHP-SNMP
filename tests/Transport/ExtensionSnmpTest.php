@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Tests\Transport;
 
-use PHPStan\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use SimPod\PhpSnmp\Exception\SnmpExtensionError;
 use SimPod\PhpSnmp\Transport\ExtensionSnmp;
 use function iterable_to_array;

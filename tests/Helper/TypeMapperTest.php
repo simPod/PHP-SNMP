@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Tests\Helper;
 
-use PHPStan\Testing\TestCase;
+use PHPUnit\Framework\TestCase;
 use SimPod\PhpSnmp\Helper\TypeMapper;
 use function iterable_to_array;
 
