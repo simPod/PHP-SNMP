@@ -17,7 +17,7 @@ final class SnmpExtensionError extends RuntimeException implements SnmpException
 
     public static function oidOutOfRange(string $oid) : self
     {
-        return new self(sprintf('OID "%s" is out of the MIB tree range (doesn\'t exist)', $oid));
+        return new self(sprintf('OID "%s" is out of the MIB tree range (does not exist)', $oid));
     }
 
     public static function unknownType(string $type) : self
