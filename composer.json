@@ -21,7 +21,7 @@
         "sort-packages": true
     },
     "require": {
-        "php": "^7.2||^8.0",
+        "php": "^7.2|^8.0",
         "bentools/iterable-functions": "^1.2",
         "consistence/consistence": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
