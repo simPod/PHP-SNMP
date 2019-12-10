@@ -22,7 +22,7 @@
         "consistence/consistence": "^1.0|^2.0"
     },
     "require-dev": {
-        "doctrine/coding-standard": "^6.0",
+        "doctrine/coding-standard": "^6.0 || ^7.0",
         "phpstan/phpstan": "^0.11.5",
         "phpstan/phpstan-strict-rules": "^0.11.0"
     },
