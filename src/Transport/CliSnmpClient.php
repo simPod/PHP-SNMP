@@ -10,12 +10,14 @@ use SimPod\PhpSnmp\Exception\InvalidVersionProvided;
 use SimPod\PhpSnmp\Exception\NoSuchInstanceExists;
 use SimPod\PhpSnmp\Exception\NoSuchObjectExists;
 use SimPod\PhpSnmp\Exception\SnmpException;
+use SimPod\PhpSnmp\Exception\TimeoutReached;
 use SimPod\PhpSnmp\Transport\Cli\ProcessExecutor;
 use SimPod\PhpSnmp\Transport\Cli\SymfonyProcessProcessExecutor;
 use Throwable;
 use function array_merge;
 use function assert;
 use function explode;
+use function implode;
 use function in_array;
 use function Safe\preg_match;
 use function Safe\substr;
@@ -31,6 +33,9 @@ final class CliSnmpClient implements SnmpClient
 
     /** @var string[] */
     private $processArgs;
+
+    /** @var string */
+    private $host;
 
     /** @var bool */
     private $useBulk;
@@ -61,6 +66,7 @@ final class CliSnmpClient implements SnmpClient
             $community,
             $host,
         ];
+        $this->host            = $host;
         $this->useBulk         = $version === '2c';
     }
 
@@ -72,7 +78,7 @@ final class CliSnmpClient implements SnmpClient
         } catch (Throwable $throwable) {
             // check for SNMP v1
             if (preg_match('~\(noSuchName\).+Failed object: (.+?)$~ms', $throwable->getMessage(), $matches) === 1) {
-                throw NoSuchInstanceExists::fromOid($matches[1]);
+                throw NoSuchInstanceExists::fromOid($this->host, $matches[1]);
             }
 
             throw $this->processException($throwable, $oids);
@@ -89,7 +95,7 @@ final class CliSnmpClient implements SnmpClient
         } catch (Throwable $throwable) {
             // check for SNMP v1
             if (preg_match('~\(noSuchName\).+Failed object: (.+?)$~ms', $throwable->getMessage(), $matches) === 1) {
-                throw EndOfMibReached::fromOid($matches[1]);
+                throw EndOfMibReached::fromOid($this->host, $matches[1]);
             }
 
             throw $this->processException($throwable, $oids);
@@ -116,7 +122,7 @@ final class CliSnmpClient implements SnmpClient
 
         $result = $this->processOutput($output);
         if ($result === []) {
-            throw NoSuchInstanceExists::fromOid($oid);
+            throw NoSuchInstanceExists::fromOid($this->host, $oid);
         }
 
         return $result;
@@ -196,11 +202,11 @@ final class CliSnmpClient implements SnmpClient
         [$oid, $value] = explode(' = ', $line, 2);
 
         if (strpos($value, 'No Such Object') === 0) {
-            throw NoSuchObjectExists::fromOid($oid);
+            throw NoSuchObjectExists::fromOid($this->host, $oid);
         }
 
         if (strpos($value, 'No Such Instance') === 0) {
-            throw NoSuchInstanceExists::fromOid($oid);
+            throw NoSuchInstanceExists::fromOid($this->host, $oid);
         }
 
         if (strpos($value, 'No more variables left in this MIB View') === 0) {
@@ -208,7 +214,7 @@ final class CliSnmpClient implements SnmpClient
                 return $result;
             }
 
-            throw EndOfMibReached::fromOid($oid);
+            throw EndOfMibReached::fromOid($this->host, $oid);
         }
 
         $result[$oid] = ValueParser::parse($value);
@@ -220,9 +226,13 @@ final class CliSnmpClient implements SnmpClient
     private function processException(Throwable $throwable, array $oids) : Throwable
     {
         if ($throwable instanceof SnmpException) {
-            return GeneralException::fromThrowable($throwable, $oids);
+            if (strpos($throwable->getMessage(), 'Timeout') !== false) {
+                throw TimeoutReached::fromOid($this->host, implode(', ', $oids));
+            }
+
+            return GeneralException::fromThrowable($throwable, $this->host, $oids);
         }
 
-        return GeneralException::new('Failed to execute SNMP CLI command', $throwable, $oids);
+        return GeneralException::new('Failed to execute SNMP CLI command', $throwable, $this->host, $oids);
     }
 }

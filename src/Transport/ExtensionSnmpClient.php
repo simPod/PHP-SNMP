@@ -9,8 +9,10 @@ use SimPod\PhpSnmp\Exception\GeneralException;
 use SimPod\PhpSnmp\Exception\InvalidVersionProvided;
 use SimPod\PhpSnmp\Exception\NoSuchInstanceExists;
 use SimPod\PhpSnmp\Exception\NoSuchObjectExists;
+use SimPod\PhpSnmp\Exception\TimeoutReached;
 use SNMP;
 use Throwable;
+use function implode;
 use function strpos;
 use const SNMP_OID_OUTPUT_NUMERIC;
 
@@ -20,6 +22,9 @@ final class ExtensionSnmpClient implements SnmpClient
 
     /** @var SNMP */
     private $snmp;
+
+    /** @var string */
+    private $host;
 
     public function __construct(
         string $host = '127.0.0.1',
@@ -50,6 +55,8 @@ final class ExtensionSnmpClient implements SnmpClient
         $this->snmp                     = new SNMP($snmpVersion, $host, $community, $timeoutMs, $retry);
         $this->snmp->oid_output_format  = SNMP_OID_OUTPUT_NUMERIC;
         $this->snmp->exceptions_enabled = SNMP::ERRNO_ANY;
+        $this->host                     = $host;
+
         if ($snmpVersion !== SNMP::VERSION_3) {
             return;
         }
@@ -112,18 +119,22 @@ final class ExtensionSnmpClient implements SnmpClient
     private function processException(Throwable $throwable, array $oids) : Throwable
     {
         if (strpos($throwable->getMessage(), 'No Such Object') !== false) {
-            return NoSuchObjectExists::fromThrowable($throwable);
+            return NoSuchObjectExists::fromThrowable($this->host, $throwable);
         }
 
         if (strpos($throwable->getMessage(), 'No Such Instance') !== false
             || strpos($throwable->getMessage(), 'noSuchName') !== false) {
-            return NoSuchInstanceExists::fromThrowable($throwable);
+            return NoSuchInstanceExists::fromThrowable($this->host, $throwable);
         }
 
         if (strpos($throwable->getMessage(), 'No more variables left in this MIB View') !== false) {
-            return EndOfMibReached::fromThrowable($throwable);
+            return EndOfMibReached::fromThrowable($this->host, $throwable);
         }
 
-        return GeneralException::fromThrowable($throwable, $oids);
+        if (strpos($throwable->getMessage(), 'No response') !== false) {
+            return TimeoutReached::fromOid($this->host, implode(', ', $oids));
+        }
+
+        return GeneralException::fromThrowable($throwable, $this->host, $oids);
     }
 }

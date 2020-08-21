@@ -13,6 +13,7 @@ use SimPod\PhpSnmp\Exception\GeneralException;
 use SimPod\PhpSnmp\Exception\NoRequestsProvided;
 use SimPod\PhpSnmp\Exception\NoSuchInstanceExists;
 use SimPod\PhpSnmp\Exception\NoSuchObjectExists;
+use SimPod\PhpSnmp\Exception\TimeoutReached;
 use Throwable;
 use function array_key_exists;
 use function array_keys;
@@ -157,7 +158,7 @@ final class ApiSnmpClient implements SnmpClient
         try {
             $response = $this->client->sendRequest($request);
         } catch (Throwable $throwable) {
-            throw GeneralException::fromThrowable($throwable, $this->getRequestsOids($requestParameters));
+            throw GeneralException::fromThrowable($throwable, $this->host, $this->getRequestsOids($requestParameters));
         }
 
         try {
@@ -170,23 +171,32 @@ final class ApiSnmpClient implements SnmpClient
                 (string) $response->getBody()
             );
 
-            throw GeneralException::new($error, $throwable, $this->getRequestsOids($requestParameters));
+            throw GeneralException::new($error, $throwable, $this->host, $this->getRequestsOids($requestParameters));
         }
 
         if (array_key_exists('error', $result)) {
             if (preg_match('~no such object: (.+)~', $result['error'], $matches) === 1) {
-                throw NoSuchObjectExists::fromOid($matches[1]);
+                throw NoSuchObjectExists::fromOid($this->host, $matches[1]);
             }
 
             if (preg_match('~no such instance: (.+)~', $result['error'], $matches) === 1) {
-                throw NoSuchInstanceExists::fromOid($matches[1]);
+                throw NoSuchInstanceExists::fromOid($this->host, $matches[1]);
             }
 
             if (preg_match('~end of mib: (.+)~', $result['error'], $matches) === 1) {
-                throw EndOfMibReached::fromOid($matches[1]);
+                throw EndOfMibReached::fromOid($this->host, $matches[1]);
             }
 
-            throw GeneralException::new($result['error'], null, $this->getRequestsOids($requestParameters));
+            if (preg_match('~timeout: (.+)~', $result['error'], $matches) === 1) {
+                throw TimeoutReached::fromOid($this->host, $matches[1]);
+            }
+
+            throw GeneralException::new(
+                $result['error'],
+                null,
+                $this->host,
+                $this->getRequestsOids($requestParameters)
+            );
         }
 
         if ($response->getStatusCode() !== 200) {
@@ -196,7 +206,7 @@ final class ApiSnmpClient implements SnmpClient
                 (string) $response->getBody()
             );
 
-            throw GeneralException::new($error, null, $this->getRequestsOids($requestParameters));
+            throw GeneralException::new($error, null, $this->host, $this->getRequestsOids($requestParameters));
         }
 
         return $result['result'];

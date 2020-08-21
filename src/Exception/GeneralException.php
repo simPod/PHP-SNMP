@@ -7,24 +7,35 @@ namespace SimPod\PhpSnmp\Exception;
 use RuntimeException;
 use Throwable;
 use function implode;
-use function Safe\sprintf;
 
 // phpcs:ignore SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix
 final class GeneralException extends RuntimeException implements SnmpException
 {
+    /** @var string|null */
+    public $host;
+
+    /** @var string|null */
+    public $oids;
+
     /** @param list<string> $oids */
-    public static function new(string $error, ?Throwable $previous = null, ?array $oids = null) : self
-    {
+    public static function new(
+        string $error,
+        ?Throwable $previous = null,
+        ?string $host = null,
+        ?array $oids = null
+    ) : self {
+        $self       = new self($error, 0, $previous);
+        $self->host = $host;
         if ($oids !== null) {
-            $error .= sprintf(', oids: %s', implode(', ', $oids));
+            $self->oids = implode(', ', $oids);
         }
 
-        return new self($error, 0, $previous);
+        return $self;
     }
 
     /** @param list<string> $oids */
-    public static function fromThrowable(Throwable $throwable, ?array $oids = null) : self
+    public static function fromThrowable(Throwable $throwable, ?string $host = null, ?array $oids = null) : self
     {
-        return self::new($throwable->getMessage(), $throwable, $oids);
+        return self::new($throwable->getMessage(), $throwable, $host, $oids);
     }
 }

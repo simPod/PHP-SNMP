@@ -4,34 +4,36 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Exception;
 
-use RuntimeException;
 use Throwable;
 use function Safe\preg_match;
-use function Safe\sprintf;
 
-final class EndOfMibReached extends RuntimeException implements SnmpException
+final class EndOfMibReached extends RequestException
 {
-    public static function new() : self
+    public static function new(?Throwable $previous = null) : self
     {
-        return new self('No more variables left in this MIB View (It is past the end of the MIB tree)');
+        return new self('No more variables left in this MIB View (It is past the end of the MIB tree)', 0, $previous);
     }
 
-    public static function fromOid(string $oid) : self
+    public static function fromOid(string $host, string $oid) : self
     {
-        return new self(
-            sprintf(
-                'No more variables left in this MIB View (It is past the end of the MIB tree), tried oid: %s',
-                $oid
-            )
-        );
+        $self       = self::new();
+        $self->host = $host;
+        $self->oids = $oid;
+
+        return $self;
     }
 
-    public static function fromThrowable(Throwable $throwable) : self
+    public static function fromThrowable(string $host, Throwable $throwable) : self
     {
+        $self       = self::new();
+        $self->host = $host;
+
         if (preg_match("~Error in packet at '(.+?)':~", $throwable->getMessage(), $matches) !== 1) {
-            throw self::new();
+            return $self;
         }
 
-        return self::fromOid($matches[1]);
+        $self->oids = $matches[1];
+
+        return $self;
     }
 }

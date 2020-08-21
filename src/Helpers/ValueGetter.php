@@ -50,7 +50,7 @@ final class ValueGetter
         $i = 0;
         foreach ($result as $oid => $value) {
             if (strpos($oid, $oids[$i]) !== 0) {
-                throw NoSuchInstanceExists::fromOid($oids[$i]);
+                throw NoSuchInstanceExists::fromOid('', $oids[$i]);
             }
 
             $i++;
