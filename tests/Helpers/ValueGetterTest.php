@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Tests\Helpers;
 
-use PHPUnit\Framework\TestCase;
 use SimPod\PhpSnmp\Exception\GeneralException;
 use SimPod\PhpSnmp\Exception\NoSuchInstanceExists;
 use SimPod\PhpSnmp\Helpers\ValueGetter;
+use SimPod\PhpSnmp\Tests\BaseTestCase;
 use SimPod\PhpSnmp\Transport\SnmpClient;
 
-final class ValueGetterTest extends TestCase
+final class ValueGetterTest extends BaseTestCase
 {
     public function testFirst() : void
     {
@@ -43,8 +43,12 @@ final class ValueGetterTest extends TestCase
             ->method('getNext')
             ->willReturn(['.1.2.4.1' => 'a']);
 
-        $this->expectExceptionObject(NoSuchInstanceExists::fromOid('.1.2.3'));
-        ValueGetter::firstFromSameTree($snmpClient, '.1.2.3');
+        self::assertSnmpException(
+            NoSuchInstanceExists::fromOid('', '.1.2.3'),
+            static function () use ($snmpClient) : void {
+                ValueGetter::firstFromSameTree($snmpClient, '.1.2.3');
+            }
+        );
     }
 
     public function testFirstFromSameTrees() : void
@@ -76,7 +80,11 @@ final class ValueGetterTest extends TestCase
                 ]
             );
 
-        $this->expectExceptionObject(NoSuchInstanceExists::fromOid('.1.2.6'));
-        ValueGetter::firstFromSameTrees($snmpClient, ['.1.2.3', '.1.2.6']);
+        self::assertSnmpException(
+            NoSuchInstanceExists::fromOid('', '.1.2.6'),
+            static function () use ($snmpClient) : void {
+                ValueGetter::firstFromSameTrees($snmpClient, ['.1.2.3', '.1.2.6']);
+            }
+        );
     }
 }

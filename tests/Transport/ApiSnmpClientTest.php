@@ -9,13 +9,14 @@ use Http\Client\Curl\Client;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\RequestInterface;
 use SimPod\PhpSnmp\Exception\EndOfMibReached;
 use SimPod\PhpSnmp\Exception\GeneralException;
 use SimPod\PhpSnmp\Exception\NoRequestsProvided;
 use SimPod\PhpSnmp\Exception\NoSuchInstanceExists;
 use SimPod\PhpSnmp\Exception\NoSuchObjectExists;
+use SimPod\PhpSnmp\Exception\TimeoutReached;
+use SimPod\PhpSnmp\Tests\BaseTestCase;
 use SimPod\PhpSnmp\Transport\ApiSnmpClient;
 use SimPod\PhpSnmp\Transport\Request;
 use function Safe\json_decode;
@@ -23,7 +24,7 @@ use function Safe\json_encode;
 use function Safe\sprintf;
 use const JSON_BIGINT_AS_STRING;
 
-final class ApiSnmpClientTest extends TestCase
+final class ApiSnmpClientTest extends BaseTestCase
 {
     /** @var Client&MockObject */
     private $client;
@@ -370,11 +371,17 @@ JSON;
         $response = '{wow this is not a valid json response';
         $this->client->method('sendRequest')->willReturn(new Response(500, [], $response));
 
-        $this->expectExceptionObject(
-            GeneralException::new(sprintf('Response is not valid JSON [HTTP 500]: "%s", oids: .1.3.6', $response))
+        self::assertSnmpException(
+            GeneralException::new(
+                sprintf('Response is not valid JSON [HTTP 500]: "%s"', $response),
+                null,
+                'lorem',
+                ['.1.3.6']
+            ),
+            static function () use ($apiSnmp) : void {
+                $apiSnmp->get(['.1.3.6']);
+            }
         );
-
-        $apiSnmp->get(['.1.3.6']);
     }
 
     public function testErrorUnexpectedStatusCodeResponse() : void
@@ -398,69 +405,96 @@ JSON;
         $this->client->method('sendRequest')->willReturn(new Response(500, [], $response));
 
         $error = sprintf('Unexpected HTTP status code: 500, response: "%s"', $response);
-        $this->expectExceptionObject(GeneralException::new($error, null, ['.1.3.6']));
-
-        $apiSnmp->get(['.1.3.6']);
+        self::assertSnmpException(
+            GeneralException::new($error, null, 'lorem', ['.1.3.6']),
+            static function () use ($apiSnmp) : void {
+                $apiSnmp->get(['.1.3.6']);
+            }
+        );
     }
 
     public function testWalkWithEndOfMibError() : void
     {
         $apiSnmp = $this->createApiSnmp();
-
         $this->client->method('sendRequest')
             ->willReturn(new Response(500, [], '{"error": "end of mib: .1.15"}'));
 
-        $this->expectExceptionObject(EndOfMibReached::fromOid('.1.15'));
-
-        $apiSnmp->walk('.1.15');
+        self::assertSnmpException(
+            EndOfMibReached::fromOid('127.0.0.1', '.1.15'),
+            static function () use ($apiSnmp) : void {
+                $apiSnmp->walk('.1.15');
+            }
+        );
     }
 
     public function testWalkWithNoSuchInstanceError() : void
     {
         $apiSnmp = $this->createApiSnmp();
-
         $this->client->method('sendRequest')
             ->willReturn(new Response(500, [], '{"error": "no such instance: .1.3.6.1.2.1.1.1"}'));
 
-        $this->expectExceptionObject(NoSuchInstanceExists::fromOid('.1.3.6.1.2.1.1.1'));
-
-        $apiSnmp->walk('.1.3.6.1.2.1.1.1');
+        self::assertSnmpException(
+            NoSuchInstanceExists::fromOid('127.0.0.1', '.1.3.6.1.2.1.1.1'),
+            static function () use ($apiSnmp) : void {
+                $apiSnmp->walk('.1.3.6.1.2.1.1.1');
+            }
+        );
     }
 
     public function testWalkWithNoSuchObjectError() : void
     {
         $apiSnmp = $this->createApiSnmp();
-
         $this->client->method('sendRequest')
             ->willReturn(new Response(500, [], '{"error": "no such object: .1.4"}'));
 
-        $this->expectExceptionObject(NoSuchObjectExists::fromOid('.1.4'));
+        self::assertSnmpException(
+            NoSuchObjectExists::fromOid('127.0.0.1', '.1.4'),
+            static function () use ($apiSnmp) : void {
+                $apiSnmp->walk('.1.4');
+            }
+        );
+    }
 
-        $apiSnmp->walk('.1.4');
+    public function testWalkWithTimeoutError() : void
+    {
+        $apiSnmp = $this->createApiSnmp();
+        $this->client->method('sendRequest')
+            ->willReturn(new Response(500, [], '{"error": "timeout: .1.4"}'));
+
+        self::assertSnmpException(
+            TimeoutReached::fromOid('127.0.0.1', '.1.4'),
+            static function () use ($apiSnmp) : void {
+                $apiSnmp->walk('.1.4');
+            }
+        );
     }
 
     public function testWalkWithRequestError() : void
     {
         $apiSnmp = $this->createApiSnmp();
-
         $this->client->method('sendRequest')
             ->willThrowException(new Exception('some error'));
 
-        $this->expectExceptionObject(GeneralException::new('some error'));
-
-        $apiSnmp->walk('.1.4');
+        self::assertSnmpException(
+            GeneralException::new('some error', null, '127.0.0.1', ['.1.4']),
+            static function () use ($apiSnmp) : void {
+                $apiSnmp->walk('.1.4');
+            }
+        );
     }
 
     public function testWalkWithUnexpectedError() : void
     {
         $apiSnmp = $this->createApiSnmp();
-
         $this->client->method('sendRequest')
             ->willReturn(new Response(500, [], '{"error": "something unexpected happened"}'));
 
-        $this->expectExceptionObject(GeneralException::new('something unexpected happened'));
-
-        $apiSnmp->walk('.1.4');
+        self::assertSnmpException(
+            GeneralException::new('something unexpected happened', null, '127.0.0.1', ['.1.4']),
+            static function () use ($apiSnmp) : void {
+                $apiSnmp->walk('.1.4');
+            }
+        );
     }
 
     private function createApiSnmp() : ApiSnmpClient

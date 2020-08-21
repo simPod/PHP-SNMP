@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace SimPod\PhpSnmp\Tests\Exception;
 
 use Exception;
-use PHPUnit\Framework\TestCase;
 use SimPod\PhpSnmp\Exception\EndOfMibReached;
+use SimPod\PhpSnmp\Tests\BaseTestCase;
 
-final class EndOfMibTest extends TestCase
+final class EndOfMibTest extends BaseTestCase
 {
     public function testFromThrowable() : void
     {
@@ -16,21 +16,17 @@ final class EndOfMibTest extends TestCase
             "Error in packet at '.1.4': No more variables left in this MIB View (It is past the end of the MIB tree)"
         );
 
-        $this->expectException(EndOfMibReached::class);
-        $this->expectExceptionMessage(
-            'No more variables left in this MIB View (It is past the end of the MIB tree), tried oid: .1.4'
-        );
-
-        throw EndOfMibReached::fromThrowable($exception);
+        $exception = EndOfMibReached::fromThrowable('127.0.0.1', $exception);
+        self::assertSame('127.0.0.1', $exception->host);
+        self::assertSame('.1.4', $exception->oids);
     }
 
     public function testFromThrowableWithUnexpectedMessage() : void
     {
         $exception = new Exception('unexpected message');
 
-        $this->expectException(EndOfMibReached::class);
-        $this->expectExceptionMessage('No more variables left in this MIB View (It is past the end of the MIB tree)');
-
-        throw EndOfMibReached::fromThrowable($exception);
+        $exception = EndOfMibReached::fromThrowable('127.0.0.1', $exception);
+        self::assertSame('127.0.0.1', $exception->host);
+        self::assertNull($exception->oids);
     }
 }
