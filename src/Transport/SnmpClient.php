@@ -21,7 +21,7 @@ interface SnmpClient
     public function getNext(array $oids) : array;
 
     /** @return array<string, mixed> */
-    public function walk(string $oid, int $maxRepetitions = 40) : array;
+    public function walk(string $oid, int $maxRepetitions = 20) : array;
 
     /**
      * @param array<Request> $requests

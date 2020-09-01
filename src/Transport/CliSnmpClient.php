@@ -105,7 +105,7 @@ final class CliSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function walk(string $oid, int $maxRepetitions = 40) : array
+    public function walk(string $oid, int $maxRepetitions = 20) : array
     {
         $walker = 'snmpwalk';
         $args   = $this->processArgs;

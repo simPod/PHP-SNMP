@@ -89,7 +89,7 @@ final class ExtensionSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function walk(string $oid, int $maxRepetitions = 40) : array
+    public function walk(string $oid, int $maxRepetitions = 20) : array
     {
         try {
             $output = $this->snmp->walk($oid, false, $maxRepetitions);

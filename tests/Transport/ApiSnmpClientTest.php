@@ -171,7 +171,7 @@ JSON;
         {
             "request_type": "walk",
             "oids": [".1.3.6.1.2.1.31.1.1.1.15"],
-            "max_repetitions": 40
+            "max_repetitions": 20
         }
     ]
 }
@@ -238,7 +238,7 @@ JSON;
         {
             "request_type": "walk",
             "oids": [".1.3.6.1.2.1.31.1.1.1.15"],
-            "max_repetitions": 40
+            "max_repetitions": 20
         },
         {
             "request_type": "getNext",

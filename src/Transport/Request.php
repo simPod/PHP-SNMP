@@ -39,7 +39,7 @@ final class Request
         return new self(self::GET_NEXT, $oids);
     }
 
-    public static function walk(string $oid, int $maxRepetitions = 40) : self
+    public static function walk(string $oid, int $maxRepetitions = 20) : self
     {
         return new self(self::WALK, [$oid], $maxRepetitions);
     }

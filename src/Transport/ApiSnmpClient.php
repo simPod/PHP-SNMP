@@ -92,7 +92,7 @@ final class ApiSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function walk(string $oid, int $maxRepetitions = 40) : array
+    public function walk(string $oid, int $maxRepetitions = 20) : array
     {
         return $this->batch([Request::walk($oid, $maxRepetitions)])[0];
     }

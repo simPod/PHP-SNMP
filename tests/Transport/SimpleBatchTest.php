@@ -123,7 +123,7 @@ final class SimpleBatchTest extends TestCase
             }
 
             /** @inheritDoc */
-            public function walk(string $oid, int $maxRepetitions = 40) : array
+            public function walk(string $oid, int $maxRepetitions = 20) : array
             {
                 return $this->snmpClient->walk($oid, $maxRepetitions);
             }
