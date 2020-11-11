@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SimPod\PhpSnmp\Exception;
 
 use RuntimeException;
+
 use function Safe\sprintf;
 
 final class InvalidVersionProvided extends RuntimeException implements SnmpException

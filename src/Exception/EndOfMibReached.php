@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SimPod\PhpSnmp\Exception;
 
 use Throwable;
+
 use function Safe\preg_match;
 
 final class EndOfMibReached extends RequestException

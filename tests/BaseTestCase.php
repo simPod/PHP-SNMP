@@ -6,6 +6,7 @@ namespace SimPod\PhpSnmp\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Throwable;
+
 use function array_intersect_key;
 use function get_object_vars;
 
