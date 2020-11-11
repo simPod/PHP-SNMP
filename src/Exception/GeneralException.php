@@ -6,6 +6,7 @@ namespace SimPod\PhpSnmp\Exception;
 
 use RuntimeException;
 use Throwable;
+
 use function implode;
 
 // phpcs:ignore SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix

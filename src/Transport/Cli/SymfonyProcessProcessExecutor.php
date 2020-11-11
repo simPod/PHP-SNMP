@@ -8,6 +8,7 @@ use SimPod\PhpSnmp\Exception\GeneralException;
 use SimPod\PhpSnmp\Exception\SnmpException;
 use Symfony\Component\Process\Process;
 use Throwable;
+
 use function trim;
 
 final class SymfonyProcessProcessExecutor implements ProcessExecutor

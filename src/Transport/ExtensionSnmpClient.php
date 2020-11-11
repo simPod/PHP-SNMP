@@ -12,8 +12,10 @@ use SimPod\PhpSnmp\Exception\NoSuchObjectExists;
 use SimPod\PhpSnmp\Exception\TimeoutReached;
 use SNMP;
 use Throwable;
+
 use function implode;
 use function strpos;
+
 use const SNMP_OID_OUTPUT_NUMERIC;
 
 final class ExtensionSnmpClient implements SnmpClient
@@ -41,12 +43,15 @@ final class ExtensionSnmpClient implements SnmpClient
         switch ($version) {
             case '1':
                 $snmpVersion = SNMP::VERSION_1;
+
                 break;
             case '2c':
                 $snmpVersion = SNMP::VERSION_2c;
+
                 break;
             case '3':
                 $snmpVersion = SNMP::VERSION_3;
+
                 break;
             default:
                 throw InvalidVersionProvided::new($version);
@@ -122,8 +127,10 @@ final class ExtensionSnmpClient implements SnmpClient
             return NoSuchObjectExists::fromThrowable($this->host, $throwable);
         }
 
-        if (strpos($throwable->getMessage(), 'No Such Instance') !== false
-            || strpos($throwable->getMessage(), 'noSuchName') !== false) {
+        if (
+            strpos($throwable->getMessage(), 'No Such Instance') !== false
+            || strpos($throwable->getMessage(), 'noSuchName') !== false
+        ) {
             return NoSuchInstanceExists::fromThrowable($this->host, $throwable);
         }
 

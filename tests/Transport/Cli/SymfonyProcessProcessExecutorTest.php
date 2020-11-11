@@ -7,6 +7,7 @@ namespace SimPod\PhpSnmp\Tests\Transport\Cli;
 use PHPUnit\Framework\TestCase;
 use SimPod\PhpSnmp\Exception\GeneralException;
 use SimPod\PhpSnmp\Transport\Cli\SymfonyProcessProcessExecutor;
+
 use function bin2hex;
 use function microtime;
 use function random_bytes;

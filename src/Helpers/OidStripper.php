@@ -7,6 +7,7 @@ namespace SimPod\PhpSnmp\Helpers;
 use SimPod\PhpSnmp\Exception\GeneralException;
 use SimPod\PhpSnmp\Transport\Request;
 use SimPod\PhpSnmp\Transport\SnmpClient;
+
 use function array_key_first;
 use function Safe\substr;
 use function strlen;

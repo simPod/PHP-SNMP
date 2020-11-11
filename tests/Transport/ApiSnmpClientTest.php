@@ -19,9 +19,11 @@ use SimPod\PhpSnmp\Exception\TimeoutReached;
 use SimPod\PhpSnmp\Tests\BaseTestCase;
 use SimPod\PhpSnmp\Transport\ApiSnmpClient;
 use SimPod\PhpSnmp\Transport\Request;
+
 use function Safe\json_decode;
 use function Safe\json_encode;
 use function Safe\sprintf;
+
 use const JSON_BIGINT_AS_STRING;
 
 final class ApiSnmpClientTest extends BaseTestCase

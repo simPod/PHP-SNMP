@@ -15,6 +15,7 @@ use SimPod\PhpSnmp\Exception\NoSuchInstanceExists;
 use SimPod\PhpSnmp\Exception\NoSuchObjectExists;
 use SimPod\PhpSnmp\Exception\TimeoutReached;
 use Throwable;
+
 use function array_key_exists;
 use function array_keys;
 use function array_map;
@@ -24,6 +25,7 @@ use function Safe\json_decode;
 use function Safe\json_encode;
 use function Safe\preg_match;
 use function Safe\sprintf;
+
 use const JSON_BIGINT_AS_STRING;
 
 final class ApiSnmpClient implements SnmpClient

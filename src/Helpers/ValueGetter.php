@@ -7,6 +7,7 @@ namespace SimPod\PhpSnmp\Helpers;
 use SimPod\PhpSnmp\Exception\GeneralException;
 use SimPod\PhpSnmp\Exception\NoSuchInstanceExists;
 use SimPod\PhpSnmp\Transport\SnmpClient;
+
 use function array_shift;
 use function array_values;
 use function strpos;

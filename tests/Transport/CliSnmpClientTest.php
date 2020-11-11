@@ -15,6 +15,7 @@ use SimPod\PhpSnmp\Exception\TimeoutReached;
 use SimPod\PhpSnmp\Tests\BaseTestCase;
 use SimPod\PhpSnmp\Transport\Cli\ProcessExecutor;
 use SimPod\PhpSnmp\Transport\CliSnmpClient;
+
 use function proc_open;
 use function Safe\proc_get_status;
 use function Safe\sprintf;

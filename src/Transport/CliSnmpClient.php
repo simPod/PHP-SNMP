@@ -14,6 +14,7 @@ use SimPod\PhpSnmp\Exception\TimeoutReached;
 use SimPod\PhpSnmp\Transport\Cli\ProcessExecutor;
 use SimPod\PhpSnmp\Transport\Cli\SymfonyProcessProcessExecutor;
 use Throwable;
+
 use function array_merge;
 use function assert;
 use function explode;
