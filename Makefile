@@ -1,4 +1,4 @@
-COMPOSER_ARGS += --no-interaction --no-progress --no-suggest
+COMPOSER_ARGS += --no-interaction --no-progress
 
 .PHONY: build
 build: vendor
