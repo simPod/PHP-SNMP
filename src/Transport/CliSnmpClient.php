@@ -29,17 +29,14 @@ final class CliSnmpClient implements SnmpClient
 {
     use SimpleBatch;
 
-    /** @var ProcessExecutor */
-    private $processExecutor;
+    private ProcessExecutor $processExecutor;
 
     /** @var string[] */
-    private $processArgs;
+    private array $processArgs;
 
-    /** @var string */
-    private $host;
+    private string $host;
 
-    /** @var bool */
-    private $useBulk;
+    private bool $useBulk;
 
     public function __construct(
         string $host = '127.0.0.1',

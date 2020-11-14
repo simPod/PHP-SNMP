@@ -22,11 +22,9 @@ final class ExtensionSnmpClient implements SnmpClient
 {
     use SimpleBatch;
 
-    /** @var SNMP */
-    private $snmp;
+    private SNMP $snmp;
 
-    /** @var string */
-    private $host;
+    private string $host;
 
     public function __construct(
         string $host = '127.0.0.1',

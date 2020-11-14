@@ -32,32 +32,23 @@ final class ApiSnmpClient implements SnmpClient
 {
     private const API_PATH = '/snmp-proxy';
 
-    /** @var ClientInterface */
-    private $client;
+    private ClientInterface $client;
 
-    /** @var RequestFactoryInterface */
-    private $requestFactory;
+    private RequestFactoryInterface $requestFactory;
 
-    /** @var StreamFactoryInterface */
-    private $streamFactory;
+    private StreamFactoryInterface $streamFactory;
 
-    /** @var string */
-    private $apiHostUrl;
+    private string $apiHostUrl;
 
-    /** @var string */
-    private $host;
+    private string $host;
 
-    /** @var string */
-    private $community;
+    private string $community;
 
-    /** @var int */
-    private $timeout;
+    private int $timeout;
 
-    /** @var int */
-    private $retries;
+    private int $retries;
 
-    /** @var string */
-    private $version;
+    private string $version;
 
     public function __construct(
         ClientInterface $client,

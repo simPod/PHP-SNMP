@@ -102,8 +102,7 @@ final class SimpleBatchTest extends TestCase
         return new class ($snmpClient) implements SnmpClient {
             use SimpleBatch;
 
-            /** @var SnmpClient */
-            private $snmpClient;
+            private SnmpClient $snmpClient;
 
             public function __construct(SnmpClient $snmpClient)
             {
