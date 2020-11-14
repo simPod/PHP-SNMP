@@ -12,11 +12,9 @@ use function implode;
 // phpcs:ignore SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix
 final class GeneralException extends RuntimeException implements SnmpException
 {
-    /** @var string|null */
-    public $host;
+    public ?string $host = null;
 
-    /** @var string|null */
-    public $oids;
+    public ?string $oids = null;
 
     /** @param list<string> $oids */
     public static function new(

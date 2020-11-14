@@ -12,9 +12,7 @@
     <file>src</file>
     <file>tests</file>
 
-    <rule ref="Cdn77">
-        <exclude name="SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint" />
-    </rule>
+    <rule ref="Cdn77" />
 
     <rule ref="Generic.Formatting.MultipleStatementAlignment" />
     <rule ref="Squiz.Commenting.FunctionComment.SpacingAfterParamType" />

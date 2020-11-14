@@ -8,9 +8,7 @@ use RuntimeException;
 
 abstract class RequestException extends RuntimeException implements SnmpException
 {
-    /** @var string */
-    public $host;
+    public string $host;
 
-    /** @var string|null */
-    public $oids;
+    public ?string $oids = null;
 }

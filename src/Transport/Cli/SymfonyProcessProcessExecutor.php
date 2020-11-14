@@ -13,8 +13,7 @@ use function trim;
 
 final class SymfonyProcessProcessExecutor implements ProcessExecutor
 {
-    /** @var int */
-    private $commandTimeout;
+    private int $commandTimeout;
 
     public function __construct(int $commandTimeout)
     {

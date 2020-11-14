@@ -9,11 +9,10 @@ use SimPod\PhpSnmp\Exception\GeneralException;
 
 final class FallbackSnmpClient implements SnmpClient
 {
-    /** @var LoggerInterface */
-    private $logger;
+    private LoggerInterface $logger;
 
     /** @var iterable<SnmpClient> */
-    private $snmpClients;
+    private iterable $snmpClients;
 
     /** @param iterable<SnmpClient> $snmpClients */
     public function __construct(LoggerInterface $logger, iterable $snmpClients)
