@@ -8,6 +8,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Psr\Log\Test\TestLogger;
 use SimPod\PhpSnmp\Exception\GeneralException;
+use SimPod\PhpSnmp\Exception\TimeoutReached;
 use SimPod\PhpSnmp\Transport\FallbackSnmpClient;
 use SimPod\PhpSnmp\Transport\Request;
 use SimPod\PhpSnmp\Transport\SnmpClient;
@@ -82,7 +83,7 @@ final class FallbackSnmpClientTest extends TestCase
         $client1->expects(self::once())
             ->method('get')
             ->with($oids = ['.1.2.3'])
-            ->willThrowException($exception1 = GeneralException::new('an error'));
+            ->willThrowException($exception1 = TimeoutReached::fromOid('127.0.0.1', '.1.2.3'));
 
         $client2 = $this->createMock(SnmpClient::class);
         $client2->expects(self::once())

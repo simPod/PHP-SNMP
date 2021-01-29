@@ -6,6 +6,7 @@ namespace SimPod\PhpSnmp\Transport;
 
 use Psr\Log\LoggerInterface;
 use SimPod\PhpSnmp\Exception\GeneralException;
+use SimPod\PhpSnmp\Exception\TimeoutReached;
 
 final class FallbackSnmpClient implements SnmpClient
 {
@@ -76,7 +77,7 @@ final class FallbackSnmpClient implements SnmpClient
         foreach ($this->snmpClients as $key => $snmpClient) {
             try {
                 return $requestCallback($snmpClient);
-            } catch (GeneralException $exception) {
+            } catch (GeneralException | TimeoutReached $exception) {
                 $this->logger->warning(
                     'SNMP request failed',
                     [
