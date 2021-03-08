@@ -59,8 +59,12 @@ final class FallbackSnmpClient implements SnmpClient
     /** @inheritDoc */
     public function batch(array $requests) : array
     {
-        // @phpstan-ignore-next-line some bug in phpstan for the moment, but we know the types are correct...
         return $this->tryClients(
+        /**
+         * @return array<T, array<string, mixed>>
+         *
+         * @template T
+         */
             static function (SnmpClient $client) use ($requests) : array {
                 return $client->batch($requests);
             }
@@ -68,9 +72,11 @@ final class FallbackSnmpClient implements SnmpClient
     }
 
     /**
-     * @param callable(SnmpClient): array<mixed> $requestCallback
+     * @param callable(SnmpClient): array<T, mixed> $requestCallback
      *
-     * @return array<mixed>
+     * @return array<T, array<string, mixed>>
+     *
+     * @template T
      */
     private function tryClients(callable $requestCallback) : array
     {

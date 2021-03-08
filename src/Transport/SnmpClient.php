@@ -24,13 +24,11 @@ interface SnmpClient
     public function walk(string $oid, int $maxRepetitions = 20) : array;
 
     /**
-     * @param array<Request> $requests
+     * @param array<T, Request> $requests
      *
-     * @return array<array<string, mixed>>
+     * @return array<T, array<string, mixed>>
      *
-     * @psalm-template T
-     * @psalm-param array<T, Request> $requests
-     * @psalm-return array<T, array<string, mixed>>
+     * @template T
      */
     public function batch(array $requests) : array;
 }
