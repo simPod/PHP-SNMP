@@ -18,12 +18,12 @@ final class OidStripper
 {
     /**
      * @param array<string, mixed> $leafOidData
+     * @psalm-param array<string, T> $leafOidData
      *
      * @return array<int, mixed>
+     * @psalm-return array<int, T>
      *
      * @psalm-template T
-     * @psalm-param array<string, T> $leafOidData
-     * @psalm-return array<int, T>
      */
     public static function stripParent(array $leafOidData) : array
     {
@@ -32,12 +32,12 @@ final class OidStripper
 
     /**
      * @param list<array<string, mixed>> $leafOidDataResponses
+     * @psalm-param list<array<string, T>> $leafOidDataResponses
      *
      * @return list<array<int, mixed>>
+     * @psalm-return list<array<int, T>>
      *
      * @psalm-template T
-     * @psalm-param list<array<string, T>> $leafOidDataResponses
-     * @psalm-return list<array<int, T>>
      */
     public static function batchStripParent(array $leafOidDataResponses) : array
     {
@@ -74,12 +74,12 @@ final class OidStripper
 
     /**
      * @param array<mixed, Request> $requests
+     * @psalm-param array<T, Request> $requests
      *
      * @return array<mixed, array<string, mixed>>
+     * @psalm-return array<T, array<string, mixed>>
      *
      * @psalm-template T
-     * @psalm-param array<T, Request> $requests
-     * @psalm-return array<T, array<string, mixed>>
      */
     public static function batchStripParentPrefix(SnmpClient $snmpClient, array $requests) : array
     {

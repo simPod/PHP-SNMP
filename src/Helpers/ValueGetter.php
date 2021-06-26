@@ -16,12 +16,12 @@ final class ValueGetter
 {
     /**
      * @param array<int|string, mixed> $response
+     * @psalm-param array<int|string, T> $response
      *
      * @return mixed
+     * @psalm-return T
      *
      * @psalm-template T
-     * @psalm-param array<int|string, T> $response
-     * @psalm-return T
      */
     public static function first(array $response)
     {
