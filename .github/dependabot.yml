@@ -6,7 +6,4 @@ updates:
     interval: daily
     time: "04:00"
   open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: cdn77/coding-standard
-    versions:
-    - "> 3.0"
+  versioning-strategy: increase-if-necessary
