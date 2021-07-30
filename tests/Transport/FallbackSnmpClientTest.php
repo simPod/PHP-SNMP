@@ -7,6 +7,7 @@ namespace SimPod\PhpSnmp\Tests\Transport;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use Psr\Log\Test\TestLogger;
+use ReflectionClass;
 use SimPod\PhpSnmp\Exception\GeneralException;
 use SimPod\PhpSnmp\Exception\TimeoutReached;
 use SimPod\PhpSnmp\Transport\FallbackSnmpClient;
@@ -109,14 +110,14 @@ final class FallbackSnmpClientTest extends TestCase
         self::assertSame('SNMP request failed', $logEntry['message']);
         self::assertSame('warning', $logEntry['level']);
         self::assertSame(0, $logEntry['context']['clientKey']);
-        self::assertSame($client1, $logEntry['context']['client']);
+        self::assertSame((new ReflectionClass($client1))->getShortName(), $logEntry['context']['client']);
         self::assertSame($exception1, $logEntry['context']['exception']);
 
         $logEntry = $logger->records[1];
         self::assertSame('SNMP request failed', $logEntry['message']);
         self::assertSame('warning', $logEntry['level']);
         self::assertSame(1, $logEntry['context']['clientKey']);
-        self::assertSame($client2, $logEntry['context']['client']);
+        self::assertSame((new ReflectionClass($client1))->getShortName(), $logEntry['context']['client']);
         self::assertSame($exception2, $logEntry['context']['exception']);
     }
 
