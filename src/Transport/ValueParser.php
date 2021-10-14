@@ -33,7 +33,7 @@ final class ValueParser
             case 'Hex-STRING':
                 return str_replace("\n", '', $value);
             case 'STRING':
-                return substr($value, 1, -1);
+                return $value;
             case 'INTEGER':
             case 'Counter32':
             case 'Gauge32':
