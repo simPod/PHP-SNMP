@@ -27,7 +27,8 @@ final class ValueParserTest extends TestCase
         yield 'Hex-STRING' => ['Hex-STRING: A1 B2 C3', 'A1 B2 C3'];
         yield 'IpAddress' => ['IpAddress: 127.0.0.1', '127.0.0.1'];
         yield 'OID' => ['OID: .1.2.3', '.1.2.3'];
-        yield 'STRING' => ['STRING: "abc"', 'abc'];
+        yield 'STRING' => ['STRING: abc', 'abc'];
+        yield 'STRING #2' => ['STRING: "abc"', '"abc"'];
         yield 'empty string' => ['""', ''];
         yield 'INTEGER' => ['INTEGER: 123', 123];
         yield 'Counter32' => ['Counter32: 123', 123];

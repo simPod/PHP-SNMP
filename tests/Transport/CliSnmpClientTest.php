@@ -137,22 +137,22 @@ final class CliSnmpClientTest extends BaseTestCase
 
         self::assertSame(
             [
-                '.1.3.6.1.2.1.1.1.0' => 'Cisco IOS Software, C2960S Software (C2960S-UNIVERSALK9-M), '
+                '.1.3.6.1.2.1.1.1.0' => '"Cisco IOS Software, C2960S Software (C2960S-UNIVERSALK9-M), '
                     . "Version 12.2(58)SE2, RELEASE SOFTWARE (fc1)\n"
                     . "Technical Support: http://www.cisco.com/techsupport\n"
                     . "Copyright (c) 1986-2011 by \\\"Cisco Systems, Inc.\\\"\n"
-                    . 'Compiled Thu 21-Jul-11 02:22 by prod_rel_team',
+                    . 'Compiled Thu 21-Jul-11 02:22 by prod_rel_team"',
                 '.1.3.6.1.2.1.1.3.0' => 293718542,
-                '.1.3.6.1.2.1.2.2.1.2.47' => 'Ethernet47',
-                '.1.3.6.1.2.1.2.2.1.2.48' => 'Ethernet48',
-                '.1.3.6.1.2.1.2.2.1.2.49001' => 'Ethernet49/1',
-                '.1.3.6.1.2.1.2.2.1.2.50001' => 'Ethernet50/1',
-                '.1.3.6.1.2.1.2.2.1.2.1000008' => 'Port-Channel8',
-                '.1.3.6.1.2.1.2.2.1.2.1000009' => 'Port-Channel9',
-                '.1.3.6.1.2.1.2.2.1.2.2002002' => 'Vlan2002',
-                '.1.3.6.1.2.1.2.2.1.2.2002019' => 'Vlan2019',
-                '.1.3.6.1.2.1.2.2.1.2.2002020' => 'Vlan2020',
-                '.1.3.6.1.2.1.2.2.1.2.5000000' => 'Loopback0',
+                '.1.3.6.1.2.1.2.2.1.2.47' => '"Ethernet47"',
+                '.1.3.6.1.2.1.2.2.1.2.48' => '"Ethernet48"',
+                '.1.3.6.1.2.1.2.2.1.2.49001' => '"Ethernet49/1"',
+                '.1.3.6.1.2.1.2.2.1.2.50001' => '"Ethernet50/1"',
+                '.1.3.6.1.2.1.2.2.1.2.1000008' => '"Port-Channel8"',
+                '.1.3.6.1.2.1.2.2.1.2.1000009' => '"Port-Channel9"',
+                '.1.3.6.1.2.1.2.2.1.2.2002002' => '"Vlan2002"',
+                '.1.3.6.1.2.1.2.2.1.2.2002019' => '"Vlan2019"',
+                '.1.3.6.1.2.1.2.2.1.2.2002020' => '"Vlan2020"',
+                '.1.3.6.1.2.1.2.2.1.2.5000000' => '"Loopback0"',
                 '.1.3.6.1.2.1.2.2.1.14.8' => 0,
                 '.1.3.6.1.2.1.2.2.1.14.9' => 226,
                 '.1.3.6.1.2.1.2.2.1.14.10' => 256,
@@ -189,14 +189,14 @@ final class CliSnmpClientTest extends BaseTestCase
     {
         $result = $this->createCliSnmp()->walk('.1.7');
 
-        self::assertSame(['.1.7.8.9' => "Don't know what I'm"], $result);
+        self::assertSame(['.1.7.8.9' => '"Don\'t know what I\'m"'], $result);
     }
 
     public function testWalkLastMibElementAndSnmpVersion1() : void
     {
         $result = $this->createCliSnmp('1')->walk('.1.7');
 
-        self::assertSame(['.1.7.8.9' => "Don't know what I'm"], $result);
+        self::assertSame(['.1.7.8.9' => '"Don\'t know what I\'m"'], $result);
     }
 
     public function testWalkInvalidVersion() : void
