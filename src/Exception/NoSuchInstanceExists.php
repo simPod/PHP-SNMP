@@ -33,7 +33,7 @@ final class NoSuchInstanceExists extends RequestException
         return $self;
     }
 
-    private static function new(?Throwable $previous = null): self
+    private static function new(Throwable|null $previous = null): self
     {
         return new self('No Such Instance currently exists at this OID', 0, $previous);
     }

@@ -24,10 +24,8 @@ final class ExtensionSnmpClient implements SnmpClient
 
     private SNMP $snmp;
 
-    private string $host;
-
     public function __construct(
-        string $host = '127.0.0.1',
+        private string $host = '127.0.0.1',
         string $community = 'public',
         int $timeoutMs = 1000000,
         int $retry = 3,
@@ -36,7 +34,7 @@ final class ExtensionSnmpClient implements SnmpClient
         string $authProtocol = 'MD5',
         string $authPassphrase = 'None',
         string $privProtocol = 'DES',
-        string $privPassphrase = 'None'
+        string $privPassphrase = 'None',
     ) {
         switch ($version) {
             case '1':
@@ -58,7 +56,6 @@ final class ExtensionSnmpClient implements SnmpClient
         $this->snmp = new SNMP($snmpVersion, $host, $community, $timeoutMs, $retry);
         $this->snmp->oid_output_format = SNMP_OID_OUTPUT_NUMERIC;
         $this->snmp->exceptions_enabled = SNMP::ERRNO_ANY;
-        $this->host = $host;
 
         if ($snmpVersion !== SNMP::VERSION_3) {
             return;

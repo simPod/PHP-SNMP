@@ -11,20 +11,12 @@ use SimPod\PhpSnmp\Exception\TimeoutReached;
 
 final class FallbackSnmpClient implements SnmpClient
 {
-    private LoggerInterface $logger;
-
-    /** @var iterable<SnmpClient> */
-    private iterable $snmpClients;
-
     /** @param iterable<SnmpClient> $snmpClients */
-    public function __construct(LoggerInterface $logger, iterable $snmpClients)
+    public function __construct(private LoggerInterface $logger, private iterable $snmpClients)
     {
         if ($snmpClients === []) {
             throw GeneralException::new('No SNMP clients provided');
         }
-
-        $this->logger = $logger;
-        $this->snmpClients = $snmpClients;
     }
 
     /** @inheritDoc */

@@ -12,16 +12,16 @@ use function implode;
 // phpcs:ignore SlevomatCodingStandard.Classes.SuperfluousExceptionNaming.SuperfluousSuffix
 final class GeneralException extends RuntimeException implements SnmpException
 {
-    public ?string $host = null;
+    public string|null $host = null;
 
-    public ?string $oids = null;
+    public string|null $oids = null;
 
     /** @param list<string> $oids */
     public static function new(
         string $error,
-        ?Throwable $previous = null,
-        ?string $host = null,
-        ?array $oids = null
+        Throwable|null $previous = null,
+        string|null $host = null,
+        array|null $oids = null,
     ): self {
         $self = new self($error, 0, $previous);
         $self->host = $host;
@@ -33,7 +33,7 @@ final class GeneralException extends RuntimeException implements SnmpException
     }
 
     /** @param list<string> $oids */
-    public static function fromThrowable(Throwable $throwable, ?string $host = null, ?array $oids = null): self
+    public static function fromThrowable(Throwable $throwable, string|null $host = null, array|null $oids = null): self
     {
         return self::new($throwable->getMessage(), $throwable, $host, $oids);
     }

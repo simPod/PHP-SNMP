@@ -10,12 +10,8 @@ use SimPod\PhpSnmp\Transport\ValueParser;
 
 final class ValueParserTest extends TestCase
 {
-    /**
-     * @param mixed $expected
-     *
-     * @dataProvider providerParse
-     */
-    public function testParse(string $raw, $expected): void
+    /** @dataProvider providerParse */
+    public function testParse(string $raw, mixed $expected): void
     {
         self::assertSame($expected, ValueParser::parse($raw));
     }

@@ -33,7 +33,7 @@ final class NoSuchObjectExists extends RequestException
         return $self;
     }
 
-    private static function new(?Throwable $previous = null): self
+    private static function new(Throwable|null $previous = null): self
     {
         return new self('No Such Object available on this agent at this OID', 0, $previous);
     }
