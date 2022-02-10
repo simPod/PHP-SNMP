@@ -25,7 +25,7 @@ final class FallbackSnmpClientTest extends TestCase
             ->willReturn($expected = ['.1.2.3' => 123]);
 
         $fallbackClient = new FallbackSnmpClient(new NullLogger(), [$client1]);
-        $result         = $fallbackClient->get($oids);
+        $result = $fallbackClient->get($oids);
 
         self::assertSame($expected, $result);
     }
@@ -39,7 +39,7 @@ final class FallbackSnmpClientTest extends TestCase
             ->willReturn($expected = ['.1.2.3' => 123]);
 
         $fallbackClient = new FallbackSnmpClient(new NullLogger(), [$client1]);
-        $result         = $fallbackClient->getNext($oids);
+        $result = $fallbackClient->getNext($oids);
 
         self::assertSame($expected, $result);
     }
@@ -53,7 +53,7 @@ final class FallbackSnmpClientTest extends TestCase
             ->willReturn($expected = ['.1.2.3' => 123]);
 
         $fallbackClient = new FallbackSnmpClient(new NullLogger(), [$client1]);
-        $result         = $fallbackClient->walk($oid);
+        $result = $fallbackClient->walk($oid);
 
         self::assertSame($expected, $result);
     }
@@ -65,7 +65,7 @@ final class FallbackSnmpClientTest extends TestCase
             'get' => Request::get(['.4.5.6']),
         ];
 
-        $client1  = $this->createMock(SnmpClient::class);
+        $client1 = $this->createMock(SnmpClient::class);
         $expected = [
             'walk' => ['.1.2.3' => 123],
             'get' => ['.4.5.6' => 456],
@@ -73,7 +73,7 @@ final class FallbackSnmpClientTest extends TestCase
         $client1->expects(self::once())->method('batch')->with($requests)->willReturn($expected);
 
         $fallbackClient = new FallbackSnmpClient(new NullLogger(), [$client1]);
-        $result         = $fallbackClient->batch($requests);
+        $result = $fallbackClient->batch($requests);
 
         self::assertSame($expected, $result);
     }
@@ -101,7 +101,7 @@ final class FallbackSnmpClientTest extends TestCase
         $logger = new TestLogger();
 
         $fallbackClient = new FallbackSnmpClient($logger, [$client1, $client2, $client3]);
-        $result         = $fallbackClient->get($oids);
+        $result = $fallbackClient->get($oids);
 
         self::assertSame($expected, $result);
         self::assertCount(2, $logger->records);

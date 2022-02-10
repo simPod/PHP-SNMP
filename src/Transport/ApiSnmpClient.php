@@ -61,15 +61,15 @@ final class ApiSnmpClient implements SnmpClient
         int $retries = 3,
         string $version = '2c'
     ) {
-        $this->client         = $client;
+        $this->client = $client;
         $this->requestFactory = $requestFactory;
-        $this->streamFactory  = $streamFactory;
-        $this->apiHostUrl     = $apiHostUrl;
-        $this->host           = $host;
-        $this->community      = $community;
-        $this->timeout        = $timeout;
-        $this->retries        = $retries;
-        $this->version        = $version;
+        $this->streamFactory = $streamFactory;
+        $this->apiHostUrl = $apiHostUrl;
+        $this->host = $host;
+        $this->community = $community;
+        $this->timeout = $timeout;
+        $this->retries = $retries;
+        $this->version = $version;
     }
 
     /** @inheritDoc */
@@ -121,12 +121,12 @@ final class ApiSnmpClient implements SnmpClient
         ];
 
         $requestKeys = array_keys($requests);
-        $result      = [];
+        $result = [];
 
         foreach ($this->doExecuteRequest($requestParameters) as $requestNo => $rawRequestResult) {
             $requestResult = [];
             for ($i = 0, $iMax = count($rawRequestResult); $i < $iMax; $i += 2) {
-                $key   = $rawRequestResult[$i];
+                $key = $rawRequestResult[$i];
                 $value = $rawRequestResult[$i + 1];
 
                 $requestResult[$key] = $value;

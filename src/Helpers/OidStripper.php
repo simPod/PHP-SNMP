@@ -89,7 +89,7 @@ final class OidStripper
         foreach ($requests as $requestKey => $request) {
             switch ($request->type) {
                 case Request::GET:
-                    $i         = 0;
+                    $i = 0;
                     $getResult = [];
 
                     foreach ($responses[$requestKey] as $childOid => $value) {
@@ -101,7 +101,7 @@ final class OidStripper
 
                     break;
                 case Request::GET_NEXT:
-                    $i             = 0;
+                    $i = 0;
                     $getNextResult = [];
 
                     foreach ($responses[$requestKey] as $childOid => $value) {
