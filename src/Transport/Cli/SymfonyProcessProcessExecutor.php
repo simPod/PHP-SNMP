@@ -21,7 +21,7 @@ final class SymfonyProcessProcessExecutor implements ProcessExecutor
     }
 
     /** @inheritDoc */
-    public function execute(array $args) : string
+    public function execute(array $args): string
     {
         try {
             $process = new Process($args);

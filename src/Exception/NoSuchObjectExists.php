@@ -10,12 +10,7 @@ use function Safe\preg_match;
 
 final class NoSuchObjectExists extends RequestException
 {
-    private static function new(?Throwable $previous = null) : self
-    {
-        return new self('No Such Object available on this agent at this OID', 0, $previous);
-    }
-
-    public static function fromOid(string $host, string $oid) : self
+    public static function fromOid(string $host, string $oid): self
     {
         $self       = self::new();
         $self->host = $host;
@@ -24,7 +19,7 @@ final class NoSuchObjectExists extends RequestException
         return $self;
     }
 
-    public static function fromThrowable(string $host, Throwable $throwable) : self
+    public static function fromThrowable(string $host, Throwable $throwable): self
     {
         $self       = self::new($throwable);
         $self->host = $host;
@@ -36,5 +31,10 @@ final class NoSuchObjectExists extends RequestException
         $self->oids = $matches[1];
 
         return $self;
+    }
+
+    private static function new(?Throwable $previous = null): self
+    {
+        return new self('No Such Object available on this agent at this OID', 0, $previous);
     }
 }

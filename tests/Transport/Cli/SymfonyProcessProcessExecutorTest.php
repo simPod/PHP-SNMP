@@ -15,7 +15,7 @@ use function Safe\sprintf;
 
 final class SymfonyProcessProcessExecutorTest extends TestCase
 {
-    public function testError() : void
+    public function testError(): void
     {
         $command = bin2hex(random_bytes(100));
 
@@ -25,7 +25,7 @@ final class SymfonyProcessProcessExecutorTest extends TestCase
         $executor->execute([$command]);
     }
 
-    public function testTimeout() : void
+    public function testTimeout(): void
     {
         $this->expectExceptionObject(
             GeneralException::new(sprintf('The process "%s" exceeded the timeout of 1 seconds', "'sleep' '5'"))

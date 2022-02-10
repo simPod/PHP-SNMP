@@ -73,25 +73,25 @@ final class ApiSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function get(array $oids) : array
+    public function get(array $oids): array
     {
         return $this->batch([Request::get($oids)])[0];
     }
 
     /** @inheritDoc */
-    public function getNext(array $oids) : array
+    public function getNext(array $oids): array
     {
         return $this->batch([Request::getNext($oids)])[0];
     }
 
     /** @inheritDoc */
-    public function walk(string $oid, int $maxRepetitions = 20) : array
+    public function walk(string $oid, int $maxRepetitions = 20): array
     {
         return $this->batch([Request::walk($oid, $maxRepetitions)])[0];
     }
 
     /** @inheritDoc */
-    public function batch(array $requests) : array
+    public function batch(array $requests): array
     {
         if ($requests === []) {
             throw NoRequestsProvided::new();
@@ -104,7 +104,7 @@ final class ApiSnmpClient implements SnmpClient
             'timeout' => $this->timeout,
             'retries' => $this->retries,
             'requests' => array_map(
-                static function (Request $request) : array {
+                static function (Request $request): array {
                     $requestArray = [
                         'request_type' => $request->type,
                         'oids' => $request->oids,
@@ -143,7 +143,7 @@ final class ApiSnmpClient implements SnmpClient
      *
      * @return list<list<string>>
      */
-    private function doExecuteRequest(array $requestParameters) : array
+    private function doExecuteRequest(array $requestParameters): array
     {
         $request = $this->requestFactory->createRequest('POST', $this->apiHostUrl . self::API_PATH)
             ->withBody($this->streamFactory->createStream(json_encode($requestParameters)));
@@ -210,7 +210,7 @@ final class ApiSnmpClient implements SnmpClient
      *
      * @return list<string>
      */
-    private function getRequestsOids(array $requestParameters) : array
+    private function getRequestsOids(array $requestParameters): array
     {
         $oids = [];
         foreach ($requestParameters['requests'] as $request) {

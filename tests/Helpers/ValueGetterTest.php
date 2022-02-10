@@ -12,21 +12,21 @@ use SimPod\PhpSnmp\Transport\SnmpClient;
 
 final class ValueGetterTest extends BaseTestCase
 {
-    public function testFirst() : void
+    public function testFirst(): void
     {
         $response = ['.1.2.3.1' => $expected = 'a'];
 
         self::assertSame($expected, ValueGetter::first($response));
     }
 
-    public function testFirstWithUnexpectedData() : void
+    public function testFirstWithUnexpectedData(): void
     {
         $this->expectExceptionObject(GeneralException::new('Expected non-empty array'));
 
         ValueGetter::first([]);
     }
 
-    public function testFirstFromSameTree() : void
+    public function testFirstFromSameTree(): void
     {
         $snmpClient = $this->createMock(SnmpClient::class);
         $snmpClient->expects(self::once())
@@ -36,7 +36,7 @@ final class ValueGetterTest extends BaseTestCase
         self::assertSame($expected, ValueGetter::firstFromSameTree($snmpClient, '.1.2.3'));
     }
 
-    public function testFirstFromSameTreeDoesntExist() : void
+    public function testFirstFromSameTreeDoesntExist(): void
     {
         $snmpClient = $this->createMock(SnmpClient::class);
         $snmpClient->expects(self::once())
@@ -45,13 +45,13 @@ final class ValueGetterTest extends BaseTestCase
 
         self::assertSnmpException(
             NoSuchInstanceExists::fromOid('', '.1.2.3'),
-            static function () use ($snmpClient) : void {
+            static function () use ($snmpClient): void {
                 ValueGetter::firstFromSameTree($snmpClient, '.1.2.3');
             }
         );
     }
 
-    public function testFirstFromSameTrees() : void
+    public function testFirstFromSameTrees(): void
     {
         $snmpClient = $this->createMock(SnmpClient::class);
         $snmpClient->expects(self::once())
@@ -68,7 +68,7 @@ final class ValueGetterTest extends BaseTestCase
         self::assertSame($expected, ValueGetter::firstFromSameTrees($snmpClient, ['.1.2.3', '.1.2.6']));
     }
 
-    public function testFirstFromSameTreesDoesntExist() : void
+    public function testFirstFromSameTreesDoesntExist(): void
     {
         $snmpClient = $this->createMock(SnmpClient::class);
         $snmpClient->expects(self::once())
@@ -82,7 +82,7 @@ final class ValueGetterTest extends BaseTestCase
 
         self::assertSnmpException(
             NoSuchInstanceExists::fromOid('', '.1.2.6'),
-            static function () use ($snmpClient) : void {
+            static function () use ($snmpClient): void {
                 ValueGetter::firstFromSameTrees($snmpClient, ['.1.2.3', '.1.2.6']);
             }
         );

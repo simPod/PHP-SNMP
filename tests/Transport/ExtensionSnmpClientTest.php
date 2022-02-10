@@ -25,7 +25,12 @@ final class ExtensionSnmpClientTest extends BaseTestCase
     /** @var resource|null */
     private static $process;
 
-    public static function setUpBeforeClass() : void
+    public function __destruct()
+    {
+        self::tearDownAfterClass();
+    }
+
+    public static function setUpBeforeClass(): void
     {
         $command = 'snmpsimd.py --v2c-arch --data-dir %s --agent-udpv4-endpoint %s';
         $command = sprintf($command, __DIR__ . '/data', self::SNMP_HOST);
@@ -38,7 +43,7 @@ final class ExtensionSnmpClientTest extends BaseTestCase
         self::$process = $process;
     }
 
-    public static function tearDownAfterClass() : void
+    public static function tearDownAfterClass(): void
     {
         if (self::$process === null) {
             return;
@@ -48,12 +53,7 @@ final class ExtensionSnmpClientTest extends BaseTestCase
         self::$process = null;
     }
 
-    public function __destruct()
-    {
-        self::tearDownAfterClass();
-    }
-
-    public function testGet() : void
+    public function testGet(): void
     {
         $result = $this->createExtensionSnmp()->get(['.1.3.6.1.2.1.2.2.1.14.9', '.1.3.6.1.2.1.4.20.1.1.10.100.192.2']);
 
@@ -66,7 +66,7 @@ final class ExtensionSnmpClientTest extends BaseTestCase
         );
     }
 
-    public function testGetNext() : void
+    public function testGetNext(): void
     {
         $result = $this->createExtensionSnmp()->getNext(
             ['.1.3.6.1.2.1.2.2.1.14.9', '.1.3.6.1.2.1.4.20.1.1.10.100.192.2']
@@ -81,7 +81,7 @@ final class ExtensionSnmpClientTest extends BaseTestCase
         );
     }
 
-    public function testWalk() : void
+    public function testWalk(): void
     {
         $result = $this->createExtensionSnmp()->walk('.1.3.6.1.2.1.31.1.1.1.15');
 
@@ -95,7 +95,7 @@ final class ExtensionSnmpClientTest extends BaseTestCase
         );
     }
 
-    public function testWalkWholeTree() : void
+    public function testWalkWholeTree(): void
     {
         $result = $this->createExtensionSnmp()->walk('.1.3');
 
@@ -149,200 +149,200 @@ final class ExtensionSnmpClientTest extends BaseTestCase
         );
     }
 
-    public function testWalkLastMibElement() : void
+    public function testWalkLastMibElement(): void
     {
         $result = $this->createExtensionSnmp()->walk('.1.7');
 
         self::assertSame(['.1.7.8.9' => '"Don\'t know what I\'m"'], $result);
     }
 
-    public function testWalkLastMibElementAndSnmpVersion1() : void
+    public function testWalkLastMibElementAndSnmpVersion1(): void
     {
         $result = $this->createExtensionSnmp('1')->walk('.1.7');
 
         self::assertSame(['.1.7.8.9' => '"Don\'t know what I\'m"'], $result);
     }
 
-    public function testWalkWithInvalidVersion() : void
+    public function testWalkWithInvalidVersion(): void
     {
         self::assertSnmpException(
             InvalidVersionProvided::new('whatever'),
-            static function () : void {
+            static function (): void {
                 (new ExtensionSnmpClient('', '', 0, 0, 'whatever'))->walk('.1.15');
             }
         );
     }
 
-    public function testWalkWithEndOfMibError() : void
+    public function testWalkWithEndOfMibError(): void
     {
         self::assertSnmpException(
             EndOfMibReached::fromOid(self::SNMP_HOST, '.1.15'),
-            function () : void {
+            function (): void {
                 $this->createExtensionSnmp()->walk('.1.15');
             }
         );
     }
 
-    public function testWalkWithNoSuchInstanceError() : void
+    public function testWalkWithNoSuchInstanceError(): void
     {
         self::assertSnmpException(
             NoSuchInstanceExists::fromOid(self::SNMP_HOST, '.1.3.5'),
-            function () : void {
+            function (): void {
                 $this->createExtensionSnmp()->walk('.1.3.5');
             }
         );
     }
 
-    public function testWalkWithSnmpVersion1AndNoSuchInstanceError() : void
+    public function testWalkWithSnmpVersion1AndNoSuchInstanceError(): void
     {
         self::assertSnmpException(
             NoSuchInstanceExists::fromOid(self::SNMP_HOST, '.1.3.5'),
-            function () : void {
+            function (): void {
                 $this->createExtensionSnmp('1')->walk('.1.3.5');
             }
         );
     }
 
-    public function testWalkWithSnmpVersion1AndEndOfMibError() : void
+    public function testWalkWithSnmpVersion1AndEndOfMibError(): void
     {
         // SNMP v1 reports NoSuchInstance instead of EndOfMib
         self::assertSnmpException(
             NoSuchInstanceExists::fromOid(self::SNMP_HOST, '.1.15'),
-            function () : void {
+            function (): void {
                 $this->createExtensionSnmp('1')->walk('.1.15');
             }
         );
     }
 
-    public function testGetWithNoSuchInstanceError() : void
+    public function testGetWithNoSuchInstanceError(): void
     {
         self::assertSnmpException(
             NoSuchInstanceExists::fromOid(self::SNMP_HOST, '.1.3.5'),
-            function () : void {
+            function (): void {
                 $this->createExtensionSnmp()->get(['.1.3.5']);
             }
         );
     }
 
-    public function testGetWithSnmpVersion1AndNoSuchInstanceError() : void
+    public function testGetWithSnmpVersion1AndNoSuchInstanceError(): void
     {
         self::assertSnmpException(
             NoSuchInstanceExists::fromOid(self::SNMP_HOST, '.1.3.5'),
-            function () : void {
+            function (): void {
                 $this->createExtensionSnmp('1')->get(['.1.3.5']);
             }
         );
     }
 
-    public function testGetNextWithEndOfMibError() : void
+    public function testGetNextWithEndOfMibError(): void
     {
         self::assertSnmpException(
             EndOfMibReached::fromOid(self::SNMP_HOST, '.1.15'),
-            function () : void {
+            function (): void {
                 $this->createExtensionSnmp()->getNext(['.1.15']);
             }
         );
     }
 
-    public function testGetNextWithSnmpVersion1AndEndOfMibError() : void
+    public function testGetNextWithSnmpVersion1AndEndOfMibError(): void
     {
         // SNMP v1 reports NoSuchInstance instead of EndOfMib
         self::assertSnmpException(
             NoSuchInstanceExists::fromOid(self::SNMP_HOST, '.1.15'),
-            function () : void {
+            function (): void {
                 $this->createExtensionSnmp('1')->getNext(['.1.15']);
             }
         );
     }
 
-    public function testWalkWithUnknownTypeError() : void
+    public function testWalkWithUnknownTypeError(): void
     {
         self::assertSnmpException(
             CannotParseUnknownValueType::new('OPAQUE'),
-            function () : void {
+            function (): void {
                 $this->createExtensionSnmp()->walk('.1.6.6.6.666');
             }
         );
     }
 
-    public function testGetTimeoutError() : void
+    public function testGetTimeoutError(): void
     {
         self::assertSnmpException(
             TimeoutReached::fromOid('127.0.0.1:1', '.1.3.6.1.2.1.1.1.0'),
-            static function () : void {
+            static function (): void {
                 $snmp = new ExtensionSnmpClient('127.0.0.1:1', 'public', 1, 0, '2c');
                 $snmp->get(['.1.3.6.1.2.1.1.1.0']);
             }
         );
     }
 
-    public function testGetWithSnmpVersion1TimeoutError() : void
+    public function testGetWithSnmpVersion1TimeoutError(): void
     {
         self::assertSnmpException(
             TimeoutReached::fromOid('127.0.0.1:1', '.1.3.6.1.2.1.1.1.0'),
-            static function () : void {
+            static function (): void {
                 $snmp = new ExtensionSnmpClient('127.0.0.1:1', 'public', 1, 0, '1');
                 $snmp->get(['.1.3.6.1.2.1.1.1.0']);
             }
         );
     }
 
-    public function testGetNextTimeoutError() : void
+    public function testGetNextTimeoutError(): void
     {
         self::assertSnmpException(
             TimeoutReached::fromOid('127.0.0.1:1', '.1.3.6.1.2.1.1.1.0'),
-            static function () : void {
+            static function (): void {
                 $snmp = new ExtensionSnmpClient('127.0.0.1:1', 'public', 1, 0, '2c');
                 $snmp->getNext(['.1.3.6.1.2.1.1.1.0']);
             }
         );
     }
 
-    public function testGetNextWithSnmpVersion1TimeoutError() : void
+    public function testGetNextWithSnmpVersion1TimeoutError(): void
     {
         self::assertSnmpException(
             TimeoutReached::fromOid('127.0.0.1:1', '.1.3.6.1.2.1.1.1.0'),
-            static function () : void {
+            static function (): void {
                 $snmp = new ExtensionSnmpClient('127.0.0.1:1', 'public', 1, 0, '1');
                 $snmp->getNext(['.1.3.6.1.2.1.1.1.0']);
             }
         );
     }
 
-    public function testWalkTimeoutError() : void
+    public function testWalkTimeoutError(): void
     {
         self::assertSnmpException(
             TimeoutReached::fromOid('127.0.0.1:1', '.1.3.6.1.2.1.1'),
-            static function () : void {
+            static function (): void {
                 $snmp = new ExtensionSnmpClient('127.0.0.1:1', 'public', 1, 0, '2c');
                 $snmp->walk('.1.3.6.1.2.1.1');
             }
         );
     }
 
-    public function testWalkWithSnmpVersion1TimeoutError() : void
+    public function testWalkWithSnmpVersion1TimeoutError(): void
     {
         self::assertSnmpException(
             TimeoutReached::fromOid('127.0.0.1:1', '.1.3.6.1.2.1.1'),
-            static function () : void {
+            static function (): void {
                 $snmp = new ExtensionSnmpClient('127.0.0.1:1', 'public', 1, 0, '1');
                 $snmp->walk('.1.3.6.1.2.1.1');
             }
         );
     }
 
-    public function testUnexpectedError() : void
+    public function testUnexpectedError(): void
     {
         self::assertSnmpException(
             GeneralException::new('Invalid object identifier: wow', null, self::SNMP_HOST, ['wow']),
-            static function () : void {
+            static function (): void {
                 $snmp = new ExtensionSnmpClient(self::SNMP_HOST, 'public', 1, 0, '1');
                 $snmp->walk('wow');
             }
         );
     }
 
-    private function createExtensionSnmp(string $version = '2c') : ExtensionSnmpClient
+    private function createExtensionSnmp(string $version = '2c'): ExtensionSnmpClient
     {
         return new ExtensionSnmpClient(self::SNMP_HOST, 'public', 1000000, 3, $version);
     }

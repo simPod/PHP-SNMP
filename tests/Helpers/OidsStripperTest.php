@@ -12,7 +12,7 @@ use SimPod\PhpSnmp\Transport\SnmpClient;
 
 final class OidsStripperTest extends TestCase
 {
-    public function testStripParent() : void
+    public function testStripParent(): void
     {
         $leafOidData = [
             '.1.2.3.1' => 'a',
@@ -29,21 +29,21 @@ final class OidsStripperTest extends TestCase
         self::assertSame($expected, OidStripper::stripParent($leafOidData));
     }
 
-    public function testStripParentEmptyData() : void
+    public function testStripParentEmptyData(): void
     {
         $this->expectExceptionObject(GeneralException::new('Expected non-empty array'));
 
         OidStripper::stripParent([]);
     }
 
-    public function testStripParentInvalidKeys() : void
+    public function testStripParentInvalidKeys(): void
     {
         $this->expectExceptionObject(GeneralException::new('Expected keys to be full OIDs'));
 
         OidStripper::stripParent(['something strange' => 123]);
     }
 
-    public function testBatchStripParent() : void
+    public function testBatchStripParent(): void
     {
         $leafOidDataResponses = [
             [
@@ -66,21 +66,21 @@ final class OidsStripperTest extends TestCase
         self::assertSame($expected, OidStripper::batchStripParent($leafOidDataResponses));
     }
 
-    public function testBatchStripParentEmptyData() : void
+    public function testBatchStripParentEmptyData(): void
     {
         $this->expectExceptionObject(GeneralException::new('Expected non-empty array'));
 
         OidStripper::batchStripParent([[]]);
     }
 
-    public function testBatchStripParentInvalidKeys() : void
+    public function testBatchStripParentInvalidKeys(): void
     {
         $this->expectExceptionObject(GeneralException::new('Expected keys to be full OIDs'));
 
         OidStripper::batchStripParent([['something strange' => 123]]);
     }
 
-    public function testWalk() : void
+    public function testWalk(): void
     {
         $response = [
             [
@@ -106,7 +106,7 @@ final class OidsStripperTest extends TestCase
         self::assertSame($expected, OidStripper::walk($snmpClient, $oid));
     }
 
-    public function testBatchStripParentPrefix() : void
+    public function testBatchStripParentPrefix(): void
     {
         $requests = [
             'walk' => Request::walk('.1.2'),

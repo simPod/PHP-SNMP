@@ -68,7 +68,7 @@ final class ExtensionSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function get(array $oids) : array
+    public function get(array $oids): array
     {
         try {
             $output = $this->snmp->get($oids);
@@ -80,7 +80,7 @@ final class ExtensionSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function getNext(array $oids) : array
+    public function getNext(array $oids): array
     {
         try {
             $output = $this->snmp->getnext($oids);
@@ -92,7 +92,7 @@ final class ExtensionSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function walk(string $oid, int $maxRepetitions = 20) : array
+    public function walk(string $oid, int $maxRepetitions = 20): array
     {
         try {
             $output = $this->snmp->walk($oid, false, $maxRepetitions);
@@ -108,7 +108,7 @@ final class ExtensionSnmpClient implements SnmpClient
      *
      * @return array<string, mixed>
      */
-    private function processOutput(array $output) : array
+    private function processOutput(array $output): array
     {
         $result = [];
         foreach ($output as $oid => $value) {
@@ -119,7 +119,7 @@ final class ExtensionSnmpClient implements SnmpClient
     }
 
     /** @param list<string> $oids */
-    private function processException(Throwable $throwable, array $oids) : Throwable
+    private function processException(Throwable $throwable, array $oids): Throwable
     {
         if (strpos($throwable->getMessage(), 'No Such Object') !== false) {
             return NoSuchObjectExists::fromThrowable($this->host, $throwable);

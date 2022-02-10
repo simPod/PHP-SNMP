@@ -31,16 +31,11 @@ final class ApiSnmpClientTest extends BaseTestCase
     /** @var Client&MockObject */
     private $client;
 
-    private static function jsonIsIdentical(string $expected, string $actual) : bool
-    {
-        return json_encode(json_decode($expected, true, 5, JSON_BIGINT_AS_STRING)) === $actual;
-    }
-
-    public function testGet() : void
+    public function testGet(): void
     {
         $apiSnmp = $this->createApiSnmp();
 
-        $response = <<<JSON
+        $response = <<<'JSON'
 {
     "result": [
         [
@@ -53,8 +48,8 @@ JSON;
         $this->client->method('sendRequest')
             ->with(
                 self::callback(
-                    static function (RequestInterface $request) : bool {
-                        $json = <<<JSON
+                    static function (RequestInterface $request): bool {
+                        $json = <<<'JSON'
 {
     "host": "127.0.0.1",
     "community": "public",
@@ -88,11 +83,11 @@ JSON;
         );
     }
 
-    public function testGetNext() : void
+    public function testGetNext(): void
     {
         $apiSnmp = $this->createApiSnmp();
 
-        $response = <<<JSON
+        $response = <<<'JSON'
 {
     "result": [
         [
@@ -105,8 +100,8 @@ JSON;
         $this->client->method('sendRequest')
             ->with(
                 self::callback(
-                    static function (RequestInterface $request) : bool {
-                        $json = <<<JSON
+                    static function (RequestInterface $request): bool {
+                        $json = <<<'JSON'
 {
     "host": "127.0.0.1",
     "community": "public",
@@ -143,11 +138,11 @@ JSON;
         );
     }
 
-    public function testWalk() : void
+    public function testWalk(): void
     {
         $apiSnmp = $this->createApiSnmp();
 
-        $response = <<<JSON
+        $response = <<<'JSON'
 {
     "result": [
         [
@@ -161,8 +156,8 @@ JSON;
         $this->client->method('sendRequest')
             ->with(
                 self::callback(
-                    static function (RequestInterface $request) : bool {
-                        $json = <<<JSON
+                    static function (RequestInterface $request): bool {
+                        $json = <<<'JSON'
 {
     "host": "127.0.0.1",
     "community": "public",
@@ -198,11 +193,11 @@ JSON;
         );
     }
 
-    public function testBatch() : void
+    public function testBatch(): void
     {
         $apiSnmp = $this->createApiSnmp();
 
-        $response = <<<JSON
+        $response = <<<'JSON'
 {
     "result": [
         [
@@ -224,8 +219,8 @@ JSON;
         $this->client->method('sendRequest')
             ->with(
                 self::callback(
-                    static function (RequestInterface $request) : bool {
-                        $json = <<<JSON
+                    static function (RequestInterface $request): bool {
+                        $json = <<<'JSON'
 {
     "host": "127.0.0.1",
     "community": "public",
@@ -288,14 +283,14 @@ JSON;
         );
     }
 
-    public function testBatchNoRequests() : void
+    public function testBatchNoRequests(): void
     {
         $this->expectExceptionObject(NoRequestsProvided::new());
 
         $this->createApiSnmp()->batch([]);
     }
 
-    public function testThatParametersAreCorrectlyPropagatedToTheJsonRequest() : void
+    public function testThatParametersAreCorrectlyPropagatedToTheJsonRequest(): void
     {
         $this->client = $this->createMock(Client::class);
         $psr17Factory = new Psr17Factory();
@@ -312,7 +307,7 @@ JSON;
             '1'
         );
 
-        $response = <<<JSON
+        $response = <<<'JSON'
 {
     "result": [
         [
@@ -324,8 +319,8 @@ JSON;
         $this->client->method('sendRequest')
             ->with(
                 self::callback(
-                    static function (RequestInterface $request) : bool {
-                        $json = <<<JSON
+                    static function (RequestInterface $request): bool {
+                        $json = <<<'JSON'
 {
     "host": "lorem",
     "community": "ipsum",
@@ -353,7 +348,7 @@ JSON;
         self::assertSame(['.1.3.6.1.2.1.2.2.1.2.1000009' => 'Port-Channel9'], $result);
     }
 
-    public function testErrorJsonDecodingResponse() : void
+    public function testErrorJsonDecodingResponse(): void
     {
         $this->client = $this->createMock(Client::class);
         $psr17Factory = new Psr17Factory();
@@ -380,13 +375,13 @@ JSON;
                 'lorem',
                 ['.1.3.6']
             ),
-            static function () use ($apiSnmp) : void {
+            static function () use ($apiSnmp): void {
                 $apiSnmp->get(['.1.3.6']);
             }
         );
     }
 
-    public function testErrorUnexpectedStatusCodeResponse() : void
+    public function testErrorUnexpectedStatusCodeResponse(): void
     {
         $this->client = $this->createMock(Client::class);
         $psr17Factory = new Psr17Factory();
@@ -409,13 +404,13 @@ JSON;
         $error = sprintf('Unexpected HTTP status code: 500, response: "%s"', $response);
         self::assertSnmpException(
             GeneralException::new($error, null, 'lorem', ['.1.3.6']),
-            static function () use ($apiSnmp) : void {
+            static function () use ($apiSnmp): void {
                 $apiSnmp->get(['.1.3.6']);
             }
         );
     }
 
-    public function testWalkWithEndOfMibError() : void
+    public function testWalkWithEndOfMibError(): void
     {
         $apiSnmp = $this->createApiSnmp();
         $this->client->method('sendRequest')
@@ -423,13 +418,13 @@ JSON;
 
         self::assertSnmpException(
             EndOfMibReached::fromOid('127.0.0.1', '.1.15'),
-            static function () use ($apiSnmp) : void {
+            static function () use ($apiSnmp): void {
                 $apiSnmp->walk('.1.15');
             }
         );
     }
 
-    public function testWalkWithNoSuchInstanceError() : void
+    public function testWalkWithNoSuchInstanceError(): void
     {
         $apiSnmp = $this->createApiSnmp();
         $this->client->method('sendRequest')
@@ -437,13 +432,13 @@ JSON;
 
         self::assertSnmpException(
             NoSuchInstanceExists::fromOid('127.0.0.1', '.1.3.6.1.2.1.1.1'),
-            static function () use ($apiSnmp) : void {
+            static function () use ($apiSnmp): void {
                 $apiSnmp->walk('.1.3.6.1.2.1.1.1');
             }
         );
     }
 
-    public function testWalkWithNoSuchObjectError() : void
+    public function testWalkWithNoSuchObjectError(): void
     {
         $apiSnmp = $this->createApiSnmp();
         $this->client->method('sendRequest')
@@ -451,13 +446,13 @@ JSON;
 
         self::assertSnmpException(
             NoSuchObjectExists::fromOid('127.0.0.1', '.1.4'),
-            static function () use ($apiSnmp) : void {
+            static function () use ($apiSnmp): void {
                 $apiSnmp->walk('.1.4');
             }
         );
     }
 
-    public function testWalkWithTimeoutError() : void
+    public function testWalkWithTimeoutError(): void
     {
         $apiSnmp = $this->createApiSnmp();
         $this->client->method('sendRequest')
@@ -465,13 +460,13 @@ JSON;
 
         self::assertSnmpException(
             TimeoutReached::fromOid('127.0.0.1', '.1.4'),
-            static function () use ($apiSnmp) : void {
+            static function () use ($apiSnmp): void {
                 $apiSnmp->walk('.1.4');
             }
         );
     }
 
-    public function testWalkWithRequestError() : void
+    public function testWalkWithRequestError(): void
     {
         $apiSnmp = $this->createApiSnmp();
         $this->client->method('sendRequest')
@@ -479,13 +474,13 @@ JSON;
 
         self::assertSnmpException(
             GeneralException::new('some error', null, '127.0.0.1', ['.1.4']),
-            static function () use ($apiSnmp) : void {
+            static function () use ($apiSnmp): void {
                 $apiSnmp->walk('.1.4');
             }
         );
     }
 
-    public function testWalkWithUnexpectedError() : void
+    public function testWalkWithUnexpectedError(): void
     {
         $apiSnmp = $this->createApiSnmp();
         $this->client->method('sendRequest')
@@ -493,13 +488,18 @@ JSON;
 
         self::assertSnmpException(
             GeneralException::new('something unexpected happened', null, '127.0.0.1', ['.1.4']),
-            static function () use ($apiSnmp) : void {
+            static function () use ($apiSnmp): void {
                 $apiSnmp->walk('.1.4');
             }
         );
     }
 
-    private function createApiSnmp() : ApiSnmpClient
+    private static function jsonIsIdentical(string $expected, string $actual): bool
+    {
+        return json_encode(json_decode($expected, true, 5, JSON_BIGINT_AS_STRING)) === $actual;
+    }
+
+    private function createApiSnmp(): ApiSnmpClient
     {
         $this->client = $this->createMock(Client::class);
         $psr17Factory = new Psr17Factory();
