@@ -8,6 +8,11 @@
         "snmp"
     ],
     "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true,
+            "roave/you-are-using-it-wrong": true
+        },
         "sort-packages": true
     },
     "require": {
