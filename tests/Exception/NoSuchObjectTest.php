@@ -10,7 +10,7 @@ use SimPod\PhpSnmp\Exception\NoSuchObjectExists;
 
 final class NoSuchObjectTest extends TestCase
 {
-    public function testFromThrowable() : void
+    public function testFromThrowable(): void
     {
         $exception = new Exception("Error in packet at '.1.4': No Such Object available on this agent at this OID");
 
@@ -19,7 +19,7 @@ final class NoSuchObjectTest extends TestCase
         self::assertSame('.1.4', $exception->oids);
     }
 
-    public function testFromThrowableWithUnexpectedMessage() : void
+    public function testFromThrowableWithUnexpectedMessage(): void
     {
         $exception = new Exception('unexpected message');
 

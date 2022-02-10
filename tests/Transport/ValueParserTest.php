@@ -15,13 +15,13 @@ final class ValueParserTest extends TestCase
      *
      * @dataProvider providerParse
      */
-    public function testParse(string $raw, $expected) : void
+    public function testParse(string $raw, $expected): void
     {
         self::assertSame($expected, ValueParser::parse($raw));
     }
 
     /** @return iterable<list<mixed>> */
-    public function providerParse() : iterable
+    public function providerParse(): iterable
     {
         yield 'Counter64' => ['Counter64: 123456', '123456'];
         yield 'Hex-STRING' => ['Hex-STRING: A1 B2 C3', 'A1 B2 C3'];
@@ -36,7 +36,7 @@ final class ValueParserTest extends TestCase
         yield 'Timeticks' => ['Timeticks: (3171608622) 367 days, 2:01:26.22', 3171608622];
     }
 
-    public function testParseWithUnknownValueType() : void
+    public function testParseWithUnknownValueType(): void
     {
         $this->expectExceptionObject(CannotParseUnknownValueType::new('Wow'));
 

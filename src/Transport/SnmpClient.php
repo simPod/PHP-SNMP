@@ -11,17 +11,17 @@ interface SnmpClient
      *
      * @return array<string, mixed>
      */
-    public function get(array $oids) : array;
+    public function get(array $oids): array;
 
     /**
      * @param list<string> $oids
      *
      * @return array<string, mixed>
      */
-    public function getNext(array $oids) : array;
+    public function getNext(array $oids): array;
 
     /** @return array<string, mixed> */
-    public function walk(string $oid, int $maxRepetitions = 20) : array;
+    public function walk(string $oid, int $maxRepetitions = 20): array;
 
     /**
      * @param array<T, Request> $requests
@@ -30,5 +30,5 @@ interface SnmpClient
      *
      * @template T
      */
-    public function batch(array $requests) : array;
+    public function batch(array $requests): array;
 }

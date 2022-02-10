@@ -44,7 +44,7 @@ final class ValueGetter
      *
      * @return list<mixed>
      */
-    public static function firstFromSameTrees(SnmpClient $snmpClient, array $oids) : array
+    public static function firstFromSameTrees(SnmpClient $snmpClient, array $oids): array
     {
         $result = $snmpClient->getNext($oids);
 

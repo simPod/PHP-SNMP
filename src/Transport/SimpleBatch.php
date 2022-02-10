@@ -9,7 +9,7 @@ use SimPod\PhpSnmp\Exception\NoRequestsProvided;
 trait SimpleBatch
 {
     /** @inheritDoc */
-    public function batch(array $requests) : array
+    public function batch(array $requests): array
     {
         if ($requests === []) {
             throw NoRequestsProvided::new();

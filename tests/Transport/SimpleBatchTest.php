@@ -18,7 +18,7 @@ final class SimpleBatchTest extends TestCase
      *
      * @dataProvider providerBatch
      */
-    public function testBatch(SnmpClient $snmpClient, array $requests, array $result) : void
+    public function testBatch(SnmpClient $snmpClient, array $requests, array $result): void
     {
         $batchSnmpClient = $this->createBatchSnmpClient($snmpClient);
 
@@ -26,7 +26,7 @@ final class SimpleBatchTest extends TestCase
     }
 
     /** @return iterable<mixed> */
-    public function providerBatch() : iterable
+    public function providerBatch(): iterable
     {
         $snmpClient = $this->createMock(SnmpClient::class);
         $snmpClient->expects(self::once())->method('get')->with(['.1.2.3'])->willReturn(['.1.2.3' => 123]);
@@ -89,7 +89,7 @@ final class SimpleBatchTest extends TestCase
         ];
     }
 
-    public function testBatchNoRequests() : void
+    public function testBatchNoRequests(): void
     {
         $this->expectExceptionObject(NoRequestsProvided::new());
 
@@ -97,7 +97,7 @@ final class SimpleBatchTest extends TestCase
         $batchSnmpClient->batch([]);
     }
 
-    private function createBatchSnmpClient(SnmpClient $snmpClient) : SnmpClient
+    private function createBatchSnmpClient(SnmpClient $snmpClient): SnmpClient
     {
         return new class ($snmpClient) implements SnmpClient {
             use SimpleBatch;
@@ -110,19 +110,19 @@ final class SimpleBatchTest extends TestCase
             }
 
             /** @inheritDoc */
-            public function get(array $oids) : array
+            public function get(array $oids): array
             {
                 return $this->snmpClient->get($oids);
             }
 
             /** @inheritDoc */
-            public function getNext(array $oids) : array
+            public function getNext(array $oids): array
             {
                 return $this->snmpClient->getNext($oids);
             }
 
             /** @inheritDoc */
-            public function walk(string $oid, int $maxRepetitions = 20) : array
+            public function walk(string $oid, int $maxRepetitions = 20): array
             {
                 return $this->snmpClient->walk($oid, $maxRepetitions);
             }

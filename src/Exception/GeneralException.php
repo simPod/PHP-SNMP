@@ -22,7 +22,7 @@ final class GeneralException extends RuntimeException implements SnmpException
         ?Throwable $previous = null,
         ?string $host = null,
         ?array $oids = null
-    ) : self {
+    ): self {
         $self       = new self($error, 0, $previous);
         $self->host = $host;
         if ($oids !== null) {
@@ -33,7 +33,7 @@ final class GeneralException extends RuntimeException implements SnmpException
     }
 
     /** @param list<string> $oids */
-    public static function fromThrowable(Throwable $throwable, ?string $host = null, ?array $oids = null) : self
+    public static function fromThrowable(Throwable $throwable, ?string $host = null, ?array $oids = null): self
     {
         return self::new($throwable->getMessage(), $throwable, $host, $oids);
     }

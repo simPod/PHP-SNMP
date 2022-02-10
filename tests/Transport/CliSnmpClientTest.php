@@ -28,7 +28,12 @@ final class CliSnmpClientTest extends BaseTestCase
     /** @var resource|null */
     private static $process;
 
-    public static function setUpBeforeClass() : void
+    public function __destruct()
+    {
+        self::tearDownAfterClass();
+    }
+
+    public static function setUpBeforeClass(): void
     {
         $command = 'snmpsimd.py --v2c-arch --data-dir %s --agent-udpv4-endpoint %s';
         $command = sprintf($command, __DIR__ . '/data', self::SNMP_HOST);
@@ -41,7 +46,7 @@ final class CliSnmpClientTest extends BaseTestCase
         self::$process = $process;
     }
 
-    public static function tearDownAfterClass() : void
+    public static function tearDownAfterClass(): void
     {
         if (self::$process === null) {
             return;
@@ -51,12 +56,7 @@ final class CliSnmpClientTest extends BaseTestCase
         self::$process = null;
     }
 
-    public function __destruct()
-    {
-        self::tearDownAfterClass();
-    }
-
-    public function testGet() : void
+    public function testGet(): void
     {
         $result = $this->createCliSnmp()->get(['.1.3.6.1.2.1.25.2.3.1.2.1', '.1.3.6.1.2.1.25.2.3.1.2.4']);
 
@@ -69,7 +69,7 @@ final class CliSnmpClientTest extends BaseTestCase
         );
     }
 
-    public function testGetNext() : void
+    public function testGetNext(): void
     {
         $result = $this->createCliSnmp()->getNext(['.1.3.6.1.2.1.25.2.3.1.2', '.1.3.6.1.2.1.25.2.3.1.2.3']);
 
@@ -82,7 +82,7 @@ final class CliSnmpClientTest extends BaseTestCase
         );
     }
 
-    public function testWalk() : void
+    public function testWalk(): void
     {
         $result = $this->createCliSnmp()->walk('.1.3.6.1.2.1.31.1.1.1.15');
 
@@ -96,7 +96,7 @@ final class CliSnmpClientTest extends BaseTestCase
         );
     }
 
-    public function testWalkSnmpClientUsesCarriageReturnsAndLineFeeds() : void
+    public function testWalkSnmpClientUsesCarriageReturnsAndLineFeeds(): void
     {
         $output = ".1.3.6.1.2.1.31.1.1.1.15.1000001 = Gauge32: 100000\r\n"
             . ".1.3.6.1.2.1.31.1.1.1.15.1000003 = Gauge32: 60000\r\n"
@@ -117,7 +117,7 @@ final class CliSnmpClientTest extends BaseTestCase
         );
     }
 
-    public function testWalkWithOldSnmpVersion() : void
+    public function testWalkWithOldSnmpVersion(): void
     {
         $result = $this->createCliSnmp('1')->walk('.1.3.6.1.2.1.31.1.1.1.15');
 
@@ -131,7 +131,7 @@ final class CliSnmpClientTest extends BaseTestCase
         );
     }
 
-    public function testWalkWholeTree() : void
+    public function testWalkWholeTree(): void
     {
         $result = $this->createCliSnmp()->walk('.1.3');
 
@@ -185,31 +185,31 @@ final class CliSnmpClientTest extends BaseTestCase
         );
     }
 
-    public function testWalkLastMibElement() : void
+    public function testWalkLastMibElement(): void
     {
         $result = $this->createCliSnmp()->walk('.1.7');
 
         self::assertSame(['.1.7.8.9' => '"Don\'t know what I\'m"'], $result);
     }
 
-    public function testWalkLastMibElementAndSnmpVersion1() : void
+    public function testWalkLastMibElementAndSnmpVersion1(): void
     {
         $result = $this->createCliSnmp('1')->walk('.1.7');
 
         self::assertSame(['.1.7.8.9' => '"Don\'t know what I\'m"'], $result);
     }
 
-    public function testWalkInvalidVersion() : void
+    public function testWalkInvalidVersion(): void
     {
         self::assertSnmpException(
             InvalidVersionProvided::new('whatever'),
-            function () : void {
+            function (): void {
                 $this->createCliSnmp('whatever')->walk('.1.15');
             }
         );
     }
 
-    public function testWalkWithNoSuchObjectError() : void
+    public function testWalkWithNoSuchObjectError(): void
     {
         // todo find real example
         $output = ".1.3.5 = No Such Object\n";
@@ -219,247 +219,247 @@ final class CliSnmpClientTest extends BaseTestCase
 
         self::assertSnmpException(
             NoSuchObjectExists::fromOid(self::SNMP_HOST, '.1.3.5'),
-            function () use ($processExecutor) : void {
+            function () use ($processExecutor): void {
                 $this->createCliSnmp('2c', $processExecutor)->walk('.1.3.5');
             }
         );
     }
 
-    public function testWalkWithNoSuchInstanceError() : void
+    public function testWalkWithNoSuchInstanceError(): void
     {
         self::assertSnmpException(
             NoSuchInstanceExists::fromOid(self::SNMP_HOST, '.1.3.5'),
-            function () : void {
+            function (): void {
                 $this->createCliSnmp()->walk('.1.3.5');
             }
         );
     }
 
-    public function testWalkWithSnmpVersion1AndNoSuchInstanceError() : void
+    public function testWalkWithSnmpVersion1AndNoSuchInstanceError(): void
     {
         self::assertSnmpException(
             NoSuchInstanceExists::fromOid(self::SNMP_HOST, '.1.3.5'),
-            function () : void {
+            function (): void {
                 $this->createCliSnmp('1')->walk('.1.3.5');
             }
         );
     }
 
-    public function testWalkWithEndOfMibError() : void
+    public function testWalkWithEndOfMibError(): void
     {
         self::assertSnmpException(
             EndOfMibReached::fromOid(self::SNMP_HOST, '.1.15'),
-            function () : void {
+            function (): void {
                 $this->createCliSnmp()->walk('.1.15');
             }
         );
     }
 
-    public function testWalkWithSnmpVersion1AndEndOfMibError() : void
+    public function testWalkWithSnmpVersion1AndEndOfMibError(): void
     {
         self::assertSnmpException(
             EndOfMibReached::new(),
-            function () : void {
+            function (): void {
                 $this->createCliSnmp('1')->walk('.1.15');
             }
         );
     }
 
-    public function testGetWithNoSuchInstanceError() : void
+    public function testGetWithNoSuchInstanceError(): void
     {
         self::assertSnmpException(
             NoSuchInstanceExists::fromOid(self::SNMP_HOST, '.1.3.5'),
-            function () : void {
+            function (): void {
                 $this->createCliSnmp()->get(['.1.3.5']);
             }
         );
     }
 
-    public function testGetWithSnmpVersion1AndNoSuchInstanceError() : void
+    public function testGetWithSnmpVersion1AndNoSuchInstanceError(): void
     {
         self::assertSnmpException(
             NoSuchInstanceExists::fromOid(self::SNMP_HOST, '.1.3.5'),
-            function () : void {
+            function (): void {
                 $this->createCliSnmp('1')->get(['.1.3.5']);
             }
         );
     }
 
-    public function testGetNextWithEndOfMibError() : void
+    public function testGetNextWithEndOfMibError(): void
     {
         self::assertSnmpException(
             EndOfMibReached::fromOid(self::SNMP_HOST, '.1.15'),
-            function () : void {
+            function (): void {
                 $this->createCliSnmp()->getNext(['.1.15']);
             }
         );
     }
 
-    public function testGetNextWithSnmpVersion1AndEndOfMibError() : void
+    public function testGetNextWithSnmpVersion1AndEndOfMibError(): void
     {
         self::assertSnmpException(
             EndOfMibReached::fromOid(self::SNMP_HOST, '.1.15'),
-            function () : void {
+            function (): void {
                 $this->createCliSnmp('1')->getNext(['.1.15']);
             }
         );
     }
 
-    public function testWalkWithUnknownTypeError() : void
+    public function testWalkWithUnknownTypeError(): void
     {
         self::assertSnmpException(
             CannotParseUnknownValueType::new('OPAQUE'),
-            function () : void {
+            function (): void {
                 $this->createCliSnmp()->walk('.1.6.6.6.666');
             }
         );
     }
 
-    public function testGetTimeoutError() : void
+    public function testGetTimeoutError(): void
     {
         self::assertSnmpException(
             TimeoutReached::fromOid('127.0.0.1:1', '.1.3.6.1.2.1.1.1.0'),
-            static function () : void {
+            static function (): void {
                 $snmp = new CliSnmpClient('127.0.0.1:1', 'public', 1, 0, '2c');
                 $snmp->get(['.1.3.6.1.2.1.1.1.0']);
             }
         );
     }
 
-    public function testGetWithSnmpVersion1TimeoutError() : void
+    public function testGetWithSnmpVersion1TimeoutError(): void
     {
         self::assertSnmpException(
             TimeoutReached::fromOid('127.0.0.1:1', '.1.3.6.1.2.1.1.1.0'),
-            static function () : void {
+            static function (): void {
                 $snmp = new CliSnmpClient('127.0.0.1:1', 'public', 1, 0, '1');
                 $snmp->get(['.1.3.6.1.2.1.1.1.0']);
             }
         );
     }
 
-    public function testGetNextTimeoutError() : void
+    public function testGetNextTimeoutError(): void
     {
         self::assertSnmpException(
             TimeoutReached::fromOid('127.0.0.1:1', '.1.3.6.1.2.1.1.1.0'),
-            static function () : void {
+            static function (): void {
                 $snmp = new CliSnmpClient('127.0.0.1:1', 'public', 1, 0, '2c');
                 $snmp->getNext(['.1.3.6.1.2.1.1.1.0']);
             }
         );
     }
 
-    public function testGetNextWithSnmpVersion1TimeoutError() : void
+    public function testGetNextWithSnmpVersion1TimeoutError(): void
     {
         self::assertSnmpException(
             TimeoutReached::fromOid('127.0.0.1:1', '.1.3.6.1.2.1.1.1.0'),
-            static function () : void {
+            static function (): void {
                 $snmp = new CliSnmpClient('127.0.0.1:1', 'public', 1, 0, '1');
                 $snmp->getNext(['.1.3.6.1.2.1.1.1.0']);
             }
         );
     }
 
-    public function testWalkTimeoutError() : void
+    public function testWalkTimeoutError(): void
     {
         self::assertSnmpException(
             TimeoutReached::fromOid('127.0.0.1:1', '.1.3.6.1.2.1.1'),
-            static function () : void {
+            static function (): void {
                 $snmp = new CliSnmpClient('127.0.0.1:1', 'public', 1, 0, '2c');
                 $snmp->walk('.1.3.6.1.2.1.1');
             }
         );
     }
 
-    public function testWalkWithSnmpVersion1TimeoutError() : void
+    public function testWalkWithSnmpVersion1TimeoutError(): void
     {
         self::assertSnmpException(
             TimeoutReached::fromOid('127.0.0.1:1', '.1.3.6.1.2.1.1'),
-            static function () : void {
+            static function (): void {
                 $snmp = new CliSnmpClient('127.0.0.1:1', 'public', 1, 0, '1');
                 $snmp->walk('.1.3.6.1.2.1.1');
             }
         );
     }
 
-    public function testGetExecutorSnmpException() : void
+    public function testGetExecutorSnmpException(): void
     {
         $processExecutor = $this->createMock(ProcessExecutor::class);
         $processExecutor->method('execute')->willThrowException($exception = GeneralException::new('test'));
 
         self::assertSnmpException(
             GeneralException::new('test', $exception, self::SNMP_HOST, ['.1.3.5']),
-            function () use ($processExecutor) : void {
+            function () use ($processExecutor): void {
                 $this->createCliSnmp('2c', $processExecutor)->get(['.1.3.5']);
             }
         );
     }
 
-    public function testGetExecutorException() : void
+    public function testGetExecutorException(): void
     {
         $processExecutor = $this->createMock(ProcessExecutor::class);
         $processExecutor->method('execute')->willThrowException($exception = new Exception('test'));
 
         self::assertSnmpException(
             GeneralException::new('Failed to execute SNMP CLI command', $exception, self::SNMP_HOST, ['.1.3.5']),
-            function () use ($processExecutor) : void {
+            function () use ($processExecutor): void {
                 $this->createCliSnmp('2c', $processExecutor)->get(['.1.3.5']);
             }
         );
     }
 
-    public function testGetNextExecutorSnmpException() : void
+    public function testGetNextExecutorSnmpException(): void
     {
         $processExecutor = $this->createMock(ProcessExecutor::class);
         $processExecutor->method('execute')->willThrowException($exception = GeneralException::new('test'));
 
         self::assertSnmpException(
             GeneralException::new('test', $exception, self::SNMP_HOST, ['.1.3.5']),
-            function () use ($processExecutor) : void {
+            function () use ($processExecutor): void {
                 $this->createCliSnmp('2c', $processExecutor)->getNext(['.1.3.5']);
             }
         );
     }
 
-    public function testGetNextExecutorException() : void
+    public function testGetNextExecutorException(): void
     {
         $processExecutor = $this->createMock(ProcessExecutor::class);
         $processExecutor->method('execute')->willThrowException($exception = new Exception('test'));
 
         self::assertSnmpException(
             GeneralException::new('Failed to execute SNMP CLI command', $exception, self::SNMP_HOST, ['.1.3.5']),
-            function () use ($processExecutor) : void {
+            function () use ($processExecutor): void {
                 $this->createCliSnmp('2c', $processExecutor)->getNext(['.1.3.5']);
             }
         );
     }
 
-    public function testWalkExecutorSnmpException() : void
+    public function testWalkExecutorSnmpException(): void
     {
         $processExecutor = $this->createMock(ProcessExecutor::class);
         $processExecutor->method('execute')->willThrowException($exception = GeneralException::new('test'));
 
         self::assertSnmpException(
             GeneralException::new('test', $exception, self::SNMP_HOST, ['.1.3.5']),
-            function () use ($processExecutor) : void {
+            function () use ($processExecutor): void {
                 $this->createCliSnmp('2c', $processExecutor)->walk('.1.3.5');
             }
         );
     }
 
-    public function testWalkExecutorException() : void
+    public function testWalkExecutorException(): void
     {
         $processExecutor = $this->createMock(ProcessExecutor::class);
         $processExecutor->method('execute')->willThrowException($exception = new Exception('test'));
 
         self::assertSnmpException(
             GeneralException::new('Failed to execute SNMP CLI command', $exception, self::SNMP_HOST, ['.1.3.5']),
-            function () use ($processExecutor) : void {
+            function () use ($processExecutor): void {
                 $this->createCliSnmp('2c', $processExecutor)->walk('.1.3.5');
             }
         );
     }
 
-    private function createCliSnmp(string $version = '2c', ?ProcessExecutor $processExecutor = null) : CliSnmpClient
+    private function createCliSnmp(string $version = '2c', ?ProcessExecutor $processExecutor = null): CliSnmpClient
     {
         return new CliSnmpClient(self::SNMP_HOST, 'public', 1, 3, $version, $processExecutor);
     }

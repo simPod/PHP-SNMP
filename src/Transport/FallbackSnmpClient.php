@@ -28,37 +28,31 @@ final class FallbackSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function get(array $oids) : array
+    public function get(array $oids): array
     {
         return $this->tryClients(
-            static function (SnmpClient $client) use ($oids) : array {
-                return $client->get($oids);
-            }
+            static fn (SnmpClient $client): array => $client->get($oids)
         );
     }
 
     /** @inheritDoc */
-    public function getNext(array $oids) : array
+    public function getNext(array $oids): array
     {
         return $this->tryClients(
-            static function (SnmpClient $client) use ($oids) : array {
-                return $client->getNext($oids);
-            }
+            static fn (SnmpClient $client): array => $client->getNext($oids)
         );
     }
 
     /** @inheritDoc */
-    public function walk(string $oid, int $maxRepetitions = 20) : array
+    public function walk(string $oid, int $maxRepetitions = 20): array
     {
         return $this->tryClients(
-            static function (SnmpClient $client) use ($oid, $maxRepetitions) : array {
-                return $client->walk($oid, $maxRepetitions);
-            }
+            static fn (SnmpClient $client): array => $client->walk($oid, $maxRepetitions)
         );
     }
 
     /** @inheritDoc */
-    public function batch(array $requests) : array
+    public function batch(array $requests): array
     {
         return $this->tryClients(
         /**
@@ -66,9 +60,7 @@ final class FallbackSnmpClient implements SnmpClient
          *
          * @template T
          */
-            static function (SnmpClient $client) use ($requests) : array {
-                return $client->batch($requests);
-            }
+            static fn (SnmpClient $client): array => $client->batch($requests)
         );
     }
 
@@ -79,7 +71,7 @@ final class FallbackSnmpClient implements SnmpClient
      *
      * @template T
      */
-    private function tryClients(callable $requestCallback) : array
+    private function tryClients(callable $requestCallback): array
     {
         foreach ($this->snmpClients as $key => $snmpClient) {
             try {

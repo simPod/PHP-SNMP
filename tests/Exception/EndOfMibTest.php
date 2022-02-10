@@ -10,7 +10,7 @@ use SimPod\PhpSnmp\Tests\BaseTestCase;
 
 final class EndOfMibTest extends BaseTestCase
 {
-    public function testFromThrowable() : void
+    public function testFromThrowable(): void
     {
         $exception = new Exception(
             "Error in packet at '.1.4': No more variables left in this MIB View (It is past the end of the MIB tree)"
@@ -21,7 +21,7 @@ final class EndOfMibTest extends BaseTestCase
         self::assertSame('.1.4', $exception->oids);
     }
 
-    public function testFromThrowableWithUnexpectedMessage() : void
+    public function testFromThrowableWithUnexpectedMessage(): void
     {
         $exception = new Exception('unexpected message');
 

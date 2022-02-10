@@ -69,7 +69,7 @@ final class CliSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function get(array $oids) : array
+    public function get(array $oids): array
     {
         try {
             $output = $this->processExecutor->execute(array_merge(['snmpget'], $this->processArgs, $oids));
@@ -86,7 +86,7 @@ final class CliSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function getNext(array $oids) : array
+    public function getNext(array $oids): array
     {
         try {
             $output = $this->processExecutor->execute(array_merge(['snmpgetnext'], $this->processArgs, $oids));
@@ -103,7 +103,7 @@ final class CliSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function walk(string $oid, int $maxRepetitions = 20) : array
+    public function walk(string $oid, int $maxRepetitions = 20): array
     {
         $walker = 'snmpwalk';
         $args   = $this->processArgs;
@@ -127,7 +127,7 @@ final class CliSnmpClient implements SnmpClient
     }
 
     /** @return array<string, mixed> */
-    private function processOutput(string $output) : array
+    private function processOutput(string $output): array
     {
         $outputLength = strlen($output);
         $lineStartPos = 0;
@@ -172,7 +172,7 @@ final class CliSnmpClient implements SnmpClient
         return $result;
     }
 
-    private function getLineEndPos(string $output, int $newLinePos, int $i) : int
+    private function getLineEndPos(string $output, int $newLinePos, int $i): int
     {
         if ($output[$newLinePos - 1] === "\r") {
             return $newLinePos - $i - 1;
@@ -186,7 +186,7 @@ final class CliSnmpClient implements SnmpClient
      *
      * @return array<string, int|string>
      */
-    private function processOutputLine(array $result, string $line) : array
+    private function processOutputLine(array $result, string $line): array
     {
         // check for SNMP v1
         if (strpos($line, 'End of MIB') === 0) {
@@ -221,7 +221,7 @@ final class CliSnmpClient implements SnmpClient
     }
 
     /** @param list<string> $oids */
-    private function processException(Throwable $throwable, array $oids) : Throwable
+    private function processException(Throwable $throwable, array $oids): Throwable
     {
         if ($throwable instanceof SnmpException) {
             if (strpos($throwable->getMessage(), 'Timeout') !== false) {

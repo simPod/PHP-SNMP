@@ -25,7 +25,7 @@ final class OidStripper
      *
      * @psalm-template T
      */
-    public static function stripParent(array $leafOidData) : array
+    public static function stripParent(array $leafOidData): array
     {
         return self::batchStripParent([$leafOidData])[0];
     }
@@ -39,7 +39,7 @@ final class OidStripper
      *
      * @psalm-template T
      */
-    public static function batchStripParent(array $leafOidDataResponses) : array
+    public static function batchStripParent(array $leafOidDataResponses): array
     {
         $result = [];
         foreach ($leafOidDataResponses as $leafOidData) {
@@ -67,7 +67,7 @@ final class OidStripper
     }
 
     /** @return array<string, mixed> */
-    public static function walk(SnmpClient $snmpClient, string $oid, int $maxRepetitions = 20) : array
+    public static function walk(SnmpClient $snmpClient, string $oid, int $maxRepetitions = 20): array
     {
         return self::batchStripParentPrefix($snmpClient, [Request::walk($oid, $maxRepetitions)])[0];
     }
@@ -81,7 +81,7 @@ final class OidStripper
      *
      * @psalm-template T
      */
-    public static function batchStripParentPrefix(SnmpClient $snmpClient, array $requests) : array
+    public static function batchStripParentPrefix(SnmpClient $snmpClient, array $requests): array
     {
         $responses = $snmpClient->batch($requests);
 

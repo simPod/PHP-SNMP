@@ -16,7 +16,7 @@ use SimPod\PhpSnmp\Transport\SnmpClient;
 
 final class FallbackSnmpClientTest extends TestCase
 {
-    public function testGet() : void
+    public function testGet(): void
     {
         $client1 = $this->createMock(SnmpClient::class);
         $client1->expects(self::once())
@@ -30,7 +30,7 @@ final class FallbackSnmpClientTest extends TestCase
         self::assertSame($expected, $result);
     }
 
-    public function testGetNext() : void
+    public function testGetNext(): void
     {
         $client1 = $this->createMock(SnmpClient::class);
         $client1->expects(self::once())
@@ -44,7 +44,7 @@ final class FallbackSnmpClientTest extends TestCase
         self::assertSame($expected, $result);
     }
 
-    public function testWalk() : void
+    public function testWalk(): void
     {
         $client1 = $this->createMock(SnmpClient::class);
         $client1->expects(self::once())
@@ -58,7 +58,7 @@ final class FallbackSnmpClientTest extends TestCase
         self::assertSame($expected, $result);
     }
 
-    public function testBatch() : void
+    public function testBatch(): void
     {
         $requests = [
             'walk' => Request::walk('.1.2.3', 10),
@@ -78,7 +78,7 @@ final class FallbackSnmpClientTest extends TestCase
         self::assertSame($expected, $result);
     }
 
-    public function testOnlyLastClientWorks() : void
+    public function testOnlyLastClientWorks(): void
     {
         $client1 = $this->createMock(SnmpClient::class);
         $client1->expects(self::once())
@@ -121,7 +121,7 @@ final class FallbackSnmpClientTest extends TestCase
         self::assertSame($exception2, $logEntry['context']['exception']);
     }
 
-    public function testAllClientsFail() : void
+    public function testAllClientsFail(): void
     {
         $client1 = $this->createMock(SnmpClient::class);
         $client1->expects(self::once())
@@ -142,7 +142,7 @@ final class FallbackSnmpClientTest extends TestCase
         $fallbackClient->get($oids);
     }
 
-    public function testNoClientsProvided() : void
+    public function testNoClientsProvided(): void
     {
         $this->expectExceptionObject(GeneralException::new('No SNMP clients provided'));
 

@@ -26,18 +26,18 @@ final class Request
     }
 
     /** @param list<string> $oids */
-    public static function get(array $oids) : self
+    public static function get(array $oids): self
     {
         return new self(self::GET, $oids);
     }
 
     /** @param list<string> $oids */
-    public static function getNext(array $oids) : self
+    public static function getNext(array $oids): self
     {
         return new self(self::GET_NEXT, $oids);
     }
 
-    public static function walk(string $oid, int $maxRepetitions = 20) : self
+    public static function walk(string $oid, int $maxRepetitions = 20): self
     {
         return new self(self::WALK, [$oid], $maxRepetitions);
     }
