@@ -17,7 +17,7 @@ final class EndOfMibReached extends RequestException
 
     public static function fromOid(string $host, string $oid): self
     {
-        $self       = self::new();
+        $self = self::new();
         $self->host = $host;
         $self->oids = $oid;
 
@@ -26,7 +26,7 @@ final class EndOfMibReached extends RequestException
 
     public static function fromThrowable(string $host, Throwable $throwable): self
     {
-        $self       = self::new();
+        $self = self::new();
         $self->host = $host;
 
         if (preg_match("~Error in packet at '(.+?)':~", $throwable->getMessage(), $matches) !== 1) {

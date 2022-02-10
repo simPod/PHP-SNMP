@@ -51,7 +51,7 @@ final class CliSnmpClient implements SnmpClient
         }
 
         $this->processExecutor = $processExecutor ?? new SymfonyProcessProcessExecutor(120);
-        $this->processArgs     = [
+        $this->processArgs = [
             '-ObenU',
             '--hexOutputLength=0',
             '-t',
@@ -64,8 +64,8 @@ final class CliSnmpClient implements SnmpClient
             $community,
             $host,
         ];
-        $this->host            = $host;
-        $this->useBulk         = $version === '2c';
+        $this->host = $host;
+        $this->useBulk = $version === '2c';
     }
 
     /** @inheritDoc */
@@ -106,10 +106,10 @@ final class CliSnmpClient implements SnmpClient
     public function walk(string $oid, int $maxRepetitions = 20): array
     {
         $walker = 'snmpwalk';
-        $args   = $this->processArgs;
+        $args = $this->processArgs;
         if ($this->useBulk) {
             $walker = 'snmpbulkwalk';
-            $args   = array_merge($args, ['-Cr' . $maxRepetitions]);
+            $args = array_merge($args, ['-Cr' . $maxRepetitions]);
         }
 
         try {
@@ -131,7 +131,7 @@ final class CliSnmpClient implements SnmpClient
     {
         $outputLength = strlen($output);
         $lineStartPos = 0;
-        $result       = [];
+        $result = [];
 
         while ($lineStartPos < $outputLength) {
             $newLinePos = strpos($output, "\n", $lineStartPos);

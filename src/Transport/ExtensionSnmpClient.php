@@ -55,10 +55,10 @@ final class ExtensionSnmpClient implements SnmpClient
                 throw InvalidVersionProvided::new($version);
         }
 
-        $this->snmp                     = new SNMP($snmpVersion, $host, $community, $timeoutMs, $retry);
-        $this->snmp->oid_output_format  = SNMP_OID_OUTPUT_NUMERIC;
+        $this->snmp = new SNMP($snmpVersion, $host, $community, $timeoutMs, $retry);
+        $this->snmp->oid_output_format = SNMP_OID_OUTPUT_NUMERIC;
         $this->snmp->exceptions_enabled = SNMP::ERRNO_ANY;
-        $this->host                     = $host;
+        $this->host = $host;
 
         if ($snmpVersion !== SNMP::VERSION_3) {
             return;

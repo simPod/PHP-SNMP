@@ -23,7 +23,7 @@ final class FallbackSnmpClient implements SnmpClient
             throw GeneralException::new('No SNMP clients provided');
         }
 
-        $this->logger      = $logger;
+        $this->logger = $logger;
         $this->snmpClients = $snmpClients;
     }
 

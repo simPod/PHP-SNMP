@@ -6,9 +6,9 @@ namespace SimPod\PhpSnmp\Transport;
 
 final class Request
 {
-    public const GET      = 'get';
+    public const GET = 'get';
     public const GET_NEXT = 'getNext';
-    public const WALK     = 'walk';
+    public const WALK = 'walk';
 
     public string $type;
 
@@ -20,8 +20,8 @@ final class Request
     /** @param list<string> $oids */
     private function __construct(string $type, array $oids, ?int $maxRepetitions = null)
     {
-        $this->type           = $type;
-        $this->oids           = $oids;
+        $this->type = $type;
+        $this->oids = $oids;
         $this->maxRepetitions = $maxRepetitions;
     }
 

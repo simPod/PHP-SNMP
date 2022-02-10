@@ -23,7 +23,7 @@ final class GeneralException extends RuntimeException implements SnmpException
         ?string $host = null,
         ?array $oids = null
     ): self {
-        $self       = new self($error, 0, $previous);
+        $self = new self($error, 0, $previous);
         $self->host = $host;
         if ($oids !== null) {
             $self->oids = implode(', ', $oids);

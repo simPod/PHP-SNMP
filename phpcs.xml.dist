@@ -15,14 +15,4 @@
     <file>tests</file>
 
     <rule ref="Cdn77" />
-
-    <rule ref="Generic.Formatting.MultipleStatementAlignment" />
-    <rule ref="Squiz.Commenting.FunctionComment.SpacingAfterParamType" />
-
-    <rule ref="Squiz.WhiteSpace.OperatorSpacing">
-        <properties>
-            <property name="ignoreNewlines" value="true" />
-            <property name="ignoreSpacingBeforeAssignments" value="true" />
-        </properties>
-    </rule>
 </ruleset>
