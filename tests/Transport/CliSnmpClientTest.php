@@ -459,7 +459,7 @@ final class CliSnmpClientTest extends BaseTestCase
         );
     }
 
-    private function createCliSnmp(string $version = '2c', ?ProcessExecutor $processExecutor = null): CliSnmpClient
+    private function createCliSnmp(string $version = '2c', ProcessExecutor|null $processExecutor = null): CliSnmpClient
     {
         return new CliSnmpClient(self::SNMP_HOST, 'public', 1, 3, $version, $processExecutor);
     }

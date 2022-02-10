@@ -10,19 +10,13 @@ final class Request
     public const GET_NEXT = 'getNext';
     public const WALK = 'walk';
 
-    public string $type;
-
     /** @var list<string> */
     public $oids;
 
-    public ?int $maxRepetitions = null;
-
     /** @param list<string> $oids */
-    private function __construct(string $type, array $oids, ?int $maxRepetitions = null)
+    private function __construct(public string $type, array $oids, public int|null $maxRepetitions = null)
     {
-        $this->type = $type;
         $this->oids = $oids;
-        $this->maxRepetitions = $maxRepetitions;
     }
 
     /** @param list<string> $oids */

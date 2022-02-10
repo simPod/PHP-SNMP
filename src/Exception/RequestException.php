@@ -10,5 +10,5 @@ abstract class RequestException extends RuntimeException implements SnmpExceptio
 {
     public string $host;
 
-    public ?string $oids = null;
+    public string|null $oids = null;
 }

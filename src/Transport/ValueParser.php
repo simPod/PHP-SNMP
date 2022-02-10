@@ -14,8 +14,7 @@ use function trim;
 
 final class ValueParser
 {
-    /** @return int|string */
-    public static function parse(string $rawValue)
+    public static function parse(string $rawValue): int|string
     {
         if ($rawValue === '""') {
             return '';

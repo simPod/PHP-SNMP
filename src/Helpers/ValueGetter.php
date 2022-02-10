@@ -18,12 +18,11 @@ final class ValueGetter
      * @param array<int|string, mixed> $response
      * @psalm-param array<int|string, T> $response
      *
-     * @return mixed
      * @psalm-return T
      *
      * @psalm-template T
      */
-    public static function first(array $response)
+    public static function first(array $response): mixed
     {
         $result = array_shift($response);
         if ($result === null) {
@@ -33,8 +32,7 @@ final class ValueGetter
         return $result;
     }
 
-    /** @return mixed */
-    public static function firstFromSameTree(SnmpClient $snmpClient, string $oid)
+    public static function firstFromSameTree(SnmpClient $snmpClient, string $oid): mixed
     {
         return self::firstFromSameTrees($snmpClient, [$oid])[0];
     }

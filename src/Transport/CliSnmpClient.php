@@ -34,17 +34,15 @@ final class CliSnmpClient implements SnmpClient
     /** @var string[] */
     private array $processArgs;
 
-    private string $host;
-
     private bool $useBulk;
 
     public function __construct(
-        string $host = '127.0.0.1',
+        private string $host = '127.0.0.1',
         string $community = 'public',
         int $timeout = 1,
         int $retries = 3,
         string $version = '2c',
-        ?ProcessExecutor $processExecutor = null
+        ProcessExecutor|null $processExecutor = null,
     ) {
         if (! in_array($version, ['1', '2c'], true)) {
             throw InvalidVersionProvided::new($version);
@@ -64,7 +62,6 @@ final class CliSnmpClient implements SnmpClient
             $community,
             $host,
         ];
-        $this->host = $host;
         $this->useBulk = $version === '2c';
     }
 
