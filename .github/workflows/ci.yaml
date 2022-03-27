@@ -77,7 +77,7 @@ jobs:
             -   uses: actions/checkout@v3
             -   uses: shivammathur/setup-php@v2
                 with:
-                    coverage: none
+                    coverage: "pcov"
                     extensions: json, snmp
                     php-version: ${{ matrix.php-version }}
 
@@ -98,44 +98,33 @@ jobs:
                 run: COMPOSER_ARGS="--prefer-stable ${{ matrix.dependencies }}" make
 
             -   name: Run tests
-                run: make test
+                run: PHPUNIT_ARGS="--coverage-clover coverage.xml" make test
 
-    coverage:
-        name: Tests Coverage
-        runs-on: ubuntu-20.04
-        strategy:
-            matrix:
-                php-version: [8.0]
+
+            -   name: "Upload coverage file"
+                uses: actions/upload-artifact@v3
+                with:
+                    name: "phpunit-${{ matrix.deps }}-${{ matrix.php-version }}.coverage"
+                    path: "coverage.xml"
+
+    upload_coverage:
+        name: "Upload coverage to Codecov"
+        runs-on: "ubuntu-20.04"
+        needs:
+            - "tests"
 
         steps:
-            -   uses: actions/checkout@v3
-            -   uses: shivammathur/setup-php@v2
-                with:
-                    coverage: pcov
-                    extensions: json, snmp
-                    php-version: ${{ matrix.php-version }}
+            - name: "Checkout"
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 2
 
-            -   name: Install dependencies
-                run: sudo apt install python3-pip snmp
+            - name: "Download coverage files"
+              uses: actions/download-artifact@v3
+              with:
+                  path: "reports"
 
-            -   name: Install snmpsim
-                run: sudo pip3 install snmpsim
-
-            -   name: Cache dependencies installed with composer
-                uses: actions/cache@v3
-                with:
-                    path: ~/.composer/cache
-                    key: php-${{ matrix.php-version }}
-                    restore-keys: php-${{ matrix.php-version }}
-
-            -   name: Install dependencies with composer
-                run: COMPOSER_ARGS="--prefer-stable" make
-
-            -   name: Run tests coverage
-                run: PHPUNIT_ARGS="--coverage-clover coverage/clover.xml" make test
-
-            -   name: Report to Coveralls
-                env:
-                    COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                    COVERALLS_RUN_LOCALLY: 1
-                run: vendor/bin/php-coveralls --coverage_clover coverage/clover.xml --json_path coverage/coveralls.json
+            - name: "Upload to Codecov"
+              uses: codecov/codecov-action@v2
+              with:
+                  directory: reports
