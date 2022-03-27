@@ -30,6 +30,7 @@
         "ext-json": "*",
         "ext-snmp": "*",
         "cdn77/coding-standard": "^6.0",
+        "colinodell/psr-testlogger": "^1.0",
         "nyholm/psr7": "^1.3",
         "php-http/curl-client": "^2.1",
         "phpstan/extension-installer": "^1.0",
