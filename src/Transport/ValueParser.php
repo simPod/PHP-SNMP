@@ -7,9 +7,9 @@ namespace SimPod\PhpSnmp\Transport;
 use SimPod\PhpSnmp\Exception\CannotParseUnknownValueType;
 
 use function explode;
-use function Safe\substr;
 use function str_replace;
 use function strrpos;
+use function substr;
 use function trim;
 
 final class ValueParser

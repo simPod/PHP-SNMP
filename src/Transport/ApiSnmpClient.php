@@ -24,7 +24,7 @@ use function count;
 use function Safe\json_decode;
 use function Safe\json_encode;
 use function Safe\preg_match;
-use function Safe\sprintf;
+use function sprintf;
 
 use const JSON_BIGINT_AS_STRING;
 
@@ -112,7 +112,7 @@ final class ApiSnmpClient implements SnmpClient
     }
 
     /**
-     * @param array<string, mixed> $requestParameters
+     * @param array{requests: iterable<array{oids: iterable<string>}>} $requestParameters
      *
      * @return list<list<string>>
      */
@@ -179,7 +179,7 @@ final class ApiSnmpClient implements SnmpClient
     }
 
     /**
-     * @param array<string, mixed> $requestParameters
+     * @param array{requests: iterable<array{oids: iterable<string>}>} $requestParameters
      *
      * @return list<string>
      */

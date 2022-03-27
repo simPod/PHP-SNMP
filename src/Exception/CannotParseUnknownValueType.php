@@ -6,7 +6,7 @@ namespace SimPod\PhpSnmp\Exception;
 
 use RuntimeException;
 
-use function Safe\sprintf;
+use function sprintf;
 
 final class CannotParseUnknownValueType extends RuntimeException implements SnmpException
 {

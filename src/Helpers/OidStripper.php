@@ -9,10 +9,10 @@ use SimPod\PhpSnmp\Transport\Request;
 use SimPod\PhpSnmp\Transport\SnmpClient;
 
 use function array_key_first;
-use function Safe\substr;
 use function strlen;
 use function strpos;
 use function strrpos;
+use function substr;
 
 final class OidStripper
 {

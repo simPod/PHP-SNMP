@@ -23,7 +23,7 @@ abstract class BaseTestCase extends TestCase
         }
     }
 
-    /** @return array<string, string|null> */
+    /** @return array<string, mixed> */
     private static function getExceptionProperties(Throwable $throwable): array
     {
         return array_intersect_key(get_object_vars($throwable), ['host' => null, 'oids' => null]);
