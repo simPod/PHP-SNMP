@@ -57,11 +57,11 @@ final class FallbackSnmpClient implements SnmpClient
     }
 
     /**
-     * @param callable(SnmpClient): array<T, mixed> $requestCallback
+     * @param callable(SnmpClient): T $requestCallback
      *
-     * @return array<T, array<string, mixed>>
+     * @return T
      *
-     * @template T
+     * @template T of array
      */
     private function tryClients(callable $requestCallback): array
     {

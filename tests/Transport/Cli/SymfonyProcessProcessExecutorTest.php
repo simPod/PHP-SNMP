@@ -11,7 +11,7 @@ use SimPod\PhpSnmp\Transport\Cli\SymfonyProcessProcessExecutor;
 use function bin2hex;
 use function microtime;
 use function random_bytes;
-use function Safe\sprintf;
+use function sprintf;
 
 final class SymfonyProcessProcessExecutorTest extends TestCase
 {

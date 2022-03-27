@@ -1,0 +1,12 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Function shell_exec is unsafe to use\\. It can return FALSE instead of throwing an exception\\. Please add 'use function Safe\\\\shell_exec;' at the beginning of the file to use the variant provided by the 'thecodingmachine/safe' library\\.$#"
+			count: 1
+			path: tests/Transport/CliSnmpClientTest.php
+
+		-
+			message: "#^Function shell_exec is unsafe to use\\. It can return FALSE instead of throwing an exception\\. Please add 'use function Safe\\\\shell_exec;' at the beginning of the file to use the variant provided by the 'thecodingmachine/safe' library\\.$#"
+			count: 1
+			path: tests/Transport/ExtensionSnmpClientTest.php
+

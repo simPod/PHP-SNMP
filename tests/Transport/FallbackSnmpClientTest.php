@@ -106,9 +106,11 @@ final class FallbackSnmpClientTest extends TestCase
         self::assertSame($expected, $result);
         self::assertCount(2, $logger->records);
 
+        /** @var array<string, mixed> $logEntry */
         $logEntry = $logger->records[0];
         self::assertSame('SNMP request failed', $logEntry['message']);
         self::assertSame('warning', $logEntry['level']);
+        self::assertIsArray($logEntry['context']);
         self::assertSame(0, $logEntry['context']['clientKey']);
         self::assertSame((new ReflectionClass($client1))->getShortName(), $logEntry['context']['client']);
         self::assertSame($exception1, $logEntry['context']['exception']);
@@ -116,6 +118,7 @@ final class FallbackSnmpClientTest extends TestCase
         $logEntry = $logger->records[1];
         self::assertSame('SNMP request failed', $logEntry['message']);
         self::assertSame('warning', $logEntry['level']);
+        self::assertIsArray($logEntry['context']);
         self::assertSame(1, $logEntry['context']['clientKey']);
         self::assertSame((new ReflectionClass($client1))->getShortName(), $logEntry['context']['client']);
         self::assertSame($exception2, $logEntry['context']['exception']);

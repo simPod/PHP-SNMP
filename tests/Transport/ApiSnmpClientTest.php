@@ -22,7 +22,7 @@ use SimPod\PhpSnmp\Transport\Request;
 
 use function Safe\json_decode;
 use function Safe\json_encode;
-use function Safe\sprintf;
+use function sprintf;
 
 use const JSON_BIGINT_AS_STRING;
 

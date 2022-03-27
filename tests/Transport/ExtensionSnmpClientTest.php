@@ -13,10 +13,10 @@ use SimPod\PhpSnmp\Exception\TimeoutReached;
 use SimPod\PhpSnmp\Tests\BaseTestCase;
 use SimPod\PhpSnmp\Transport\ExtensionSnmpClient;
 
+use function proc_get_status;
 use function proc_open;
-use function Safe\proc_get_status;
-use function Safe\sprintf;
 use function shell_exec;
+use function sprintf;
 
 final class ExtensionSnmpClientTest extends BaseTestCase
 {
