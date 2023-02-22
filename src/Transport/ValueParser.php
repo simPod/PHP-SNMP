@@ -27,12 +27,11 @@ final class ValueParser
         switch ($type) {
             case 'Counter64':
             case 'IpAddress':
+            case 'STRING':
             case 'OID':
                 return $value;
             case 'Hex-STRING':
                 return str_replace("\n", '', $value);
-            case 'STRING':
-                return $value;
             case 'INTEGER':
             case 'Counter32':
             case 'Gauge32':
