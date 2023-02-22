@@ -53,16 +53,14 @@ final class SimpleBatchTest extends TestCase
 
         $snmpClient
             ->expects(self::exactly(2))
-            ->method('walk')
             ->id('walk')
+            ->method('walk')
             ->after('get')
-            ->withConsecutive(
-                ['.1.2.3', 10],
-                ['.3.2.1', 10]
-            )
-            ->willReturnOnConsecutiveCalls(
-                ['.1.2.3.4.5' => 12345],
-                ['.3.2.1.1.2' => 32112]
+            ->willReturnMap(
+                [
+                    ['.1.2.3', 10, ['.1.2.3.4.5' => 12345]],
+                    ['.3.2.1', 10,['.3.2.1.1.2' => 32112]],
+                ]
             );
 
         $snmpClient
