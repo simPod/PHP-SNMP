@@ -10,6 +10,7 @@
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true,
+            "php-http/discovery": true,
             "phpstan/extension-installer": true,
             "roave/you-are-using-it-wrong": true
         },
