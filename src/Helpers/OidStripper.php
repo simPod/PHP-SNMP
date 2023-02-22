@@ -76,8 +76,8 @@ final class OidStripper
      * @param array<mixed, Request> $requests
      * @psalm-param array<T, Request> $requests
      *
-     * @return array<mixed, array<string, mixed>>
-     * @psalm-return array<T, array<string, mixed>>
+     * @return array<mixed, array<mixed>>
+     * @psalm-return array<T, array<mixed>>
      *
      * @psalm-template T
      */
