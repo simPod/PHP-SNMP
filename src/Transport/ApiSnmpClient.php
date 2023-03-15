@@ -30,7 +30,7 @@ use const JSON_BIGINT_AS_STRING;
 
 final class ApiSnmpClient implements SnmpClient
 {
-    private const API_PATH = '/snmp-proxy';
+    private const ApiPath = '/snmp-proxy';
 
     public function __construct(
         private ClientInterface $client,
@@ -89,7 +89,7 @@ final class ApiSnmpClient implements SnmpClient
 
                     return $requestArray;
                 },
-                array_values($requests)
+                array_values($requests),
             ),
         ];
 
@@ -118,7 +118,7 @@ final class ApiSnmpClient implements SnmpClient
      */
     private function doExecuteRequest(array $requestParameters): array
     {
-        $request = $this->requestFactory->createRequest('POST', $this->apiHostUrl . self::API_PATH)
+        $request = $this->requestFactory->createRequest('POST', $this->apiHostUrl . self::ApiPath)
             ->withBody($this->streamFactory->createStream(json_encode($requestParameters)));
 
         try {
@@ -134,7 +134,7 @@ final class ApiSnmpClient implements SnmpClient
             $error = sprintf(
                 'Response is not valid JSON [HTTP %d]: "%s"',
                 $response->getStatusCode(),
-                (string) $response->getBody()
+                (string) $response->getBody(),
             );
 
             throw GeneralException::new($error, $throwable, $this->host, $this->getRequestsOids($requestParameters));
@@ -161,7 +161,7 @@ final class ApiSnmpClient implements SnmpClient
                 $result['error'],
                 null,
                 $this->host,
-                $this->getRequestsOids($requestParameters)
+                $this->getRequestsOids($requestParameters),
             );
         }
 
@@ -169,7 +169,7 @@ final class ApiSnmpClient implements SnmpClient
             $error = sprintf(
                 'Unexpected HTTP status code: %d, response: "%s"',
                 $response->getStatusCode(),
-                (string) $response->getBody()
+                (string) $response->getBody(),
             );
 
             throw GeneralException::new($error, null, $this->host, $this->getRequestsOids($requestParameters));

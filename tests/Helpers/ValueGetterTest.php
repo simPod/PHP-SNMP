@@ -47,7 +47,7 @@ final class ValueGetterTest extends BaseTestCase
             NoSuchInstanceExists::fromOid('', '.1.2.3'),
             static function () use ($snmpClient): void {
                 ValueGetter::firstFromSameTree($snmpClient, '.1.2.3');
-            }
+            },
         );
     }
 
@@ -60,7 +60,7 @@ final class ValueGetterTest extends BaseTestCase
                 [
                     '.1.2.3.1' => 'a',
                     '.1.2.6.1' => 'b',
-                ]
+                ],
             );
 
         $expected = ['a', 'b'];
@@ -77,14 +77,14 @@ final class ValueGetterTest extends BaseTestCase
                 [
                     '.1.2.3.1' => 'a',
                     '.1.2.7.1' => 'b',
-                ]
+                ],
             );
 
         self::assertSnmpException(
             NoSuchInstanceExists::fromOid('', '.1.2.6'),
             static function () use ($snmpClient): void {
                 ValueGetter::firstFromSameTrees($snmpClient, ['.1.2.3', '.1.2.6']);
-            }
+            },
         );
     }
 }

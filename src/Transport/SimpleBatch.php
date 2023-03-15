@@ -18,15 +18,15 @@ trait SimpleBatch
         $result = [];
         foreach ($requests as $key => $request) {
             switch ($request->type) {
-                case Request::GET:
+                case Request::Get:
                     $result[$key] = $this->get($request->oids);
 
                     break;
-                case Request::GET_NEXT:
+                case Request::GetNext:
                     $result[$key] = $this->getNext($request->oids);
 
                     break;
-                case Request::WALK:
+                case Request::Walk:
                     $result[$key] = $this->walk($request->oids[0], (int) $request->maxRepetitions);
             }
         }

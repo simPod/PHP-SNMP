@@ -76,7 +76,7 @@ final class FallbackSnmpClient implements SnmpClient
                         'clientKey' => $key,
                         'client' => $reflection->getShortName(),
                         'exception' => $exception,
-                    ]
+                    ],
                 );
             }
         }

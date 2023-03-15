@@ -23,7 +23,7 @@ use function sprintf;
 
 final class CliSnmpClientTest extends BaseTestCase
 {
-    private const SNMP_HOST = '127.0.0.1:15000';
+    private const SnmpHost = '127.0.0.1:15000';
 
     /** @var resource|null */
     private static $process;
@@ -36,7 +36,7 @@ final class CliSnmpClientTest extends BaseTestCase
     public static function setUpBeforeClass(): void
     {
         $command = 'snmpsimd.py --v2c-arch --data-dir %s --agent-udpv4-endpoint %s';
-        $command = sprintf($command, __DIR__ . '/data', self::SNMP_HOST);
+        $command = sprintf($command, __DIR__ . '/data', self::SnmpHost);
 
         $process = proc_open($command, [0 => ['file', '/dev/null', 'w'], 2 => ['file', '/dev/null', 'w']], $pipes);
         if ($process === false) {
@@ -65,7 +65,7 @@ final class CliSnmpClientTest extends BaseTestCase
                 '.1.3.6.1.2.1.25.2.3.1.2.1' => '.1.3.6.1.2.1.25.2.1.2',
                 '.1.3.6.1.2.1.25.2.3.1.2.4' => '.1.3.6.1.2.1.25.2.1.9',
             ],
-            $result
+            $result,
         );
     }
 
@@ -78,7 +78,7 @@ final class CliSnmpClientTest extends BaseTestCase
                 '.1.3.6.1.2.1.25.2.3.1.2.1' => '.1.3.6.1.2.1.25.2.1.2',
                 '.1.3.6.1.2.1.25.2.3.1.2.4' => '.1.3.6.1.2.1.25.2.1.9',
             ],
-            $result
+            $result,
         );
     }
 
@@ -92,7 +92,7 @@ final class CliSnmpClientTest extends BaseTestCase
                 '.1.3.6.1.2.1.31.1.1.1.15.1000003' => 60000,
                 '.1.3.6.1.2.1.31.1.1.1.15.1000005' => 80000,
             ],
-            $result
+            $result,
         );
     }
 
@@ -113,7 +113,7 @@ final class CliSnmpClientTest extends BaseTestCase
                 '.1.3.6.1.2.1.31.1.1.1.15.1000003' => 60000,
                 '.1.3.6.1.2.1.31.1.1.1.15.1000005' => 80000,
             ],
-            $result
+            $result,
         );
     }
 
@@ -127,7 +127,7 @@ final class CliSnmpClientTest extends BaseTestCase
                 '.1.3.6.1.2.1.31.1.1.1.15.1000003' => 60000,
                 '.1.3.6.1.2.1.31.1.1.1.15.1000005' => 80000,
             ],
-            $result
+            $result,
         );
     }
 
@@ -181,7 +181,7 @@ final class CliSnmpClientTest extends BaseTestCase
                     . 'FF FF FF FF FF FF FF',
                 '.1.3.6.1.6.3.10.2.1.3.0' => 2937024,
             ],
-            $result
+            $result,
         );
     }
 
@@ -205,7 +205,7 @@ final class CliSnmpClientTest extends BaseTestCase
             InvalidVersionProvided::new('whatever'),
             function (): void {
                 $this->createCliSnmp('whatever')->walk('.1.15');
-            }
+            },
         );
     }
 
@@ -218,40 +218,40 @@ final class CliSnmpClientTest extends BaseTestCase
         $processExecutor->method('execute')->willReturn($output);
 
         self::assertSnmpException(
-            NoSuchObjectExists::fromOid(self::SNMP_HOST, '.1.3.5'),
+            NoSuchObjectExists::fromOid(self::SnmpHost, '.1.3.5'),
             function () use ($processExecutor): void {
                 $this->createCliSnmp('2c', $processExecutor)->walk('.1.3.5');
-            }
+            },
         );
     }
 
     public function testWalkWithNoSuchInstanceError(): void
     {
         self::assertSnmpException(
-            NoSuchInstanceExists::fromOid(self::SNMP_HOST, '.1.3.5'),
+            NoSuchInstanceExists::fromOid(self::SnmpHost, '.1.3.5'),
             function (): void {
                 $this->createCliSnmp()->walk('.1.3.5');
-            }
+            },
         );
     }
 
     public function testWalkWithSnmpVersion1AndNoSuchInstanceError(): void
     {
         self::assertSnmpException(
-            NoSuchInstanceExists::fromOid(self::SNMP_HOST, '.1.3.5'),
+            NoSuchInstanceExists::fromOid(self::SnmpHost, '.1.3.5'),
             function (): void {
                 $this->createCliSnmp('1')->walk('.1.3.5');
-            }
+            },
         );
     }
 
     public function testWalkWithEndOfMibError(): void
     {
         self::assertSnmpException(
-            EndOfMibReached::fromOid(self::SNMP_HOST, '.1.15'),
+            EndOfMibReached::fromOid(self::SnmpHost, '.1.15'),
             function (): void {
                 $this->createCliSnmp()->walk('.1.15');
-            }
+            },
         );
     }
 
@@ -261,47 +261,47 @@ final class CliSnmpClientTest extends BaseTestCase
             EndOfMibReached::new(),
             function (): void {
                 $this->createCliSnmp('1')->walk('.1.15');
-            }
+            },
         );
     }
 
     public function testGetWithNoSuchInstanceError(): void
     {
         self::assertSnmpException(
-            NoSuchInstanceExists::fromOid(self::SNMP_HOST, '.1.3.5'),
+            NoSuchInstanceExists::fromOid(self::SnmpHost, '.1.3.5'),
             function (): void {
                 $this->createCliSnmp()->get(['.1.3.5']);
-            }
+            },
         );
     }
 
     public function testGetWithSnmpVersion1AndNoSuchInstanceError(): void
     {
         self::assertSnmpException(
-            NoSuchInstanceExists::fromOid(self::SNMP_HOST, '.1.3.5'),
+            NoSuchInstanceExists::fromOid(self::SnmpHost, '.1.3.5'),
             function (): void {
                 $this->createCliSnmp('1')->get(['.1.3.5']);
-            }
+            },
         );
     }
 
     public function testGetNextWithEndOfMibError(): void
     {
         self::assertSnmpException(
-            EndOfMibReached::fromOid(self::SNMP_HOST, '.1.15'),
+            EndOfMibReached::fromOid(self::SnmpHost, '.1.15'),
             function (): void {
                 $this->createCliSnmp()->getNext(['.1.15']);
-            }
+            },
         );
     }
 
     public function testGetNextWithSnmpVersion1AndEndOfMibError(): void
     {
         self::assertSnmpException(
-            EndOfMibReached::fromOid(self::SNMP_HOST, '.1.15'),
+            EndOfMibReached::fromOid(self::SnmpHost, '.1.15'),
             function (): void {
                 $this->createCliSnmp('1')->getNext(['.1.15']);
-            }
+            },
         );
     }
 
@@ -311,7 +311,7 @@ final class CliSnmpClientTest extends BaseTestCase
             CannotParseUnknownValueType::new('OPAQUE'),
             function (): void {
                 $this->createCliSnmp()->walk('.1.6.6.6.666');
-            }
+            },
         );
     }
 
@@ -322,7 +322,7 @@ final class CliSnmpClientTest extends BaseTestCase
             static function (): void {
                 $snmp = new CliSnmpClient('127.0.0.1:1', 'public', 1, 0, '2c');
                 $snmp->get(['.1.3.6.1.2.1.1.1.0']);
-            }
+            },
         );
     }
 
@@ -333,7 +333,7 @@ final class CliSnmpClientTest extends BaseTestCase
             static function (): void {
                 $snmp = new CliSnmpClient('127.0.0.1:1', 'public', 1, 0, '1');
                 $snmp->get(['.1.3.6.1.2.1.1.1.0']);
-            }
+            },
         );
     }
 
@@ -344,7 +344,7 @@ final class CliSnmpClientTest extends BaseTestCase
             static function (): void {
                 $snmp = new CliSnmpClient('127.0.0.1:1', 'public', 1, 0, '2c');
                 $snmp->getNext(['.1.3.6.1.2.1.1.1.0']);
-            }
+            },
         );
     }
 
@@ -355,7 +355,7 @@ final class CliSnmpClientTest extends BaseTestCase
             static function (): void {
                 $snmp = new CliSnmpClient('127.0.0.1:1', 'public', 1, 0, '1');
                 $snmp->getNext(['.1.3.6.1.2.1.1.1.0']);
-            }
+            },
         );
     }
 
@@ -366,7 +366,7 @@ final class CliSnmpClientTest extends BaseTestCase
             static function (): void {
                 $snmp = new CliSnmpClient('127.0.0.1:1', 'public', 1, 0, '2c');
                 $snmp->walk('.1.3.6.1.2.1.1');
-            }
+            },
         );
     }
 
@@ -377,7 +377,7 @@ final class CliSnmpClientTest extends BaseTestCase
             static function (): void {
                 $snmp = new CliSnmpClient('127.0.0.1:1', 'public', 1, 0, '1');
                 $snmp->walk('.1.3.6.1.2.1.1');
-            }
+            },
         );
     }
 
@@ -387,10 +387,10 @@ final class CliSnmpClientTest extends BaseTestCase
         $processExecutor->method('execute')->willThrowException($exception = GeneralException::new('test'));
 
         self::assertSnmpException(
-            GeneralException::new('test', $exception, self::SNMP_HOST, ['.1.3.5']),
+            GeneralException::new('test', $exception, self::SnmpHost, ['.1.3.5']),
             function () use ($processExecutor): void {
                 $this->createCliSnmp('2c', $processExecutor)->get(['.1.3.5']);
-            }
+            },
         );
     }
 
@@ -400,10 +400,10 @@ final class CliSnmpClientTest extends BaseTestCase
         $processExecutor->method('execute')->willThrowException($exception = new Exception('test'));
 
         self::assertSnmpException(
-            GeneralException::new('Failed to execute SNMP CLI command', $exception, self::SNMP_HOST, ['.1.3.5']),
+            GeneralException::new('Failed to execute SNMP CLI command', $exception, self::SnmpHost, ['.1.3.5']),
             function () use ($processExecutor): void {
                 $this->createCliSnmp('2c', $processExecutor)->get(['.1.3.5']);
-            }
+            },
         );
     }
 
@@ -413,10 +413,10 @@ final class CliSnmpClientTest extends BaseTestCase
         $processExecutor->method('execute')->willThrowException($exception = GeneralException::new('test'));
 
         self::assertSnmpException(
-            GeneralException::new('test', $exception, self::SNMP_HOST, ['.1.3.5']),
+            GeneralException::new('test', $exception, self::SnmpHost, ['.1.3.5']),
             function () use ($processExecutor): void {
                 $this->createCliSnmp('2c', $processExecutor)->getNext(['.1.3.5']);
-            }
+            },
         );
     }
 
@@ -426,10 +426,10 @@ final class CliSnmpClientTest extends BaseTestCase
         $processExecutor->method('execute')->willThrowException($exception = new Exception('test'));
 
         self::assertSnmpException(
-            GeneralException::new('Failed to execute SNMP CLI command', $exception, self::SNMP_HOST, ['.1.3.5']),
+            GeneralException::new('Failed to execute SNMP CLI command', $exception, self::SnmpHost, ['.1.3.5']),
             function () use ($processExecutor): void {
                 $this->createCliSnmp('2c', $processExecutor)->getNext(['.1.3.5']);
-            }
+            },
         );
     }
 
@@ -439,10 +439,10 @@ final class CliSnmpClientTest extends BaseTestCase
         $processExecutor->method('execute')->willThrowException($exception = GeneralException::new('test'));
 
         self::assertSnmpException(
-            GeneralException::new('test', $exception, self::SNMP_HOST, ['.1.3.5']),
+            GeneralException::new('test', $exception, self::SnmpHost, ['.1.3.5']),
             function () use ($processExecutor): void {
                 $this->createCliSnmp('2c', $processExecutor)->walk('.1.3.5');
-            }
+            },
         );
     }
 
@@ -452,15 +452,15 @@ final class CliSnmpClientTest extends BaseTestCase
         $processExecutor->method('execute')->willThrowException($exception = new Exception('test'));
 
         self::assertSnmpException(
-            GeneralException::new('Failed to execute SNMP CLI command', $exception, self::SNMP_HOST, ['.1.3.5']),
+            GeneralException::new('Failed to execute SNMP CLI command', $exception, self::SnmpHost, ['.1.3.5']),
             function () use ($processExecutor): void {
                 $this->createCliSnmp('2c', $processExecutor)->walk('.1.3.5');
-            }
+            },
         );
     }
 
     private function createCliSnmp(string $version = '2c', ProcessExecutor|null $processExecutor = null): CliSnmpClient
     {
-        return new CliSnmpClient(self::SNMP_HOST, 'public', 1, 3, $version, $processExecutor);
+        return new CliSnmpClient(self::SnmpHost, 'public', 1, 3, $version, $processExecutor);
     }
 }
