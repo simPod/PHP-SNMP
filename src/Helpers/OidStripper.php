@@ -88,7 +88,7 @@ final class OidStripper
         $result = [];
         foreach ($requests as $requestKey => $request) {
             switch ($request->type) {
-                case Request::GET:
+                case Request::Get:
                     $i = 0;
                     $getResult = [];
 
@@ -100,7 +100,7 @@ final class OidStripper
                     $result[$requestKey] = $getResult;
 
                     break;
-                case Request::GET_NEXT:
+                case Request::GetNext:
                     $i = 0;
                     $getNextResult = [];
 
@@ -116,7 +116,7 @@ final class OidStripper
                     $result[$requestKey] = $getNextResult;
 
                     break;
-                case Request::WALK:
+                case Request::Walk:
                     $stripLength = strlen($request->oids[0]) + 1;
 
                     $walkResult = [];

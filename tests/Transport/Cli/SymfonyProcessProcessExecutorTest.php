@@ -28,7 +28,7 @@ final class SymfonyProcessProcessExecutorTest extends TestCase
     public function testTimeout(): void
     {
         $this->expectExceptionObject(
-            GeneralException::new(sprintf('The process "%s" exceeded the timeout of 1 seconds', "'sleep' '5'"))
+            GeneralException::new(sprintf('The process "%s" exceeded the timeout of 1 seconds', "'sleep' '5'")),
         );
 
         $time = microtime(true);

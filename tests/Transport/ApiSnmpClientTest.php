@@ -28,8 +28,7 @@ use const JSON_BIGINT_AS_STRING;
 
 final class ApiSnmpClientTest extends BaseTestCase
 {
-    /** @var Client&MockObject */
-    private $client;
+    private Client&MockObject $client;
 
     public function testGet(): void
     {
@@ -67,8 +66,8 @@ JSON;
 
                         return (string) $request->getUri() === 'http://localhost/snmp-proxy'
                             && self::jsonIsIdentical($json, (string) $request->getBody());
-                    }
-                )
+                    },
+                ),
             )
             ->willReturn(new Response(200, [], $response));
 
@@ -79,7 +78,7 @@ JSON;
                 '.1.3.6.1.2.1.25.2.3.1.2.1' => '.1.3.6.1.2.1.25.2.1.2',
                 '.1.3.6.1.2.1.25.2.3.1.2.4' => '.1.3.6.1.2.1.25.2.1.9',
             ],
-            $result
+            $result,
         );
     }
 
@@ -122,8 +121,8 @@ JSON;
 
                         return (string) $request->getUri() === 'http://localhost/snmp-proxy'
                             && self::jsonIsIdentical($json, (string) $request->getBody());
-                    }
-                )
+                    },
+                ),
             )
             ->willReturn(new Response(200, [], $response));
 
@@ -134,7 +133,7 @@ JSON;
                 '.1.3.6.1.2.1.25.2.3.1.2.1' => '.1.3.6.1.2.1.25.2.1.2',
                 '.1.3.6.1.2.1.25.2.3.1.2.4' => '.1.3.6.1.2.1.25.2.1.9',
             ],
-            $result
+            $result,
         );
     }
 
@@ -176,8 +175,8 @@ JSON;
 
                         return (string) $request->getUri() === 'http://localhost/snmp-proxy'
                             && self::jsonIsIdentical($json, (string) $request->getBody());
-                    }
-                )
+                    },
+                ),
             )
             ->willReturn(new Response(200, [], $response));
 
@@ -189,7 +188,7 @@ JSON;
                 '.1.3.6.1.2.1.31.1.1.1.15.1000003' => 60000,
                 '.1.3.6.1.2.1.31.1.1.1.15.1000005' => 80000,
             ],
-            $result
+            $result,
         );
     }
 
@@ -250,8 +249,8 @@ JSON;
 
                         return (string) $request->getUri() === 'http://localhost/snmp-proxy'
                             && self::jsonIsIdentical($json, (string) $request->getBody());
-                    }
-                )
+                    },
+                ),
             )
             ->willReturn(new Response(200, [], $response));
 
@@ -260,7 +259,7 @@ JSON;
                 'get' => Request::get(['.1.3.6.1.2.1.25.2.3.1.2.1', '.1.3.6.1.2.1.25.2.3.1.2.4']),
                 'walk' => Request::walk('.1.3.6.1.2.1.31.1.1.1.15'),
                 'getNext' => Request::getNext(['.1.3.6.1.2.1.25.2.3.1.2', '.1.3.6.1.2.1.25.2.3.1.2.3']),
-            ]
+            ],
         );
 
         self::assertSame(
@@ -279,7 +278,7 @@ JSON;
                     '.1.3.6.1.2.1.25.2.3.1.2.4' => '.1.3.6.1.2.1.25.2.1.9',
                 ],
             ],
-            $result
+            $result,
         );
     }
 
@@ -304,7 +303,7 @@ JSON;
             'ipsum',
             50,
             5,
-            '1'
+            '1',
         );
 
         $response = <<<'JSON'
@@ -338,8 +337,8 @@ JSON;
 
                         return (string) $request->getUri() === 'http://somewhere/snmp-proxy'
                             && self::jsonIsIdentical($json, (string) $request->getBody());
-                    }
-                )
+                    },
+                ),
             )
             ->willReturn(new Response(200, [], $response));
 
@@ -362,7 +361,7 @@ JSON;
             'ipsum',
             50,
             5,
-            '1'
+            '1',
         );
 
         $response = '{wow this is not a valid json response';
@@ -373,11 +372,11 @@ JSON;
                 sprintf('Response is not valid JSON [HTTP 500]: "%s"', $response),
                 null,
                 'lorem',
-                ['.1.3.6']
+                ['.1.3.6'],
             ),
             static function () use ($apiSnmp): void {
                 $apiSnmp->get(['.1.3.6']);
-            }
+            },
         );
     }
 
@@ -395,7 +394,7 @@ JSON;
             'ipsum',
             50,
             5,
-            '1'
+            '1',
         );
 
         $response = '{"wow": "this server responds with JSON"}';
@@ -406,7 +405,7 @@ JSON;
             GeneralException::new($error, null, 'lorem', ['.1.3.6']),
             static function () use ($apiSnmp): void {
                 $apiSnmp->get(['.1.3.6']);
-            }
+            },
         );
     }
 
@@ -420,7 +419,7 @@ JSON;
             EndOfMibReached::fromOid('127.0.0.1', '.1.15'),
             static function () use ($apiSnmp): void {
                 $apiSnmp->walk('.1.15');
-            }
+            },
         );
     }
 
@@ -434,7 +433,7 @@ JSON;
             NoSuchInstanceExists::fromOid('127.0.0.1', '.1.3.6.1.2.1.1.1'),
             static function () use ($apiSnmp): void {
                 $apiSnmp->walk('.1.3.6.1.2.1.1.1');
-            }
+            },
         );
     }
 
@@ -448,7 +447,7 @@ JSON;
             NoSuchObjectExists::fromOid('127.0.0.1', '.1.4'),
             static function () use ($apiSnmp): void {
                 $apiSnmp->walk('.1.4');
-            }
+            },
         );
     }
 
@@ -462,7 +461,7 @@ JSON;
             TimeoutReached::fromOid('127.0.0.1', '.1.4'),
             static function () use ($apiSnmp): void {
                 $apiSnmp->walk('.1.4');
-            }
+            },
         );
     }
 
@@ -476,7 +475,7 @@ JSON;
             GeneralException::new('some error', null, '127.0.0.1', ['.1.4']),
             static function () use ($apiSnmp): void {
                 $apiSnmp->walk('.1.4');
-            }
+            },
         );
     }
 
@@ -490,7 +489,7 @@ JSON;
             GeneralException::new('something unexpected happened', null, '127.0.0.1', ['.1.4']),
             static function () use ($apiSnmp): void {
                 $apiSnmp->walk('.1.4');
-            }
+            },
         );
     }
 

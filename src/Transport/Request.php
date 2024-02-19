@@ -6,33 +6,32 @@ namespace SimPod\PhpSnmp\Transport;
 
 final class Request
 {
-    public const GET = 'get';
-    public const GET_NEXT = 'getNext';
-    public const WALK = 'walk';
-
-    /** @var list<string> */
-    public $oids;
+    public const Get = 'get';
+    public const GetNext = 'getNext';
+    public const Walk = 'walk';
 
     /** @param list<string> $oids */
-    private function __construct(public string $type, array $oids, public int|null $maxRepetitions = null)
-    {
-        $this->oids = $oids;
+    private function __construct(
+        public string $type,
+        public array $oids,
+        public int|null $maxRepetitions = null,
+    ) {
     }
 
     /** @param list<string> $oids */
     public static function get(array $oids): self
     {
-        return new self(self::GET, $oids);
+        return new self(self::Get, $oids);
     }
 
     /** @param list<string> $oids */
     public static function getNext(array $oids): self
     {
-        return new self(self::GET_NEXT, $oids);
+        return new self(self::GetNext, $oids);
     }
 
     public static function walk(string $oid, int $maxRepetitions = 20): self
     {
-        return new self(self::WALK, [$oid], $maxRepetitions);
+        return new self(self::Walk, [$oid], $maxRepetitions);
     }
 }

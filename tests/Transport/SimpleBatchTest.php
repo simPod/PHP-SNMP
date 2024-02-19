@@ -60,7 +60,7 @@ final class SimpleBatchTest extends TestCase
                 [
                     ['.1.2.3', 10, ['.1.2.3.4.5' => 12345]],
                     ['.3.2.1', 10,['.3.2.1.1.2' => 32112]],
-                ]
+                ],
             );
 
         $snmpClient
