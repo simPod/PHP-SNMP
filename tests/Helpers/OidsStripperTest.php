@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Tests\Helpers;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SimPod\PhpSnmp\Exception\GeneralException;
 use SimPod\PhpSnmp\Helpers\OidStripper;
 use SimPod\PhpSnmp\Transport\Request;
 use SimPod\PhpSnmp\Transport\SnmpClient;
 
+#[CoversClass(OidStripper::class)]
 final class OidsStripperTest extends TestCase
 {
     public function testStripParent(): void

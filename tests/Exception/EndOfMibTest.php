@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace SimPod\PhpSnmp\Tests\Exception;
 
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SimPod\PhpSnmp\Exception\EndOfMibReached;
 use SimPod\PhpSnmp\Tests\BaseTestCase;
 
+#[CoversClass(EndOfMibReached::class)]
 final class EndOfMibTest extends BaseTestCase
 {
     public function testFromThrowable(): void
