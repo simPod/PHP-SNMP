@@ -4,20 +4,21 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Tests\Transport;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SimPod\PhpSnmp\Exception\CannotParseUnknownValueType;
 use SimPod\PhpSnmp\Transport\ValueParser;
 
 final class ValueParserTest extends TestCase
 {
-    /** @dataProvider providerParse */
+    #[DataProvider('providerParse')]
     public function testParse(string $raw, mixed $expected): void
     {
         self::assertSame($expected, ValueParser::parse($raw));
     }
 
     /** @return iterable<list<mixed>> */
-    public function providerParse(): iterable
+    public static function providerParse(): iterable
     {
         yield 'Counter64' => ['Counter64: 123456', '123456'];
         yield 'Hex-STRING' => ['Hex-STRING: A1 B2 C3', 'A1 B2 C3'];

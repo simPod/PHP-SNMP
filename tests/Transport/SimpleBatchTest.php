@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Tests\Transport;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SimPod\PhpSnmp\Exception\NoRequestsProvided;
 use SimPod\PhpSnmp\Transport\Request;
@@ -15,43 +16,55 @@ final class SimpleBatchTest extends TestCase
     /**
      * @param list<Request> $requests
      * @param list<array<string, mixed>> $result
-     *
-     * @dataProvider providerBatch
      */
-    public function testBatch(SnmpClient $snmpClient, array $requests, array $result): void
+    #[DataProvider('providerBatch')]
+    public function testBatch(callable $snmpClientFactory, array $requests, array $result): void
     {
-        $batchSnmpClient = $this->createBatchSnmpClient($snmpClient);
+        $batchSnmpClient = $this->createBatchSnmpClient($snmpClientFactory($this));
 
         self::assertSame($result, $batchSnmpClient->batch($requests));
     }
 
     /** @return iterable<mixed> */
-    public function providerBatch(): iterable
+    public static function providerBatch(): iterable
     {
-        $snmpClient = $this->createMock(SnmpClient::class);
-        $snmpClient->expects(self::once())->method('get')->with(['.1.2.3'])->willReturn(['.1.2.3' => 123]);
+        $snmpClientFactory = static function (TestCase $testCase) {
+            $snmpClient = $testCase->createMock(SnmpClient::class);
+            $snmpClient->expects(self::once())->method('get')->with(['.1.2.3'])->willReturn(['.1.2.3' => 123]);
 
-        yield 'single get' => [$snmpClient, [Request::get(['.1.2.3'])], [['.1.2.3' => 123]]];
+            return $snmpClient;
+        };
 
-        $snmpClient = $this->createMock(SnmpClient::class);
-        $snmpClient->expects(self::once())->method('getNext')->with(['.1.2.3'])->willReturn(['.1.2.3.1' => 1231]);
+        yield 'single get' => [$snmpClientFactory, [Request::get(['.1.2.3'])], [['.1.2.3' => 123]]];
 
-        yield 'single getNext' => [$snmpClient, [Request::getNext(['.1.2.3'])], [['.1.2.3.1' => 1231]]];
+        $snmpClientFactory = static function (TestCase $testCase) {
+            $snmpClient = $testCase->createMock(SnmpClient::class);
+            $snmpClient->expects(self::once())->method('getNext')->with(['.1.2.3'])->willReturn(['.1.2.3.1' => 1231]);
 
-        $snmpClient = $this->createMock(SnmpClient::class);
-        $snmpClient->expects(self::once())->method('walk')->with('.1.2.3', 10)->willReturn(['.1.2.3.4.5' => 12345]);
+            return $snmpClient;
+        };
 
-        yield 'single walk' => [$snmpClient, [Request::walk('.1.2.3', 10)], [['.1.2.3.4.5' => 12345]]];
+        yield 'single getNext' => [$snmpClientFactory, [Request::getNext(['.1.2.3'])], [['.1.2.3.1' => 1231]]];
 
-        $snmpClient = $this->createMock(SnmpClient::class);
-        $snmpClient
+        $snmpClientFactory = static function (TestCase $testCase) {
+            $snmpClient = $testCase->createMock(SnmpClient::class);
+            $snmpClient->expects(self::once())->method('walk')->with('.1.2.3', 10)->willReturn(['.1.2.3.4.5' => 12345]);
+
+            return $snmpClient;
+        };
+
+        yield 'single walk' => [$snmpClientFactory, [Request::walk('.1.2.3', 10)], [['.1.2.3.4.5' => 12345]]];
+
+        $snmpClientFactory = static function (TestCase $testCase) {
+            $snmpClient = $testCase->createMock(SnmpClient::class);
+            $snmpClient
             ->expects(self::once())
             ->id('get')
             ->method('get')
             ->with(['.1.2.3', '.4.5.6'])
             ->willReturn(['.1.2.3' => 123, '.4.5.6' => 456]);
 
-        $snmpClient
+            $snmpClient
             ->expects(self::exactly(2))
             ->id('walk')
             ->method('walk')
@@ -63,15 +76,18 @@ final class SimpleBatchTest extends TestCase
                 ],
             );
 
-        $snmpClient
+            $snmpClient
             ->expects(self::once())
             ->after('walk')
             ->method('getNext')
             ->with(['.7.8.9'])
             ->willReturn(['.7.8.9.1' => 7891]);
 
+            return $snmpClient;
+        };
+
         yield 'multiple requests' => [
-            $snmpClient,
+            $snmpClientFactory,
             [
                 'get' => Request::get(['.1.2.3', '.4.5.6']),
                 'walk' => Request::walk('.1.2.3', 10),
