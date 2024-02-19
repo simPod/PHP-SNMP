@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SimPod\PhpSnmp\Tests\Transport;
 
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SimPod\PhpSnmp\Exception\CannotParseUnknownValueType;
 use SimPod\PhpSnmp\Exception\EndOfMibReached;
 use SimPod\PhpSnmp\Exception\GeneralException;
@@ -21,6 +22,7 @@ use function proc_open;
 use function shell_exec;
 use function sprintf;
 
+#[CoversClass(CliSnmpClient::class)]
 final class CliSnmpClientTest extends BaseTestCase
 {
     private const SnmpHost = '127.0.0.1:15000';

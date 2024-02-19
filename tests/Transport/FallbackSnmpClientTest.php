@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SimPod\PhpSnmp\Tests\Transport;
 
 use ColinODell\PsrTestLogger\TestLogger;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use ReflectionClass;
@@ -14,6 +15,7 @@ use SimPod\PhpSnmp\Transport\FallbackSnmpClient;
 use SimPod\PhpSnmp\Transport\Request;
 use SimPod\PhpSnmp\Transport\SnmpClient;
 
+#[CoversClass(FallbackSnmpClient::class)]
 final class FallbackSnmpClientTest extends TestCase
 {
     public function testGet(): void
