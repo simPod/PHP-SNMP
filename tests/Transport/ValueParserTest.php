@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Tests\Transport;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SimPod\PhpSnmp\Exception\CannotParseUnknownValueType;
 use SimPod\PhpSnmp\Transport\ValueParser;
 
+#[CoversClass(ValueParser::class)]
 final class ValueParserTest extends TestCase
 {
     #[DataProvider('providerParse')]

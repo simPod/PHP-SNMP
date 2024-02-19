@@ -8,6 +8,7 @@ use Exception;
 use Http\Client\Curl\Client;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7\Response;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\RequestInterface;
 use SimPod\PhpSnmp\Exception\EndOfMibReached;
@@ -26,6 +27,7 @@ use function sprintf;
 
 use const JSON_BIGINT_AS_STRING;
 
+#[CoversClass(ApiSnmpClient::class)]
 final class ApiSnmpClientTest extends BaseTestCase
 {
     private Client&MockObject $client;

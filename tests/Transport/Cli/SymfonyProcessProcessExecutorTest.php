@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Tests\Transport\Cli;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SimPod\PhpSnmp\Exception\GeneralException;
 use SimPod\PhpSnmp\Transport\Cli\SymfonyProcessProcessExecutor;
@@ -13,6 +14,8 @@ use function microtime;
 use function random_bytes;
 use function sprintf;
 
+#[CoversClass(SymfonyProcessProcessExecutor::class)]
+#[CoversClass(GeneralException::class)]
 final class SymfonyProcessProcessExecutorTest extends TestCase
 {
     public function testError(): void
