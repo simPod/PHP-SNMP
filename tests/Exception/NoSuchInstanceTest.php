@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace SimPod\PhpSnmp\Tests\Exception;
 
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SimPod\PhpSnmp\Exception\NoSuchInstanceExists;
 
+#[CoversClass(NoSuchInstanceExists::class)]
 final class NoSuchInstanceTest extends TestCase
 {
     public function testFromThrowable(): void

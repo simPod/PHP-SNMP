@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Tests\Helpers;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use SimPod\PhpSnmp\Exception\GeneralException;
 use SimPod\PhpSnmp\Exception\NoSuchInstanceExists;
 use SimPod\PhpSnmp\Helpers\ValueGetter;
 use SimPod\PhpSnmp\Tests\BaseTestCase;
 use SimPod\PhpSnmp\Transport\SnmpClient;
 
+#[CoversClass(ValueGetter::class)]
 final class ValueGetterTest extends BaseTestCase
 {
     public function testFirst(): void
