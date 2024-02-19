@@ -32,7 +32,7 @@ final class SimpleBatchTest extends TestCase
     {
         $snmpClientFactory = static function (TestCase $testCase) {
             $snmpClient = $testCase->createMock(SnmpClient::class);
-            $snmpClient->expects(self::once())->method('get')->with(['.1.2.3'])->willReturn(['.1.2.3' => 123]);
+            $snmpClient->expects($testCase->once())->method('get')->with(['.1.2.3'])->willReturn(['.1.2.3' => 123]);
 
             return $snmpClient;
         };
@@ -41,7 +41,11 @@ final class SimpleBatchTest extends TestCase
 
         $snmpClientFactory = static function (TestCase $testCase) {
             $snmpClient = $testCase->createMock(SnmpClient::class);
-            $snmpClient->expects(self::once())->method('getNext')->with(['.1.2.3'])->willReturn(['.1.2.3.1' => 1231]);
+            $snmpClient
+                ->expects($testCase->once())
+                ->method('getNext')
+                ->with(['.1.2.3'])
+                ->willReturn(['.1.2.3.1' => 1231]);
 
             return $snmpClient;
         };
@@ -50,7 +54,10 @@ final class SimpleBatchTest extends TestCase
 
         $snmpClientFactory = static function (TestCase $testCase) {
             $snmpClient = $testCase->createMock(SnmpClient::class);
-            $snmpClient->expects(self::once())->method('walk')->with('.1.2.3', 10)->willReturn(['.1.2.3.4.5' => 12345]);
+            $snmpClient
+                ->expects($testCase->once())->method('walk')
+                ->with('.1.2.3', 10)
+                ->willReturn(['.1.2.3.4.5' => 12345]);
 
             return $snmpClient;
         };
@@ -60,14 +67,14 @@ final class SimpleBatchTest extends TestCase
         $snmpClientFactory = static function (TestCase $testCase) {
             $snmpClient = $testCase->createMock(SnmpClient::class);
             $snmpClient
-            ->expects(self::once())
+            ->expects($testCase->once())
             ->id('get')
             ->method('get')
             ->with(['.1.2.3', '.4.5.6'])
             ->willReturn(['.1.2.3' => 123, '.4.5.6' => 456]);
 
             $snmpClient
-            ->expects(self::exactly(2))
+            ->expects($testCase->exactly(2))
             ->id('walk')
             ->method('walk')
             ->after('get')
@@ -79,7 +86,7 @@ final class SimpleBatchTest extends TestCase
             );
 
             $snmpClient
-            ->expects(self::once())
+            ->expects($testCase->once())
             ->after('walk')
             ->method('getNext')
             ->with(['.7.8.9'])
@@ -118,7 +125,7 @@ final class SimpleBatchTest extends TestCase
         return new class ($snmpClient) implements SnmpClient {
             use SimpleBatch;
 
-            public function __construct(private SnmpClient $snmpClient)
+            public function __construct(private readonly SnmpClient $snmpClient)
             {
             }
 
