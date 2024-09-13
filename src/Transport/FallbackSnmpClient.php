@@ -23,7 +23,7 @@ final class FallbackSnmpClient implements SnmpClient
     public function get(array $oids): array
     {
         return $this->tryClients(
-            static fn (SnmpClient $client): array => $client->get($oids)
+            static fn (SnmpClient $client): array => $client->get($oids),
         );
     }
 
@@ -31,7 +31,7 @@ final class FallbackSnmpClient implements SnmpClient
     public function getNext(array $oids): array
     {
         return $this->tryClients(
-            static fn (SnmpClient $client): array => $client->getNext($oids)
+            static fn (SnmpClient $client): array => $client->getNext($oids),
         );
     }
 
@@ -39,7 +39,7 @@ final class FallbackSnmpClient implements SnmpClient
     public function walk(string $oid, int $maxRepetitions = 20): array
     {
         return $this->tryClients(
-            static fn (SnmpClient $client): array => $client->walk($oid, $maxRepetitions)
+            static fn (SnmpClient $client): array => $client->walk($oid, $maxRepetitions),
         );
     }
 
@@ -52,7 +52,7 @@ final class FallbackSnmpClient implements SnmpClient
          *
          * @template T
          */
-            static fn (SnmpClient $client): array => $client->batch($requests)
+            static fn (SnmpClient $client): array => $client->batch($requests),
         );
     }
 
