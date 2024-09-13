@@ -69,6 +69,7 @@ jobs:
         name: Tests
         runs-on: ubuntu-22.04
         strategy:
+            fail-fast: false
             matrix:
                 php-version: [8.2, 8.3]
                 dependencies: ["", --prefer-lowest]
@@ -85,7 +86,7 @@ jobs:
                 run: sudo apt install python3-pip snmp
 
             -   name: Install snmpsim
-                run: sudo pip3 install snmpsim
+                run: sudo pip3 install snmpsim==0.4.7
 
             -   name: Cache dependencies installed with composer
                 uses: actions/cache@v4
