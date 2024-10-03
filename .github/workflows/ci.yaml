@@ -7,7 +7,7 @@ on:
 jobs:
     phpstan:
         name: PHPStan
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
         strategy:
             matrix:
                 php-version: [8.2]
@@ -37,7 +37,7 @@ jobs:
 
     coding-standards:
         name: Coding Standards
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
         strategy:
             matrix:
                 php-version: [8.2]
@@ -67,7 +67,7 @@ jobs:
 
     tests:
         name: Tests
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
         strategy:
             matrix:
                 php-version: [8.2, 8.3]
@@ -109,7 +109,7 @@ jobs:
 
     upload_coverage:
         name: "Upload coverage to Codecov"
-        runs-on: "ubuntu-22.04"
+        runs-on: "ubuntu-24.04"
         needs:
             - "tests"
 
