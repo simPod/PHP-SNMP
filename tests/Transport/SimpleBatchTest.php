@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Tests\Transport;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use SimPod\PhpSnmp\Exception\NoRequestsProvided;
@@ -12,7 +12,7 @@ use SimPod\PhpSnmp\Transport\Request;
 use SimPod\PhpSnmp\Transport\SimpleBatch;
 use SimPod\PhpSnmp\Transport\SnmpClient;
 
-#[CoversClass(SimpleBatch::class)]
+#[CoversTrait(SimpleBatch::class)]
 final class SimpleBatchTest extends TestCase
 {
     /**
