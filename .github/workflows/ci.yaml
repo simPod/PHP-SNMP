@@ -85,7 +85,7 @@ jobs:
                 run: sudo apt install python3-pip snmp
 
             -   name: Install snmpsim
-                run: sudo pip3 install snmpsim
+                run: sudo pip3 install snmpsim==0.4.7
 
             -   name: Cache dependencies installed with composer
                 uses: actions/cache@v4
