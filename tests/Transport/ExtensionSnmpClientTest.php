@@ -34,7 +34,7 @@ final class ExtensionSnmpClientTest extends BaseTestCase
 
     public static function setUpBeforeClass(): void
     {
-        $command = 'snmpsimd.py --v2c-arch --data-dir %s --agent-udpv4-endpoint %s';
+        $command = 'snmpsim-command-responder-lite --v2c-arch --data-dir %s --agent-udpv4-endpoint %s';
         $command = sprintf($command, __DIR__ . '/data', self::SnmpHost);
 
         $process = proc_open($command, [0 => ['file', '/dev/null', 'w'], 2 => ['file', '/dev/null', 'w']], $pipes);
