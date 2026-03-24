@@ -82,10 +82,18 @@ jobs:
                     php-version: ${{ matrix.php-version }}
 
             -   name: Install dependencies
-                run: sudo apt install pipx snmp
+                run: sudo apt install snmp
 
-            -   name: Install snmpsim
-                run: pipx install snmpsim
+            -   name: Install snmpsim via Docker
+                run: |
+                    docker run -d --name snmpsim --network host \
+                      -v "${{ github.workspace }}/tests/Transport/data:/data:ro" \
+                      python:3.10-slim \
+                      bash -c "pip install 'snmpsim==0.4.7' 'pysnmp>=4.4,<5' 'pyasn1<0.5' 'pysmi<0.4' 'pycryptodomex' && rm -rf /usr/local/snmpsim/data && useradd -r -m snmpsim && cp -r /data /home/snmpsim/data && chown -R snmpsim:snmpsim /home/snmpsim && su snmpsim -s /bin/bash -c 'snmpsimd.py --v2c-arch --data-dir=/home/snmpsim/data --agent-udpv4-endpoint 127.0.0.1:15000'"
+                    for i in $(seq 1 60); do
+                      snmpget -v2c -c public -t 1 -r 0 127.0.0.1:15000 .1.3.6.1.2.1.1.3.0 2>/dev/null && break
+                      sleep 2
+                    done
 
             -   name: Cache dependencies installed with composer
                 uses: actions/cache@v4
@@ -98,6 +106,8 @@ jobs:
                 run: COMPOSER_ARGS="--prefer-stable ${{ matrix.dependencies }}" make
 
             -   name: Run tests
+                env:
+                    SNMPSIM_EXTERNAL: "1"
                 run: PHPUNIT_ARGS="--coverage-clover coverage.xml" make test
 
 

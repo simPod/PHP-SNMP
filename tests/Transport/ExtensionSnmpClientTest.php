@@ -14,6 +14,7 @@ use SimPod\PhpSnmp\Exception\TimeoutReached;
 use SimPod\PhpSnmp\Tests\BaseTestCase;
 use SimPod\PhpSnmp\Transport\ExtensionSnmpClient;
 
+use function getenv;
 use function proc_get_status;
 use function proc_open;
 use function shell_exec;
@@ -34,6 +35,10 @@ final class ExtensionSnmpClientTest extends BaseTestCase
 
     public static function setUpBeforeClass(): void
     {
+        if (getenv('SNMPSIM_EXTERNAL') !== false) {
+            return;
+        }
+
         $command = 'snmpsim-command-responder-lite --v2c-arch --data-dir %s --agent-udpv4-endpoint %s';
         $command = sprintf($command, __DIR__ . '/data', self::SnmpHost);
 
