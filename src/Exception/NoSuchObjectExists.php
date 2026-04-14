@@ -6,7 +6,7 @@ namespace SimPod\PhpSnmp\Exception;
 
 use Throwable;
 
-use function Safe\preg_match;
+use function Psl\Regex\first_match;
 
 final class NoSuchObjectExists extends RequestException
 {
@@ -24,7 +24,8 @@ final class NoSuchObjectExists extends RequestException
         $self = self::new($throwable);
         $self->host = $host;
 
-        if (preg_match("~Error in packet at '(.+?)':~", $throwable->getMessage(), $matches) !== 1) {
+        $matches = first_match($throwable->getMessage(), "~Error in packet at '(.+?)':~");
+        if ($matches === null) {
             return $self;
         }
 

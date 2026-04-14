@@ -3,10 +3,3 @@ parameters:
     paths:
         - %currentWorkingDirectory%/src
         - %currentWorkingDirectory%/tests
-    ignoreErrors:
-        # extension is badly designed, we know these types won't ever be here
-        - '~Parameter #1 \$output of method SimPod\\PhpSnmp\\Transport\\ExtensionSnmpClient::processOutput\(\) expects array<string, string>, array\|string\|false given\.~'
-        - '~Parameter #1 \$output of method SimPod\\PhpSnmp\\Transport\\ExtensionSnmpClient::processOutput\(\) expects array<string, string>, array\|false given\.~'
-
-includes:
-    - phpstan-baseline.neon

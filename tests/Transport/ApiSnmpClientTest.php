@@ -21,11 +21,12 @@ use SimPod\PhpSnmp\Tests\BaseTestCase;
 use SimPod\PhpSnmp\Transport\ApiSnmpClient;
 use SimPod\PhpSnmp\Transport\Request;
 
-use function Safe\json_decode;
-use function Safe\json_encode;
+use function json_decode;
+use function Psl\Json\encode;
 use function sprintf;
 
 use const JSON_BIGINT_AS_STRING;
+use const JSON_THROW_ON_ERROR;
 
 #[CoversClass(ApiSnmpClient::class)]
 final class ApiSnmpClientTest extends BaseTestCase
@@ -497,7 +498,7 @@ JSON;
 
     private static function jsonIsIdentical(string $expected, string $actual): bool
     {
-        return json_encode(json_decode($expected, true, 5, JSON_BIGINT_AS_STRING)) === $actual;
+        return encode(json_decode($expected, true, 5, JSON_BIGINT_AS_STRING | JSON_THROW_ON_ERROR)) === $actual;
     }
 
     private function createApiSnmp(): ApiSnmpClient

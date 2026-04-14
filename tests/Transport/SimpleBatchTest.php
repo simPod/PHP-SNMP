@@ -16,8 +16,9 @@ use SimPod\PhpSnmp\Transport\SnmpClient;
 final class SimpleBatchTest extends TestCase
 {
     /**
-     * @param list<Request> $requests
-     * @param list<array<string, mixed>> $result
+     * @param callable(TestCase): SnmpClient $snmpClientFactory
+     * @param array<array-key, Request> $requests
+     * @param array<array-key, array<string, mixed>> $result
      */
     #[DataProvider('providerBatch')]
     public function testBatch(callable $snmpClientFactory, array $requests, array $result): void
@@ -27,10 +28,16 @@ final class SimpleBatchTest extends TestCase
         self::assertSame($result, $batchSnmpClient->batch($requests));
     }
 
-    /** @return iterable<mixed> */
+    /**
+     * @return iterable<string, array{
+     *     0: callable(TestCase): SnmpClient,
+     *     1: array<array-key, Request>,
+     *     2: array<array-key, array<string, mixed>>
+     * }>
+     */
     public static function providerBatch(): iterable
     {
-        $snmpClientFactory = static function (TestCase $testCase) {
+        $snmpClientFactory = static function (TestCase $testCase): SnmpClient {
             $snmpClient = $testCase->createMock(SnmpClient::class);
             $snmpClient->expects($testCase->once())->method('get')->with(['.1.2.3'])->willReturn(['.1.2.3' => 123]);
 
@@ -39,7 +46,7 @@ final class SimpleBatchTest extends TestCase
 
         yield 'single get' => [$snmpClientFactory, [Request::get(['.1.2.3'])], [['.1.2.3' => 123]]];
 
-        $snmpClientFactory = static function (TestCase $testCase) {
+        $snmpClientFactory = static function (TestCase $testCase): SnmpClient {
             $snmpClient = $testCase->createMock(SnmpClient::class);
             $snmpClient
                 ->expects($testCase->once())
@@ -52,7 +59,7 @@ final class SimpleBatchTest extends TestCase
 
         yield 'single getNext' => [$snmpClientFactory, [Request::getNext(['.1.2.3'])], [['.1.2.3.1' => 1231]]];
 
-        $snmpClientFactory = static function (TestCase $testCase) {
+        $snmpClientFactory = static function (TestCase $testCase): SnmpClient {
             $snmpClient = $testCase->createMock(SnmpClient::class);
             $snmpClient
                 ->expects($testCase->once())->method('walk')
@@ -64,7 +71,7 @@ final class SimpleBatchTest extends TestCase
 
         yield 'single walk' => [$snmpClientFactory, [Request::walk('.1.2.3', 10)], [['.1.2.3.4.5' => 12345]]];
 
-        $snmpClientFactory = static function (TestCase $testCase) {
+        $snmpClientFactory = static function (TestCase $testCase): SnmpClient {
             $snmpClient = $testCase->createMock(SnmpClient::class);
             $snmpClient
             ->expects($testCase->once())
