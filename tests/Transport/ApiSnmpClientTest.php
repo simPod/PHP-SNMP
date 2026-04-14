@@ -47,7 +47,7 @@ final class ApiSnmpClientTest extends BaseTestCase
     ]
 }
 JSON;
-        $this->client->method('sendRequest')
+        $this->client->expects($this->once())->method('sendRequest')
             ->with(
                 self::callback(
                     static function (RequestInterface $request): bool {
@@ -99,7 +99,7 @@ JSON;
     ]
 }
 JSON;
-        $this->client->method('sendRequest')
+        $this->client->expects($this->once())->method('sendRequest')
             ->with(
                 self::callback(
                     static function (RequestInterface $request): bool {
@@ -155,7 +155,7 @@ JSON;
     ]
 }
 JSON;
-        $this->client->method('sendRequest')
+        $this->client->expects($this->once())->method('sendRequest')
             ->with(
                 self::callback(
                     static function (RequestInterface $request): bool {
@@ -218,7 +218,7 @@ JSON;
     ]
 }
 JSON;
-        $this->client->method('sendRequest')
+        $this->client->expects($this->once())->method('sendRequest')
             ->with(
                 self::callback(
                     static function (RequestInterface $request): bool {
@@ -318,7 +318,7 @@ JSON;
     ]
 }
 JSON;
-        $this->client->method('sendRequest')
+        $this->client->expects($this->once())->method('sendRequest')
             ->with(
                 self::callback(
                     static function (RequestInterface $request): bool {

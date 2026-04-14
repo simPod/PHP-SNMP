@@ -42,7 +42,7 @@
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
         "php-standard-library/phpstan-extension": "^2.1",
-        "phpunit/phpunit": "11.5.55",
+        "phpunit/phpunit": "^13",
         "psr/http-client": "^1.0",
         "psr/http-factory": "^1.0",
         "psr/http-message": "^2.0",

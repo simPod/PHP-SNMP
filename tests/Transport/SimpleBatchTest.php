@@ -75,16 +75,13 @@ final class SimpleBatchTest extends TestCase
             $snmpClient = $testCase->createMock(SnmpClient::class);
             $snmpClient
             ->expects($testCase->once())
-            ->id('get')
             ->method('get')
             ->with(['.1.2.3', '.4.5.6'])
             ->willReturn(['.1.2.3' => 123, '.4.5.6' => 456]);
 
             $snmpClient
             ->expects($testCase->exactly(2))
-            ->id('walk')
             ->method('walk')
-            ->after('get')
             ->willReturnMap(
                 [
                     ['.1.2.3', 10, ['.1.2.3.4.5' => 12345]],
@@ -94,7 +91,6 @@ final class SimpleBatchTest extends TestCase
 
             $snmpClient
             ->expects($testCase->once())
-            ->after('walk')
             ->method('getNext')
             ->with(['.7.8.9'])
             ->willReturn(['.7.8.9.1' => 7891]);
