@@ -8,24 +8,21 @@ jobs:
     phpstan:
         name: PHPStan
         runs-on: ubuntu-24.04
-        strategy:
-            matrix:
-                php-version: [8.4, 8.5]
         steps:
             -   uses: actions/checkout@v6
             -   uses: shivammathur/setup-php@v2
                 with:
                     coverage: none
                     extensions: json, snmp
-                    php-version: ${{ matrix.php-version }}
+                    php-version: 8.4
                     tools: cs2pr
 
             -   name: Cache dependencies installed with composer
                 uses: actions/cache@v5
                 with:
                     path: ~/.composer/cache
-                    key: php-${{ matrix.php-version }}
-                    restore-keys: php-${{ matrix.php-version }}
+                    key: php-8.4
+                    restore-keys: php-8.4
 
             -   name: Install dependencies with composer
                 run: COMPOSER_ARGS="--prefer-stable" make
@@ -38,24 +35,21 @@ jobs:
     coding-standards:
         name: Coding Standards
         runs-on: ubuntu-24.04
-        strategy:
-            matrix:
-                php-version: [8.4, 8.5]
         steps:
             -   uses: actions/checkout@v6
             -   uses: shivammathur/setup-php@v2
                 with:
                     coverage: none
                     extensions: snmp
-                    php-version: ${{ matrix.php-version }}
+                    php-version: 8.4
                     tools: cs2pr
 
             -   name: Cache dependencies installed with composer
                 uses: actions/cache@v5
                 with:
                     path: ~/.composer/cache
-                    key: php-${{ matrix.php-version }}
-                    restore-keys: php-${{ matrix.php-version }}
+                    key: php-8.4
+                    restore-keys: php-8.4
 
             -   name: Install dependencies with composer
                 run: COMPOSER_ARGS="--prefer-stable" make
