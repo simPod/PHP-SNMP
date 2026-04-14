@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Transport;
 
+use JsonException;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use Safe\Exceptions\JsonException;
 use SimPod\PhpSnmp\Exception\EndOfMibReached;
 use SimPod\PhpSnmp\Exception\GeneralException;
 use SimPod\PhpSnmp\Exception\NoRequestsProvided;
@@ -21,12 +21,13 @@ use function array_keys;
 use function array_map;
 use function array_values;
 use function count;
-use function Safe\json_decode;
-use function Safe\json_encode;
-use function Safe\preg_match;
+use function json_decode;
+use function Psl\Json\encode;
+use function Psl\Regex\first_match;
 use function sprintf;
 
 use const JSON_BIGINT_AS_STRING;
+use const JSON_THROW_ON_ERROR;
 
 final class ApiSnmpClient implements SnmpClient
 {
@@ -119,7 +120,7 @@ final class ApiSnmpClient implements SnmpClient
     private function doExecuteRequest(array $requestParameters): array
     {
         $request = $this->requestFactory->createRequest('POST', $this->apiHostUrl . self::ApiPath)
-            ->withBody($this->streamFactory->createStream(json_encode($requestParameters)));
+            ->withBody($this->streamFactory->createStream(encode($requestParameters)));
 
         try {
             $response = $this->client->sendRequest($request);
@@ -129,7 +130,7 @@ final class ApiSnmpClient implements SnmpClient
 
         try {
             /** @var array{error: string}|array{result: list<list<string>>} $result */
-            $result = json_decode((string) $response->getBody(), true, 5, JSON_BIGINT_AS_STRING);
+            $result = json_decode((string) $response->getBody(), true, 5, JSON_BIGINT_AS_STRING | JSON_THROW_ON_ERROR);
         } catch (JsonException $throwable) {
             $error = sprintf(
                 'Response is not valid JSON [HTTP %d]: "%s"',
@@ -141,19 +142,23 @@ final class ApiSnmpClient implements SnmpClient
         }
 
         if (array_key_exists('error', $result)) {
-            if (preg_match('~no such object: (.+)~', $result['error'], $matches) === 1) {
+            $matches = first_match($result['error'], '~no such object: (.+)~');
+            if ($matches !== null) {
                 throw NoSuchObjectExists::fromOid($this->host, $matches[1]);
             }
 
-            if (preg_match('~no such instance: (.+)~', $result['error'], $matches) === 1) {
+            $matches = first_match($result['error'], '~no such instance: (.+)~');
+            if ($matches !== null) {
                 throw NoSuchInstanceExists::fromOid($this->host, $matches[1]);
             }
 
-            if (preg_match('~end of mib: (.+)~', $result['error'], $matches) === 1) {
+            $matches = first_match($result['error'], '~end of mib: (.+)~');
+            if ($matches !== null) {
                 throw EndOfMibReached::fromOid($this->host, $matches[1]);
             }
 
-            if (preg_match('~timeout: (.+)~', $result['error'], $matches) === 1) {
+            $matches = first_match($result['error'], '~timeout: (.+)~');
+            if ($matches !== null) {
                 throw TimeoutReached::fromOid($this->host, $matches[1]);
             }
 

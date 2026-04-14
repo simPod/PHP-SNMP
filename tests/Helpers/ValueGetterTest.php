@@ -11,12 +11,15 @@ use SimPod\PhpSnmp\Helpers\ValueGetter;
 use SimPod\PhpSnmp\Tests\BaseTestCase;
 use SimPod\PhpSnmp\Transport\SnmpClient;
 
+use function uniqid;
+
 #[CoversClass(ValueGetter::class)]
 final class ValueGetterTest extends BaseTestCase
 {
     public function testFirst(): void
     {
-        $response = ['.1.2.3.1' => $expected = 'a'];
+        $expected = uniqid('value-', true);
+        $response = ['.1.2.3.1' => $expected];
 
         self::assertSame($expected, ValueGetter::first($response));
     }

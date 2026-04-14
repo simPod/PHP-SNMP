@@ -20,7 +20,7 @@ use function assert;
 use function explode;
 use function implode;
 use function in_array;
-use function Safe\preg_match;
+use function Psl\Regex\first_match;
 use function strlen;
 use function strpos;
 use function substr;
@@ -72,7 +72,8 @@ final class CliSnmpClient implements SnmpClient
             $output = $this->processExecutor->execute(array_merge(['snmpget'], $this->processArgs, $oids));
         } catch (Throwable $throwable) {
             // check for SNMP v1
-            if (preg_match('~\(noSuchName\).+Failed object: (.+?)$~ms', $throwable->getMessage(), $matches) === 1) {
+            $matches = first_match($throwable->getMessage(), '~\(noSuchName\).+Failed object: (.+?)$~ms');
+            if ($matches !== null) {
                 throw NoSuchInstanceExists::fromOid($this->host, $matches[1]);
             }
 
@@ -89,7 +90,8 @@ final class CliSnmpClient implements SnmpClient
             $output = $this->processExecutor->execute(array_merge(['snmpgetnext'], $this->processArgs, $oids));
         } catch (Throwable $throwable) {
             // check for SNMP v1
-            if (preg_match('~\(noSuchName\).+Failed object: (.+?)$~ms', $throwable->getMessage(), $matches) === 1) {
+            $matches = first_match($throwable->getMessage(), '~\(noSuchName\).+Failed object: (.+?)$~ms');
+            if ($matches !== null) {
                 throw EndOfMibReached::fromOid($this->host, $matches[1]);
             }
 
