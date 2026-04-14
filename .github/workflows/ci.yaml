@@ -21,7 +21,7 @@ jobs:
                     tools: cs2pr
 
             -   name: Cache dependencies installed with composer
-                uses: actions/cache@v4
+                uses: actions/cache@v5
                 with:
                     path: ~/.composer/cache
                     key: php-${{ matrix.php-version }}
@@ -51,7 +51,7 @@ jobs:
                     tools: cs2pr
 
             -   name: Cache dependencies installed with composer
-                uses: actions/cache@v4
+                uses: actions/cache@v5
                 with:
                     path: ~/.composer/cache
                     key: php-${{ matrix.php-version }}
@@ -96,7 +96,7 @@ jobs:
                     done
 
             -   name: Cache dependencies installed with composer
-                uses: actions/cache@v4
+                uses: actions/cache@v5
                 with:
                     path: ~/.composer/cache
                     key: php-${{ matrix.php-version }}-dependencies-${{ matrix.dependencies }}
