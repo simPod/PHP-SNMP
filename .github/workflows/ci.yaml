@@ -17,15 +17,11 @@ jobs:
                     php-version: 8.4
                     tools: cs2pr
 
-            -   name: Cache dependencies installed with composer
-                uses: actions/cache@v5
-                with:
-                    path: ~/.composer/cache
-                    key: php-8.4
-                    restore-keys: php-8.4
-
             -   name: Install dependencies with composer
-                run: COMPOSER_ARGS="--prefer-stable" make
+                uses: ramsey/composer-install@v4
+                with:
+                    dependency-versions: highest
+                    composer-options: --prefer-stable
 
             -   name: Run a static analysis with phpstan/phpstan
                 env:
@@ -44,15 +40,11 @@ jobs:
                     php-version: 8.4
                     tools: cs2pr
 
-            -   name: Cache dependencies installed with composer
-                uses: actions/cache@v5
-                with:
-                    path: ~/.composer/cache
-                    key: php-8.4
-                    restore-keys: php-8.4
-
             -   name: Install dependencies with composer
-                run: COMPOSER_ARGS="--prefer-stable" make
+                uses: ramsey/composer-install@v4
+                with:
+                    dependency-versions: highest
+                    composer-options: --prefer-stable
 
             -   name: Run squizlabs/php_codesniffer
                 env:
@@ -89,15 +81,18 @@ jobs:
                       sleep 2
                     done
 
-            -   name: Cache dependencies installed with composer
-                uses: actions/cache@v5
+            -   name: Install highest dependencies with composer
+                if: matrix.dependencies == ''
+                uses: ramsey/composer-install@v4
                 with:
-                    path: ~/.composer/cache
-                    key: php-${{ matrix.php-version }}-dependencies-${{ matrix.dependencies }}
-                    restore-keys: php-${{ matrix.php-version }}
+                    dependency-versions: highest
+                    composer-options: --prefer-stable
 
-            -   name: Install dependencies with composer
-                run: COMPOSER_ARGS="--prefer-stable ${{ matrix.dependencies }}" make
+            -   name: Install lowest dependencies with composer
+                if: matrix.dependencies == '--prefer-lowest'
+                uses: ramsey/composer-install@v4
+                with:
+                    dependency-versions: lowest
 
             -   name: Run tests
                 env:
