@@ -7,7 +7,7 @@ on:
 jobs:
     phpstan:
         name: PHPStan
-        runs-on: ubuntu-24.04
+        runs-on: ubuntu-26.04
         steps:
             -   uses: actions/checkout@v7
             -   uses: shivammathur/setup-php@v2
@@ -30,7 +30,7 @@ jobs:
 
     coding-standards:
         name: Coding Standards
-        runs-on: ubuntu-24.04
+        runs-on: ubuntu-26.04
         steps:
             -   uses: actions/checkout@v7
             -   uses: shivammathur/setup-php@v2
@@ -53,7 +53,7 @@ jobs:
 
     tests:
         name: Tests
-        runs-on: ubuntu-24.04
+        runs-on: ubuntu-26.04
         strategy:
             matrix:
                 php-version: [8.4, 8.5]
@@ -108,7 +108,7 @@ jobs:
 
     upload_coverage:
         name: "Upload coverage to Codecov"
-        runs-on: "ubuntu-24.04"
+        runs-on: "ubuntu-26.04"
         needs:
             - "tests"
 
