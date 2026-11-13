@@ -501,8 +501,7 @@ final class CliSnmpClientTest extends BaseTestCase
         string $version = '2c',
         ProcessExecutor|null $processExecutor = null,
         int $defaultMaxRepetitions = 20,
-    ): CliSnmpClient
-    {
+    ): CliSnmpClient {
         return new CliSnmpClient(self::SnmpHost, 'public', 1, 3, $version, $processExecutor, $defaultMaxRepetitions);
     }
 }
