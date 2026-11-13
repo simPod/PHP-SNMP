@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace SimPod\PhpSnmp\Tests\Transport;
 
 use Exception;
+use Generator;
 use Http\Client\Curl\Client;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7\Response;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\RequestInterface;
 use SimPod\PhpSnmp\Exception\EndOfMibReached;
@@ -195,9 +197,43 @@ JSON;
         );
     }
 
+    #[DataProvider('provideWalkMaxRepetitions')]
+    public function testWalkUsesConfiguredDefaultOrExplicitMaxRepetitions(
+        int|null $maxRepetitions,
+        int $expected,
+    ): void {
+        $apiSnmp = $this->createApiSnmp(5);
+        $this->client->expects($this->once())
+            ->method('sendRequest')
+            ->with(self::callback(
+                static fn (RequestInterface $request) => self::jsonIsIdentical(
+                    sprintf(
+                        '{"host":"127.0.0.1","community":"public","version":"2c","timeout":1,"retries":3,'
+                        . '"requests":[{"request_type":"walk","oids":[".1.2.3"],"max_repetitions":%d}]}',
+                        $expected,
+                    ),
+                    (string) $request->getBody(),
+                ),
+            ))
+            ->willReturn(new Response(200, [], '{"result":[[]]}'));
+
+        if ($maxRepetitions === null) {
+            $apiSnmp->walk('.1.2.3');
+        } else {
+            $apiSnmp->walk('.1.2.3', $maxRepetitions);
+        }
+    }
+
+    /** @phpstan-return Generator<string, array{int|null, int}> */
+    public static function provideWalkMaxRepetitions(): Generator
+    {
+        yield 'configured default' => [null, 5];
+        yield 'explicit default value overrides configuration' => [20, 20];
+    }
+
     public function testBatch(): void
     {
-        $apiSnmp = $this->createApiSnmp();
+        $apiSnmp = $this->createApiSnmp(5);
 
         $response = <<<'JSON'
 {
@@ -205,6 +241,11 @@ JSON;
         [
             ".1.3.6.1.2.1.25.2.3.1.2.1", ".1.3.6.1.2.1.25.2.1.2",
             ".1.3.6.1.2.1.25.2.3.1.2.4", ".1.3.6.1.2.1.25.2.1.9"
+        ],
+        [
+            ".1.3.6.1.2.1.31.1.1.1.15.1000001", 100000,
+            ".1.3.6.1.2.1.31.1.1.1.15.1000003", 60000,
+            ".1.3.6.1.2.1.31.1.1.1.15.1000005", 80000
         ],
         [
             ".1.3.6.1.2.1.31.1.1.1.15.1000001", 100000,
@@ -237,6 +278,11 @@ JSON;
         {
             "request_type": "walk",
             "oids": [".1.3.6.1.2.1.31.1.1.1.15"],
+            "max_repetitions": 5
+        },
+        {
+            "request_type": "walk",
+            "oids": [".1.3.6.1.2.1.31.1.1.1.15"],
             "max_repetitions": 20
         },
         {
@@ -261,6 +307,7 @@ JSON;
             [
                 'get' => Request::get(['.1.3.6.1.2.1.25.2.3.1.2.1', '.1.3.6.1.2.1.25.2.3.1.2.4']),
                 'walk' => Request::walk('.1.3.6.1.2.1.31.1.1.1.15'),
+                'explicitWalk' => Request::walk('.1.3.6.1.2.1.31.1.1.1.15', 20),
                 'getNext' => Request::getNext(['.1.3.6.1.2.1.25.2.3.1.2', '.1.3.6.1.2.1.25.2.3.1.2.3']),
             ],
         );
@@ -272,6 +319,11 @@ JSON;
                     '.1.3.6.1.2.1.25.2.3.1.2.4' => '.1.3.6.1.2.1.25.2.1.9',
                 ],
                 'walk' => [
+                    '.1.3.6.1.2.1.31.1.1.1.15.1000001' => 100000,
+                    '.1.3.6.1.2.1.31.1.1.1.15.1000003' => 60000,
+                    '.1.3.6.1.2.1.31.1.1.1.15.1000005' => 80000,
+                ],
+                'explicitWalk' => [
                     '.1.3.6.1.2.1.31.1.1.1.15.1000001' => 100000,
                     '.1.3.6.1.2.1.31.1.1.1.15.1000003' => 60000,
                     '.1.3.6.1.2.1.31.1.1.1.15.1000005' => 80000,
@@ -501,11 +553,17 @@ JSON;
         return encode(json_decode($expected, true, 5, JSON_BIGINT_AS_STRING | JSON_THROW_ON_ERROR)) === $actual;
     }
 
-    private function createApiSnmp(): ApiSnmpClient
+    private function createApiSnmp(int $defaultMaxRepetitions = 20): ApiSnmpClient
     {
         $this->client = $this->createMock(Client::class);
         $psr17Factory = new Psr17Factory();
 
-        return new ApiSnmpClient($this->client, $psr17Factory, $psr17Factory, 'http://localhost');
+        return new ApiSnmpClient(
+            $this->client,
+            $psr17Factory,
+            $psr17Factory,
+            'http://localhost',
+            defaultMaxRepetitions: $defaultMaxRepetitions,
+        );
     }
 }

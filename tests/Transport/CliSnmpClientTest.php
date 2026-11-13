@@ -16,6 +16,7 @@ use SimPod\PhpSnmp\Exception\TimeoutReached;
 use SimPod\PhpSnmp\Tests\BaseTestCase;
 use SimPod\PhpSnmp\Transport\Cli\ProcessExecutor;
 use SimPod\PhpSnmp\Transport\CliSnmpClient;
+use SimPod\PhpSnmp\Transport\Request;
 
 use function getenv;
 use function proc_get_status;
@@ -119,6 +120,36 @@ final class CliSnmpClientTest extends BaseTestCase
                 '.1.3.6.1.2.1.31.1.1.1.15.1000001' => 100000,
                 '.1.3.6.1.2.1.31.1.1.1.15.1000003' => 60000,
                 '.1.3.6.1.2.1.31.1.1.1.15.1000005' => 80000,
+            ],
+            $result,
+        );
+    }
+
+    public function testBatchWalkUsesConfiguredDefaultAndExplicitMaxRepetitions(): void
+    {
+        $processExecutor = $this->createMock(ProcessExecutor::class);
+        $call = 0;
+        $processExecutor->expects(self::exactly(2))
+            ->method('execute')
+            ->willReturnCallback(
+                /** @param list<string> $arguments */
+                static function (array $arguments) use (&$call): string {
+                    self::assertContains($call++ === 0 ? '-Cr5' : '-Cr20', $arguments);
+
+                    return ".1.2.3.4 = INTEGER: 4\n";
+                },
+            );
+
+        $client = $this->createCliSnmp('2c', $processExecutor, 5);
+        $result = $client->batch([
+            'defaultWalk' => Request::walk('.1.2.3'),
+            'explicitWalk' => Request::walk('.1.2.3', 20),
+        ]);
+
+        self::assertSame(
+            [
+                'defaultWalk' => ['.1.2.3.4' => 4],
+                'explicitWalk' => ['.1.2.3.4' => 4],
             ],
             $result,
         );
@@ -466,8 +497,12 @@ final class CliSnmpClientTest extends BaseTestCase
         );
     }
 
-    private function createCliSnmp(string $version = '2c', ProcessExecutor|null $processExecutor = null): CliSnmpClient
+    private function createCliSnmp(
+        string $version = '2c',
+        ProcessExecutor|null $processExecutor = null,
+        int $defaultMaxRepetitions = 20,
+    ): CliSnmpClient
     {
-        return new CliSnmpClient(self::SnmpHost, 'public', 1, 3, $version, $processExecutor);
+        return new CliSnmpClient(self::SnmpHost, 'public', 1, 3, $version, $processExecutor, $defaultMaxRepetitions);
     }
 }

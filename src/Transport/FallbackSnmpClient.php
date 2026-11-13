@@ -36,7 +36,7 @@ final class FallbackSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function walk(string $oid, int $maxRepetitions = 20): array
+    public function walk(string $oid, int|null $maxRepetitions = null): array
     {
         return $this->tryClients(
             static fn (SnmpClient $client): array => $client->walk($oid, $maxRepetitions),

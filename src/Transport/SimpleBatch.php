@@ -27,7 +27,7 @@ trait SimpleBatch
 
                     break;
                 case Request::Walk:
-                    $result[$key] = $this->walk($request->oids[0], (int) $request->maxRepetitions);
+                    $result[$key] = $this->walk($request->oids[0], $request->maxRepetitions);
             }
         }
 

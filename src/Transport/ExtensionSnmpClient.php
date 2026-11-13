@@ -41,6 +41,7 @@ final class ExtensionSnmpClient implements SnmpClient
         string $authPassphrase = 'None',
         string $privProtocol = 'DES',
         string $privPassphrase = 'None',
+        private int $defaultMaxRepetitions = 20,
     ) {
         switch ($version) {
             case '1':
@@ -105,8 +106,10 @@ final class ExtensionSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function walk(string $oid, int $maxRepetitions = 20): array
+    public function walk(string $oid, int|null $maxRepetitions = null): array
     {
+        $maxRepetitions ??= $this->defaultMaxRepetitions;
+
         if ($maxRepetitions < 0) {
             throw GeneralException::new('Max repetitions must not be negative');
         }

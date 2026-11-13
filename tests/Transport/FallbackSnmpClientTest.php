@@ -51,7 +51,7 @@ final class FallbackSnmpClientTest extends TestCase
         $client1 = $this->createMock(SnmpClient::class);
         $client1->expects(self::once())
             ->method('walk')
-            ->with($oid = '.1.2.3')
+            ->with($oid = '.1.2.3', null)
             ->willReturn($expected = ['.1.2.3' => 123]);
 
         $fallbackClient = new FallbackSnmpClient(new NullLogger(), [$client1]);

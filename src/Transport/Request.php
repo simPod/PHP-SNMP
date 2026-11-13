@@ -30,7 +30,8 @@ final class Request
         return new self(self::GetNext, $oids);
     }
 
-    public static function walk(string $oid, int $maxRepetitions = 20): self
+    /** Omit max repetitions to use the executing client's default. */
+    public static function walk(string $oid, int|null $maxRepetitions = null): self
     {
         return new self(self::Walk, [$oid], $maxRepetitions);
     }

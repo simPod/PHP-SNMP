@@ -43,6 +43,7 @@ final class CliSnmpClient implements SnmpClient
         int $retries = 3,
         string $version = '2c',
         ProcessExecutor|null $processExecutor = null,
+        private int $defaultMaxRepetitions = 20,
     ) {
         if (! in_array($version, ['1', '2c'], true)) {
             throw InvalidVersionProvided::new($version);
@@ -102,13 +103,13 @@ final class CliSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function walk(string $oid, int $maxRepetitions = 20): array
+    public function walk(string $oid, int|null $maxRepetitions = null): array
     {
         $walker = 'snmpwalk';
         $args = $this->processArgs;
         if ($this->useBulk) {
             $walker = 'snmpbulkwalk';
-            $args = array_merge($args, ['-Cr' . $maxRepetitions]);
+            $args = array_merge($args, ['-Cr' . ($maxRepetitions ?? $this->defaultMaxRepetitions)]);
         }
 
         try {
