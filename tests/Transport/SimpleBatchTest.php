@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SimPod\PhpSnmp\Tests\Transport;
 
+use Generator;
 use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +21,7 @@ final class SimpleBatchTest extends TestCase
      * @param array<array-key, Request> $requests
      * @param array<array-key, array<string, mixed>> $result
      */
-    #[DataProvider('providerBatch')]
+    #[DataProvider('provideBatch')]
     public function testBatch(callable $snmpClientFactory, array $requests, array $result): void
     {
         $batchSnmpClient = $this->createBatchSnmpClient($snmpClientFactory($this));
@@ -29,13 +30,13 @@ final class SimpleBatchTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{
+     * @return Generator<string, array{
      *     0: callable(TestCase): SnmpClient,
      *     1: array<array-key, Request>,
      *     2: array<array-key, array<string, mixed>>
      * }>
      */
-    public static function providerBatch(): iterable
+    public static function provideBatch(): Generator
     {
         $snmpClientFactory = static function (TestCase $testCase): SnmpClient {
             $snmpClient = $testCase->createMock(SnmpClient::class);
@@ -85,7 +86,7 @@ final class SimpleBatchTest extends TestCase
             ->willReturnMap(
                 [
                     ['.1.2.3', 10, ['.1.2.3.4.5' => 12345]],
-                    ['.3.2.1', 10,['.3.2.1.1.2' => 32112]],
+                    ['.3.2.1', null, ['.3.2.1.1.2' => 32112]],
                 ],
             );
 
@@ -104,7 +105,7 @@ final class SimpleBatchTest extends TestCase
                 'get' => Request::get(['.1.2.3', '.4.5.6']),
                 'walk' => Request::walk('.1.2.3', 10),
                 'getNext' => Request::getNext(['.7.8.9']),
-                'anotherWalk' => Request::walk('.3.2.1', 10),
+                'anotherWalk' => Request::walk('.3.2.1'),
             ],
             [
                 'get' => ['.1.2.3' => 123, '.4.5.6' => 456],
@@ -145,7 +146,7 @@ final class SimpleBatchTest extends TestCase
             }
 
             /** @inheritDoc */
-            public function walk(string $oid, int $maxRepetitions = 20): array
+            public function walk(string $oid, int|null $maxRepetitions = null): array
             {
                 return $this->snmpClient->walk($oid, $maxRepetitions);
             }

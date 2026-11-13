@@ -20,8 +20,12 @@ interface SnmpClient
      */
     public function getNext(array $oids): array;
 
-    /** @return array<string, mixed> */
-    public function walk(string $oid, int $maxRepetitions = 20): array;
+    /**
+     * Null max repetitions uses the client's default (20 unless configured otherwise).
+     *
+     * @return array<string, mixed>
+     */
+    public function walk(string $oid, int|null $maxRepetitions = null): array;
 
     /**
      * @param array<T, Request> $requests

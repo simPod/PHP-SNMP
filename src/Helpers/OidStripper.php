@@ -67,7 +67,7 @@ final class OidStripper
     }
 
     /** @return array<mixed> */
-    public static function walk(SnmpClient $snmpClient, string $oid, int $maxRepetitions = 20): array
+    public static function walk(SnmpClient $snmpClient, string $oid, int|null $maxRepetitions = null): array
     {
         return self::batchStripParentPrefix($snmpClient, [Request::walk($oid, $maxRepetitions)])[0];
     }

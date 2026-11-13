@@ -43,6 +43,7 @@ final class ApiSnmpClient implements SnmpClient
         private int $timeout = 1,
         private int $retries = 3,
         private string $version = '2c',
+        private int $defaultMaxRepetitions = 20,
     ) {
     }
 
@@ -59,7 +60,7 @@ final class ApiSnmpClient implements SnmpClient
     }
 
     /** @inheritDoc */
-    public function walk(string $oid, int $maxRepetitions = 20): array
+    public function walk(string $oid, int|null $maxRepetitions = null): array
     {
         return $this->batch([Request::walk($oid, $maxRepetitions)])[0];
     }
@@ -78,14 +79,14 @@ final class ApiSnmpClient implements SnmpClient
             'timeout' => $this->timeout,
             'retries' => $this->retries,
             'requests' => array_map(
-                static function (Request $request): array {
+                function (Request $request): array {
                     $requestArray = [
                         'request_type' => $request->type,
                         'oids' => $request->oids,
                     ];
 
-                    if ($request->maxRepetitions !== null) {
-                        $requestArray['max_repetitions'] = $request->maxRepetitions;
+                    if ($request->type === Request::Walk) {
+                        $requestArray['max_repetitions'] = $request->maxRepetitions ?? $this->defaultMaxRepetitions;
                     }
 
                     return $requestArray;
