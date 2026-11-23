@@ -14,7 +14,7 @@ jobs:
                 with:
                     coverage: none
                     extensions: json, snmp
-                    php-version: 8.4
+                    php-version: '8.5'
                     tools: cs2pr
 
             -   name: Install dependencies with composer
@@ -37,7 +37,7 @@ jobs:
                 with:
                     coverage: none
                     extensions: snmp
-                    php-version: 8.4
+                    php-version: '8.5'
                     tools: cs2pr
 
             -   name: Install dependencies with composer
@@ -56,7 +56,7 @@ jobs:
         runs-on: ubuntu-26.04
         strategy:
             matrix:
-                php-version: ['8.4', '8.5', '8.6']
+                php-version: ['8.5', '8.6']
                 dependencies: ["", --prefer-lowest]
 
         steps:
