@@ -5,6 +5,28 @@ PHP SNMP Client
 [![Packagist](https://poser.pugx.org/simpod/php-snmp/v/stable.svg)](https://packagist.org/packages/simpod/php-snmp)
 [![Code Coverage][Coverage image]][CodeCov Master]
 
+## Direct SNMP with typed values
+
+Use `ExtensionSnmpClient` with `ext-snmp` to query a device directly. Pass
+`typedValues: true` to receive `SnmpValue` objects keyed by numeric OID from
+GET, GETNEXT, walks, and batches. The default output is unchanged.
+
+```php
+use SimPod\PhpSnmp\Transport\ExtensionSnmpClient;
+
+$client = new ExtensionSnmpClient(host: '192.0.2.1', community: $community, typedValues: true);
+$value = $client->get(['.1.3.6.1.2.1.1.1.0'])['.1.3.6.1.2.1.1.1.0'];
+// $value->type is the ASN.1 type tag; $value->value contains the unquoted system description.
+```
+
+Octet strings contain raw bytes, including any NUL bytes. Integer types,
+including Counter64, contain decimal strings, so no precision is lost by
+casting to a PHP integer. ASN.1 NULL has a `null` payload. The client returns
+the extension's plain data without applying MIB display hints.
+If you set the `timeoutMs` argument, pass **microseconds** despite its name.
+In typed mode, if Net-SNMP reports a missing walk root, the client uses GETNEXT
+to distinguish a missing subtree from the end of the MIB.
+
 ## Walk defaults
 
 Configure `defaultMaxRepetitions` once on `ApiSnmpClient`, `CliSnmpClient`, or
