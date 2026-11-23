@@ -9,16 +9,26 @@ use SimPod\PhpSnmp\Exception\GeneralException;
 use SimPod\PhpSnmp\Exception\InvalidVersionProvided;
 use SimPod\PhpSnmp\Exception\NoSuchInstanceExists;
 use SimPod\PhpSnmp\Exception\NoSuchObjectExists;
+use SimPod\PhpSnmp\Exception\SnmpException;
 use SimPod\PhpSnmp\Exception\TimeoutReached;
 use SNMP;
+use SNMPException as NativeSnmpException;
+use stdClass;
 use Throwable;
 
+use function extension_loaded;
 use function implode;
+use function is_array;
+use function is_int;
 use function is_string;
+use function reset;
 use function sprintf;
 use function strpos;
 
+use const SNMP_NULL;
 use const SNMP_OID_OUTPUT_NUMERIC;
+use const SNMP_VALUE_OBJECT;
+use const SNMP_VALUE_PLAIN;
 
 final class ExtensionSnmpClient implements SnmpClient
 {
@@ -27,6 +37,8 @@ final class ExtensionSnmpClient implements SnmpClient
     private SNMP $snmp;
 
     /**
+     * The `$timeoutMs` parameter is in microseconds, as required by ext-snmp.
+     *
      * @param int<0, max> $timeoutMs
      * @param int<0, max> $retry
      */
@@ -42,7 +54,12 @@ final class ExtensionSnmpClient implements SnmpClient
         string $privProtocol = 'DES',
         string $privPassphrase = 'None',
         private int $defaultMaxRepetitions = 20,
+        private bool $typedValues = false,
     ) {
+        if (! extension_loaded('snmp')) {
+            throw GeneralException::new('The SNMP extension is required', host: $host);
+        }
+
         switch ($version) {
             case '1':
                 $snmpVersion = SNMP::VERSION_1;
@@ -68,6 +85,10 @@ final class ExtensionSnmpClient implements SnmpClient
         $this->snmp->oid_output_format = SNMP_OID_OUTPUT_NUMERIC;
         $this->snmp->exceptions_enabled = SNMP::ERRNO_ANY;
 
+        if ($typedValues) {
+            $this->snmp->valueretrieval = SNMP_VALUE_PLAIN | SNMP_VALUE_OBJECT;
+        }
+
         if ($snmpVersion !== SNMP::VERSION_3) {
             return;
         }
@@ -90,7 +111,7 @@ final class ExtensionSnmpClient implements SnmpClient
             throw $this->processException($throwable, $oids);
         }
 
-        return $this->processOutput($this->ensureOutput($output, $oids));
+        return $this->processOutput($output, $oids);
     }
 
     /** @inheritDoc */
@@ -102,7 +123,7 @@ final class ExtensionSnmpClient implements SnmpClient
             throw $this->processException($throwable, $oids);
         }
 
-        return $this->processOutput($this->ensureOutput($output, $oids));
+        return $this->processOutput($output, $oids);
     }
 
     /** @inheritDoc */
@@ -117,31 +138,68 @@ final class ExtensionSnmpClient implements SnmpClient
         try {
             $output = $this->snmp->walk($oid, false, $maxRepetitions);
         } catch (Throwable $throwable) {
-            throw $this->processException($throwable, [$oid]);
+            $exception = $this->processException($throwable, [$oid]);
+            if (
+                $this->typedValues
+                && ($exception instanceof NoSuchObjectExists || $exception instanceof NoSuchInstanceExists)
+            ) {
+                throw $this->classifyEmptyWalk($oid);
+            }
+
+            throw $exception;
         }
 
-        return $this->processOutput($this->ensureOutput($output, [$oid]));
+        return $this->processOutput($output, [$oid]);
+    }
+
+    private function classifyEmptyWalk(string $oid): SnmpException
+    {
+        // Net-SNMP can fail a GET on the root of an empty subtree. GETNEXT can still find a successor.
+        $next = $this->getNext([$oid]);
+        $value = reset($next);
+        if ($value === false) {
+            return NoSuchObjectExists::fromOid($this->host, $oid);
+        }
+
+        return $value instanceof SnmpValue && $value->type === SNMP_NULL
+            ? EndOfMibReached::fromOid($this->host, $oid)
+            : NoSuchInstanceExists::fromOid($this->host, $oid);
     }
 
     /**
-     * @param array<array-key, mixed>|false $output
      * @param list<string> $oids
      *
-     * @return array<string, string>
+     * @return array<string, int|string|SnmpValue>
      */
-    private function ensureOutput(array|false $output, array $oids): array
+    private function processOutput(mixed $output, array $oids): array
     {
-        if ($output === false) {
+        if (! is_array($output)) {
             throw GeneralException::new('Unexpected empty response from SNMP extension', null, $this->host, $oids);
         }
 
         $result = [];
         foreach ($output as $oid => $value) {
-            if (! is_string($oid) || ! is_string($value)) {
+            if (! is_string($oid)) {
                 throw GeneralException::new('Unexpected output from SNMP extension', null, $this->host, $oids);
             }
 
-            $result[$oid] = $value;
+            if (! $this->typedValues && is_string($value)) {
+                $result[$oid] = ValueParser::parse($value);
+
+                continue;
+            }
+
+            if ($this->typedValues && $value instanceof stdClass) {
+                $type = $value->type ?? null;
+                $payload = $value->value ?? null;
+                if (is_int($type) && (is_string($payload) || ($type === SNMP_NULL && $payload === null))) {
+                    $result[$oid] = new SnmpValue($type, $payload);
+
+                    continue;
+                }
+            }
+
+            throw GeneralException::new('Unexpected output from SNMP extension', null, $this->host, $oids);
         }
 
         return $result;
@@ -174,24 +232,13 @@ final class ExtensionSnmpClient implements SnmpClient
         };
     }
 
-    /**
-     * @param array<string, string> $output
-     *
-     * @return array<string, mixed>
-     */
-    private function processOutput(array $output): array
-    {
-        $result = [];
-        foreach ($output as $oid => $value) {
-            $result[$oid] = ValueParser::parse($value);
-        }
-
-        return $result;
-    }
-
     /** @param list<string> $oids */
     private function processException(Throwable $throwable, array $oids): Throwable
     {
+        if ($throwable instanceof NativeSnmpException && $throwable->getCode() === SNMP::ERRNO_TIMEOUT) {
+            return TimeoutReached::fromOid($this->host, implode(', ', $oids));
+        }
+
         if (strpos($throwable->getMessage(), 'No Such Object') !== false) {
             return NoSuchObjectExists::fromThrowable($this->host, $throwable);
         }

@@ -13,12 +13,18 @@ use SimPod\PhpSnmp\Exception\NoSuchInstanceExists;
 use SimPod\PhpSnmp\Exception\TimeoutReached;
 use SimPod\PhpSnmp\Tests\BaseTestCase;
 use SimPod\PhpSnmp\Transport\ExtensionSnmpClient;
+use SimPod\PhpSnmp\Transport\Request;
+use SimPod\PhpSnmp\Transport\SnmpValue;
 
 use function getenv;
 use function proc_get_status;
 use function proc_open;
 use function shell_exec;
 use function sprintf;
+
+use const SNMP_COUNTER64;
+use const SNMP_OCTET_STR;
+use const SNMP_TIMETICKS;
 
 #[CoversClass(ExtensionSnmpClient::class)]
 final class ExtensionSnmpClientTest extends BaseTestCase
@@ -85,6 +91,38 @@ final class ExtensionSnmpClientTest extends BaseTestCase
                 '.1.3.6.1.2.1.4.20.1.1.10.110.27.254' => '10.110.27.254',
             ],
             $result,
+        );
+    }
+
+    public function testBatchWithTypedValuesPreservesRawBytesAndNumericText(): void
+    {
+        $textOid = '.1.3.6.1.2.1.2.2.1.2.47';
+        $ticksOid = '.1.3.6.1.2.1.1.3.0';
+        $binaryOid = '.1.3.6.1.2.1.4.22.1.2.2000955.185.152.67.99';
+        $counterOid = '.1.6.6.6.667.0';
+        $result = new ExtensionSnmpClient(host: self::SnmpHost, typedValues: true)->batch([
+            'text' => Request::get([$textOid]),
+            'next' => Request::getNext(['.1.3.6.1.2.1.1.2.0']),
+            'binary' => Request::get([$binaryOid]),
+            'counter' => Request::walk('.1.6.6.6.667'),
+        ]);
+
+        $values = [];
+        foreach ($result as $key => $bindings) {
+            foreach ($bindings as $oid => $value) {
+                self::assertInstanceOf(SnmpValue::class, $value);
+                $values[$key][$oid] = [$value->type, $value->value];
+            }
+        }
+
+        self::assertSame(
+            [
+                'text' => [$textOid => [SNMP_OCTET_STR, 'Ethernet47']],
+                'next' => [$ticksOid => [SNMP_TIMETICKS, '293718542']],
+                'binary' => [$binaryOid => [SNMP_OCTET_STR, "ST\x00_A\xD0"]],
+                'counter' => [$counterOid => [SNMP_COUNTER64, '18446744073709551615']],
+            ],
+            $values,
         );
     }
 
@@ -196,6 +234,16 @@ final class ExtensionSnmpClientTest extends BaseTestCase
             NoSuchInstanceExists::fromOid(self::SnmpHost, '.1.3.5'),
             function (): void {
                 $this->createExtensionSnmp()->walk('.1.3.5');
+            },
+        );
+    }
+
+    public function testTypedWalkReportsNoSuchInstanceWhenTheNextOidIsOutsideTheSubtree(): void
+    {
+        self::assertSnmpException(
+            NoSuchInstanceExists::fromOid(self::SnmpHost, '.1.3.5'),
+            static function (): void {
+                new ExtensionSnmpClient(host: self::SnmpHost, typedValues: true)->walk('.1.3.5');
             },
         );
     }

@@ -61,5 +61,8 @@
 # made up thing just for testing - didn't find real examples :D
 1.6.6.6.666.0|68e|\xaa\xbb\xcc
 
+# Counter64 above PHP_INT_MAX
+1.6.6.6.667.0|70|18446744073709551615
+
 # made up OID to test End Of MIB
 1.7.8.9|4|Don't know what I'm
