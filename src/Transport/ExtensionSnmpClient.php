@@ -12,7 +12,7 @@ use SimPod\PhpSnmp\Exception\NoSuchObjectExists;
 use SimPod\PhpSnmp\Exception\SnmpException;
 use SimPod\PhpSnmp\Exception\TimeoutReached;
 use SNMP;
-use SNMPException;
+use SNMPException as NativeSnmpException;
 use stdClass;
 use Throwable;
 
@@ -235,7 +235,7 @@ final class ExtensionSnmpClient implements SnmpClient
     /** @param list<string> $oids */
     private function processException(Throwable $throwable, array $oids): Throwable
     {
-        if ($throwable instanceof SNMPException && $throwable->getCode() === SNMP::ERRNO_TIMEOUT) {
+        if ($throwable instanceof NativeSnmpException && $throwable->getCode() === SNMP::ERRNO_TIMEOUT) {
             return TimeoutReached::fromOid($this->host, implode(', ', $oids));
         }
 
