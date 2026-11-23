@@ -29,7 +29,7 @@ use const SNMP_TIMETICKS;
 #[CoversClass(ExtensionSnmpClient::class)]
 final class ExtensionSnmpClientTest extends BaseTestCase
 {
-    private const SnmpHost = '127.0.0.1:15000';
+    private const string SnmpHost = '127.0.0.1:15000';
 
     /** @var resource|null */
     private static $process;
@@ -213,7 +213,7 @@ final class ExtensionSnmpClientTest extends BaseTestCase
         self::assertSnmpException(
             InvalidVersionProvided::new('whatever'),
             static function (): void {
-                (new ExtensionSnmpClient('', '', 0, 0, 'whatever'))->walk('.1.15');
+                new ExtensionSnmpClient('', '', 0, 0, 'whatever')->walk('.1.15');
             },
         );
     }

@@ -27,7 +27,7 @@ use function sprintf;
 #[CoversClass(CliSnmpClient::class)]
 final class CliSnmpClientTest extends BaseTestCase
 {
-    private const SnmpHost = '127.0.0.1:15000';
+    private const string SnmpHost = '127.0.0.1:15000';
 
     /** @var resource|null */
     private static $process;

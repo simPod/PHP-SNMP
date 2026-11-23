@@ -31,7 +31,7 @@ use const JSON_THROW_ON_ERROR;
 
 final class ApiSnmpClient implements SnmpClient
 {
-    private const ApiPath = '/snmp-proxy';
+    private const string ApiPath = '/snmp-proxy';
 
     public function __construct(
         private ClientInterface $client,
