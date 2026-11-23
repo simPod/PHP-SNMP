@@ -18,7 +18,7 @@
         "sort-packages": true
     },
     "require": {
-        "php": "^8.4",
+        "php": "^8.5",
         "php-standard-library/json": "^6.1",
         "php-standard-library/regex": "^6.1",
         "psr/log": "^3"

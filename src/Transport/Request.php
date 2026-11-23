@@ -6,9 +6,9 @@ namespace SimPod\PhpSnmp\Transport;
 
 final class Request
 {
-    public const Get = 'get';
-    public const GetNext = 'getNext';
-    public const Walk = 'walk';
+    public const string Get = 'get';
+    public const string GetNext = 'getNext';
+    public const string Walk = 'walk';
 
     /** @param list<string> $oids */
     private function __construct(

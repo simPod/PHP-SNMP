@@ -5,6 +5,10 @@ PHP SNMP Client
 [![Packagist](https://poser.pugx.org/simpod/php-snmp/v/stable.svg)](https://packagist.org/packages/simpod/php-snmp)
 [![Code Coverage][Coverage image]][CodeCov Master]
 
+## Requirements
+
+PHP 8.5 or later in the PHP 8 series.
+
 ## Direct SNMP with typed values
 
 Use `ExtensionSnmpClient` with `ext-snmp` to query a device directly. Pass
