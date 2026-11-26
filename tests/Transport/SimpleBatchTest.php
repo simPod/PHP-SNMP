@@ -30,10 +30,10 @@ final class SimpleBatchTest extends TestCase
     }
 
     /**
-     * @return Generator<string, array{
+     * @phpstan-return Generator<string, array{
      *     0: callable(TestCase): SnmpClient,
      *     1: array<array-key, Request>,
-     *     2: array<array-key, array<string, mixed>>
+     *     2: array<array-key, array<string, mixed>>,
      * }>
      */
     public static function provideBatch(): Generator
